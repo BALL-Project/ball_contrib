@@ -49,7 +49,7 @@ ELSE()
 
 	# Generate Makefile patch: the generated Makefile has GLEW_DEST set to CONTRIB_INSTALL_BASE
 	CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/makefile_glew_dest.diff.in"
-		       "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/makefile_glew_dest.diff")
+		       "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/makefile_glew_dest.diff")
 
 	ExternalProject_Add(${PACKAGE_NAME}
 
@@ -67,14 +67,12 @@ ELSE()
 		CONFIGURE_COMMAND ""
 		BUILD_COMMAND make
 		INSTALL_COMMAND make install
-		# Auto installation not possible: problem is the GLEW_DEST environment variable
-		# Custom installation steps below
 	)
 
 	# Apply Makefile patch
 	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
 		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/"
-		COMMAND patch Makefile < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/makefile_glew_dest.diff"
+		COMMAND patch Makefile < "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/makefile_glew_dest.diff"
 		DEPENDEES patch
 	)
 

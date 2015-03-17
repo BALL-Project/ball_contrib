@@ -95,6 +95,8 @@ SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
 # Path that contains extracted sources (usually <build_dir>/src)
 SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
 
+# Path that contains configured patch file
+SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
 
 
 ###############################################################################
