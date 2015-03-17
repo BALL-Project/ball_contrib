@@ -116,6 +116,12 @@ INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 SET(PACKAGE_NAME "eigen3")
 INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
+SET(PACKAGE_NAME "lpsolve")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+
+SET(PACKAGE_NAME "gsl")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+
 SET(PACKAGE_NAME "fftw")
 INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
