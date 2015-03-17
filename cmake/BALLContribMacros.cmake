@@ -32,11 +32,7 @@
 # -----------------------------------------------------------------------------
 
 
-MACRO(DOWNLOAD_PACKAGE_TARBALL tarball md5sum)
-
-	MESSAGE(STATUS "Downloading: ${tarball}")
-
-	SET(PACKAGE_DOWNLOADED FALSE)
+MACRO(CHECK_PACKAGE_TARBALL tarball md5sum package_valid)
 
 	# Check if tarball has already been downloaded
 	IF(EXISTS "${CONTRIB_PACKAGE_PATH}/${tarball}")
@@ -45,31 +41,75 @@ MACRO(DOWNLOAD_PACKAGE_TARBALL tarball md5sum)
 
 		# Check if tarball MD5 sum is correct
 		IF("${PACKAGE_MD5}" STREQUAL "${md5sum}")
-			SET(PACKAGE_DOWNLOADED TRUE)
+			SET(${package_valid} TRUE)
 		ENDIF()
 
 	ENDIF()
 
-	# If package is not yet existing or MD5 sum is wrong proceed download
-	IF(NOT PACKAGE_DOWNLOADED)
+ENDMACRO()
+
+
+MACRO(DOWNLOAD_PACKAGE_TARBALL tarball md5sum)
+
+	MESSAGE(STATUS "Downloading: ${tarball}")
+
+	SET(PACKAGE_VALID FALSE)
+
+	CHECK_PACKAGE_TARBALL("${tarball}" "${md5sum}" PACKAGE_VALID)
+
+	# Try download from mirror 1
+	IF(NOT PACKAGE_VALID)
 
 		FILE(DOWNLOAD
-			"${CONTRIB_PACKAGES_URL}/${tarball}"
+			"${CONTRIB_PACKAGES_URL_1}/${tarball}"
 			"${CONTRIB_PACKAGE_PATH}/${tarball}"
-			EXPECTED_MD5 ${md5sum}
-			STATUS BOOST_DOWNLOAD_STATUS
 		)
 
+	ENDIF()
+
+	CHECK_PACKAGE_TARBALL("${tarball}" "${md5sum}" PACKAGE_VALID)
+
+	# Try download from mirror 1
+	IF(NOT PACKAGE_VALID)
+
+		FILE(DOWNLOAD
+			"${CONTRIB_PACKAGES_URL_2}/${tarball}"
+			"${CONTRIB_PACKAGE_PATH}/${tarball}"
+		)
+
+	ENDIF()
+
+	CHECK_PACKAGE_TARBALL("${tarball}" "${md5sum}" PACKAGE_VALID)
+
+	IF(NOT PACKAGE_VALID)
+		MSG_DOWNLOAD_FAILED("${tarball}")
 	ENDIF()
 
 ENDMACRO()
 
 
-MACRO(CONFIGURE_PACKAGE_BEGIN package_name)
+MACRO(MSG_CONFIGURE_PACKAGE_BEGIN package_name)
 	MESSAGE(STATUS "Configuring project: ${package_name}")
 ENDMACRO()
 
 
-MACRO(CONFIGURE_PACKAGE_END package_name)
+MACRO(MSG_CONFIGURE_PACKAGE_END package_name)
 	MESSAGE(STATUS "Configuring ${package_name} - done")
 ENDMACRO()
+
+MACRO(MSG_DOWNLOAD_FAILED tarball)
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS " FATAL ERROR: Download of contrib package failed: ${tarball}")
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS " - Please verify that your internet connection works and try again.")
+	MESSAGE(STATUS " - If this error occurrs again please contact the developers.")
+	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS "")
+	MESSAGE(FATAL_ERROR "")
+ENDMACRO()
+
+
+
+
+

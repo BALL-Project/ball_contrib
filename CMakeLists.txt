@@ -64,10 +64,10 @@ INCLUDE(BALLContribMacros)
 ###############################################################################
 
 # URL to download the tarballs
-SET(CONTRIB_PACKAGES_URL "http://abi.inf.uni-tuebingen.de/Software/ball/contrib")
+SET(CONTRIB_PACKAGES_URL_1 "http://abi.inf.uni-tuebingen.de/Software/ball/contrib")
 
 # Fallback URL to download the tarballs, providing some redundancy
-SET(CONTRIB_PACKAGES_FALLBACK_URL "http://abi.inf.uni-tuebingen.de/Software/ball/contrib")
+SET(CONTRIB_PACKAGES_URL_2 "http://sourceforge.net/projects/ballproject/files/contrib/")
 
 # Folder to store the downloaded tarballs
 SET(CONTRIB_PACKAGE_PATH "${PROJECT_BINARY_DIR}/packages")
@@ -98,12 +98,9 @@ SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
 
 
 ###############################################################################
-###    Include BALL contrib libraries                                       ###
+###    Include all contrib packages here                                    ###
+###    The package name must match its corresponding folder name            ###
 ###############################################################################
-
-
-#SET(BUILD_TYPE "list" "Variable can be used to build only parts of the contrib package")
-#SET(VALID_BUILD_TYPES "all" "boost")
 
 SET(PACKAGE_NAME "zlib")
 INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
@@ -114,23 +111,11 @@ INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 SET(PACKAGE_NAME "boost")
 INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
+SET(PACKAGE_NAME "eigen3")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
-
-
-
-#FILE(GLOB_RECURSE TMP_CONTRIB_LIBRARIES RELATIVE "${CONTRIB_LIBRARY_PATH}" "*configure_library.cmake")
-
-#SET(CONTRIB_LIBRARIES "")
-#FOREACH(i ${TMP_CONTRIB_LIBRARIES})
-#	GET_FILENAME_COMPONENT(library ${i} DIRECTORY)
-#	LIST(APPEND CONTRIB_LIBRARIES ${library})
-#ENDFOREACH()
-
-#FOREACH(i ${CONTRIB_LIBRARIES})
-#	SET(PACKAGE_NAME "${i}")
-#	INCLUDE("${CONTRIB_LIBRARY_PATH}/${i}/configure_library.cmake")
-#ENDFOREACH()
-
+SET(PACKAGE_NAME "fftw")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
 
 

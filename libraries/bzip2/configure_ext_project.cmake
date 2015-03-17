@@ -31,7 +31,7 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
+MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 # Download package
 SET(PACKAGE_TARBALL "bzip2-1.0.6.tar.gz")
@@ -74,5 +74,5 @@ ELSEIF(OS_DARWIN)
 
 ENDIF()
 
-CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
+MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
 
