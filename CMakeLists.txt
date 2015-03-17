@@ -117,6 +117,8 @@ INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 SET(PACKAGE_NAME "fftw")
 INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
+SET(PACKAGE_NAME "glew")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
 
 
