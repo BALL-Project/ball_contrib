@@ -1,0 +1,47 @@
+18c18
+< CC=gcc
+---
+> CC=cc
+25a26
+> 
+27c28
+< PREFIX=/usr/local
+---
+> PREFIX=.
+38c39
+< all: libbz2.a bzip2 bzip2recover test
+---
+> all: libbz2.a libbz2.dylib bzip2 bzip2recover test
+40c41
+< bzip2: libbz2.a bzip2.o
+---
+> bzip2: libbz2.a libbz2.dylib bzip2.o
+54a56,63
+> libbz2.dylib: $(OBJS)
+> 	rm -f libbz2.dylib 
+> 	$(CC) -dynamiclib $(OBJS) -o libbz2.1.0.6.dylib
+> 	-install_name $(PREFIX)/lib/libbz2.1.dylib \ 
+> 	-compatibility_version 1 -current_version 1.0.6 
+> 	ln -s libbz2.1.0.6.dylib libbz2.1.dylib 
+> 	ln -s libbz2.1.0.6.dylib libbz2.dylib
+> 
+64,69c73,78
+< 	cmp sample1.bz2 sample1.rb2 
+< 	cmp sample2.bz2 sample2.rb2
+< 	cmp sample3.bz2 sample3.rb2
+< 	cmp sample1.tst sample1.ref
+< 	cmp sample2.tst sample2.ref
+< 	cmp sample3.tst sample3.ref
+---
+> 	DYLD_LIBRARY_PATH=. ./bzip2 -1  < sample1.ref > sample1.rb2 
+> 	DYLD_LIBRARY_PATH=. ./bzip2 -2  < sample2.ref > sample2.rb2 
+> 	DYLD_LIBRARY_PATH=. ./bzip2 -3  < sample3.ref > sample3.rb2 
+> 	DYLD_LIBRARY_PATH=. ./bzip2 -d  < sample1.bz2 > sample1.tst 
+> 	DYLD_LIBRARY_PATH=. ./bzip2 -d  < sample2.bz2 > sample2.tst 
+> 	DYLD_LIBRARY_PATH=. ./bzip2 -ds < sample3.bz2 > sample3.tst
+91a101
+> 	cp -f libbz2.1.0.6.dylib $(PREFIX)/lib 
+112c122
+< 	rm -f *.o libbz2.a bzip2 bzip2recover \
+---
+> 	rm -f *.o libbz2.a libbz2.*.dylib bzip2 bzip2recover \ 
