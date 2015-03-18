@@ -104,12 +104,6 @@ SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
 ###    The package name must match its corresponding folder name            ###
 ###############################################################################
 
-SET(PACKAGE_NAME "zlib")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
-
-SET(PACKAGE_NAME "bzip2")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
-
 SET(PACKAGE_NAME "boost")
 INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
 
