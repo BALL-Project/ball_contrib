@@ -43,7 +43,7 @@ IF(OS_WINDOWS)
 
 	# Windows
 
-ELSEIF(OS_DARWIN)
+ELSE()
 
 	# Linux / Darwin
 
@@ -65,12 +65,14 @@ ELSEIF(OS_DARWIN)
 		INSTALL_COMMAND make install PREFIX=${CONTRIB_INSTALL_BASE}
 	)
 
-	# Apply Makefile patch
-	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/"
-		COMMAND patch Makefile < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/bzip2-1.0.6-Makefile.diff"
-		DEPENDEES patch
-	)
+	IF(OS_DARWIN)
+		# Apply Makefile patch
+		ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
+			WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/"
+			COMMAND patch Makefile < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/bzip2-1.0.6-Makefile.diff"
+			DEPENDEES patch
+		)
+	ENDIF()
 
 ENDIF()
 
