@@ -39,7 +39,7 @@ PROJECT("BALL_contrib")
 ###    CMake settings                                                       ###
 ###############################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2 FATAL_ERROR)
 
 # ExternalProjects package
 INCLUDE(ExternalProject)
