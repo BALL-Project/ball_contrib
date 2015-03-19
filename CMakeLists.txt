@@ -110,22 +110,22 @@ SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
 ###############################################################################
 
 SET(PACKAGE_NAME "boost")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 SET(PACKAGE_NAME "eigen3")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 SET(PACKAGE_NAME "lpsolve")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 SET(PACKAGE_NAME "gsl")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 SET(PACKAGE_NAME "fftw")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 SET(PACKAGE_NAME "glew")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_ext_project.cmake")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 
 
