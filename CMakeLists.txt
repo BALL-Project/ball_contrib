@@ -39,7 +39,7 @@ PROJECT("BALL_contrib")
 ###    CMake settings                                                       ###
 ###############################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3 FATAL_ERROR)
 
 # ExternalProjects package
 INCLUDE(ExternalProject)
@@ -63,14 +63,19 @@ INCLUDE(BALLContribMacros)
 ###    Set variables and create necessary directories                       ###
 ###############################################################################
 
+# Path to directory that contains the archives of the contrib packages needed.
+# This is a mechanism to install old contrib versions
+# for which we don't hostthe archives anymore
+SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the contrib archives.")
+
 # URL to download the tarballs
-SET(CONTRIB_PACKAGES_URL_1 "http://abi.inf.uni-tuebingen.de/Software/ball/contrib")
+SET(CONTRIB_ARCHIVES_URL_1 "http://abi.inf.uni-tuebingen.de/Software/ball/contrib")
 
 # Fallback URL to download the tarballs, providing some redundancy
-SET(CONTRIB_PACKAGES_URL_2 "http://sourceforge.net/projects/ballproject/files/contrib/")
+SET(CONTRIB_ARCHIVES_URL_2 "http://sourceforge.net/projects/ballproject/files/contrib/")
 
 # Folder to store the downloaded tarballs
-SET(CONTRIB_PACKAGE_PATH "${PROJECT_BINARY_DIR}/packages")
+SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
 FILE(MAKE_DIRECTORY "${CONTRIB_PACKAGE_PATH}")
 
 # Install directory

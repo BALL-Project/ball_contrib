@@ -32,16 +32,23 @@
 # -----------------------------------------------------------------------------
 
 
-MACRO(CHECK_PACKAGE_TARBALL tarball md5sum package_valid)
+###############################################################################
+###    Macros                                                               ###
+###############################################################################
 
-	# Check if tarball has already been downloaded
-	IF(EXISTS "${CONTRIB_PACKAGE_PATH}/${tarball}")
+#
+# Check MD5 sum of ARCHIVE and set IS_VALID=TRUE if it matches ARCHIVE_MD5
+#
+MACRO(CHECK_PACKAGE_ARCHIVE archive archive_md5 is_valid)
 
-		FILE(MD5 "${CONTRIB_PACKAGE_PATH}/${tarball}" PACKAGE_MD5)
+	# Check if archive has already been downloaded
+	IF(EXISTS "${archive}")
 
-		# Check if tarball MD5 sum is correct
-		IF("${PACKAGE_MD5}" STREQUAL "${md5sum}")
-			SET(${package_valid} TRUE)
+		FILE(MD5 "${archive}" ARCHIVE_MD5_CALC)
+
+		# Check if archive MD5 sum is correct
+		IF("${ARCHIVE_MD5_CALC}" STREQUAL "${archive_md5}")
+			SET(${is_valid} TRUE)
 		ENDIF()
 
 	ENDIF()
@@ -49,44 +56,83 @@ MACRO(CHECK_PACKAGE_TARBALL tarball md5sum package_valid)
 ENDMACRO()
 
 
-MACRO(DOWNLOAD_PACKAGE_TARBALL tarball md5sum)
+#
+# Fetch ARCHIVE either from a local directory or download
+# Using a local directoy can manually be specified by setting the optional variable ARCHIVES_PATH
+# This mechanism can be used to build older contrib packages
+#
+MACRO(FETCH_PACKAGE_ARCHIVE archive archive_md5)
 
-	MESSAGE(STATUS "Downloading: ${tarball}")
+	# Check if ARCHIVE_PATH variable has been specified manually
+	IF(ARCHIVES_PATH)
 
-	SET(PACKAGE_VALID FALSE)
+		SET(IS_VALID FALSE)
+		SET(ARCHIVE_SRC "${ARCHIVES_PATH}/${archive}")
 
-	CHECK_PACKAGE_TARBALL("${tarball}" "${md5sum}" PACKAGE_VALID)
+		CHECK_PACKAGE_ARCHIVE("${ARCHIVE_SRC}" "${archive_md5}" IS_VALID)
 
-	# Try download from mirror 1
-	IF(NOT PACKAGE_VALID)
+		IF(IS_VALID)
+			FILE(COPY "${ARCHIVE_SRC}" DESTINATION "${CONTRIB_ARCHIVES_PATH}")
+		ELSE()
+			MSG_INVALID_ARCHIVE_PATH("${archive}")
+		ENDIF()
 
-		FILE(DOWNLOAD
-			"${CONTRIB_PACKAGES_URL_1}/${tarball}"
-			"${CONTRIB_PACKAGE_PATH}/${tarball}"
-		)
+	ELSE()
 
-	ENDIF()
+		DOWNLOAD_PACKAGE_ARCHIVE("${archive}" "${archive_md5}")
 
-	CHECK_PACKAGE_TARBALL("${tarball}" "${md5sum}" PACKAGE_VALID)
-
-	# Try download from mirror 1
-	IF(NOT PACKAGE_VALID)
-
-		FILE(DOWNLOAD
-			"${CONTRIB_PACKAGES_URL_2}/${tarball}"
-			"${CONTRIB_PACKAGE_PATH}/${tarball}"
-		)
-
-	ENDIF()
-
-	CHECK_PACKAGE_TARBALL("${tarball}" "${md5sum}" PACKAGE_VALID)
-
-	IF(NOT PACKAGE_VALID)
-		MSG_DOWNLOAD_FAILED("${tarball}")
 	ENDIF()
 
 ENDMACRO()
 
+
+#
+# Download archive
+#
+MACRO(DOWNLOAD_PACKAGE_ARCHIVE archive archive_md5)
+
+	MESSAGE(STATUS "Downloading: ${archive}")
+
+	SET(IS_VALID FALSE)
+	SET(ARCHIVE_DEST "${CONTRIB_ARCHIVES_PATH}/${archive}")
+
+	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${archive_md5}" IS_VALID)
+
+	# Try download from mirror 1
+	IF(NOT IS_VALID)
+
+		FILE(DOWNLOAD
+			"${CONTRIB_ARCHIVES_URL_1}/${archive}"
+			"${ARCHIVE_DEST}"
+		)
+
+	ENDIF()
+
+	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${archive_md5}" IS_VALID)
+
+	# Try download from mirror 1
+	IF(NOT IS_VALID)
+
+		FILE(DOWNLOAD
+			"${CONTRIB_ARCHIVES_URL_2}/${archive}"
+			"${ARCHIVE_DEST}"
+		)
+
+	ENDIF()
+
+	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${archive_md5}" IS_VALID)
+
+	IF(NOT IS_VALID)
+		MSG_DOWNLOAD_FAILED("${archive}")
+	ENDIF()
+
+ENDMACRO()
+
+
+
+###############################################################################
+###    Messages                                                             ###
+###############################################################################
 
 MACRO(MSG_CONFIGURE_PACKAGE_BEGIN package_name)
 	MESSAGE(STATUS "Configuring project: ${package_name}")
@@ -97,18 +143,33 @@ MACRO(MSG_CONFIGURE_PACKAGE_END package_name)
 	MESSAGE(STATUS "Configuring ${package_name} - done")
 ENDMACRO()
 
-MACRO(MSG_DOWNLOAD_FAILED tarball)
+
+MACRO(MSG_DOWNLOAD_FAILED archive)
 	MESSAGE(STATUS "")
-	MESSAGE(STATUS "===========================================================================")
-	MESSAGE(STATUS " FATAL ERROR: Download of contrib package failed: ${tarball}")
+	MESSAGE(STATUS "=============================================================================================")
+	MESSAGE(STATUS " FATAL ERROR: Download of contrib archive failed: ${archive}")
 	MESSAGE(STATUS "")
 	MESSAGE(STATUS " - Please verify that your internet connection works and try again.")
 	MESSAGE(STATUS " - If this error occurrs again please contact the developers.")
-	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS "=============================================================================================")
 	MESSAGE(STATUS "")
 	MESSAGE(FATAL_ERROR "")
 ENDMACRO()
 
+
+MACRO(MSG_INVALID_ARCHIVE_PATH archive)
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "=============================================================================================")
+	MESSAGE(STATUS " FATAL ERROR: Contrib archive ${archive} not found or invalid." )
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS " - Please verify that ARCHIVES_PATH (${ARCHIVES_PATH}) is set correctly")
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS " PLEASE NOTE: only use ARCHIVES_PATH if you plan to build an older contrib version" )
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "=============================================================================================")
+	MESSAGE(STATUS "")
+	MESSAGE(FATAL_ERROR "")
+ENDMACRO()
 
 
 
