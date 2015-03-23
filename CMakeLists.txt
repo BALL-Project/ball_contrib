@@ -41,20 +41,16 @@ PROJECT("BALL_contrib")
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3 FATAL_ERROR)
 
+# Path to contrib-specific CMake modules
+LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
 # ExternalProjects package
 INCLUDE(ExternalProject)
 
-# Path to install modules
-LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-
-
-
-###############################################################################
-###    Load macros and determine global system configuration                ###
-###############################################################################
-
+# Global system configuration
 INCLUDE(BALLContribConfigure)
 
+# Load contrib-specific macros and messages
 INCLUDE(BALLContribMacros)
 
 
@@ -63,10 +59,11 @@ INCLUDE(BALLContribMacros)
 ###    Set variables and create necessary directories                       ###
 ###############################################################################
 
+# OPTIONAL:
 # Path to directory that contains the archives of the contrib packages needed.
 # This is a mechanism to install old contrib versions
 # for which we don't hostthe archives anymore
-SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the contrib archives.")
+SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
 # URL to download the tarballs
 SET(CONTRIB_ARCHIVES_URL_1 "http://abi.inf.uni-tuebingen.de/Software/ball/contrib")
@@ -102,6 +99,7 @@ SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
 
 # Path that contains configured patch file
 SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
+
 
 
 ###############################################################################
