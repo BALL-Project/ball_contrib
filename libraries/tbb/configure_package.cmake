@@ -34,31 +34,14 @@
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 # Download archive
-SET(PACKAGE_ARCHIVE "eigen-eigen-10219c95fe65.tar.gz")
-SET(ARCHIVE_MD5 "4d0d77e06fef87b4fcd2c9b72cc8dc55")
+SET(PACKAGE_ARCHIVE "tbb43_20150316oss_src.tgz")
+SET(ARCHIVE_MD5 "bf090eaa86cf89ea014b7b462786a440")
 FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
 
 
 IF(OS_WINDOWS)
 
 	# Windows
-	ExternalProject_Add(${PACKAGE_NAME}
-
-		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
-		PREFIX ${PROJECT_BINARY_DIR}
-
-		LOG_DOWNLOAD 1
-		LOG_UPDATE 1
-		LOG_CONFIGURE 1
-		LOG_BUILD 1
-		LOG_INSTALL 1
-
-		CMAKE_COMMAND cmake
-		CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
-		BUILD_COMMAND make
-		INSTALL_COMMAND make install -Wno-dev
-	)
-
 
 ELSE()
 
@@ -69,16 +52,31 @@ ELSE()
 		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
 		PREFIX ${PROJECT_BINARY_DIR}
 
+		BUILD_IN_SOURCE 1
+
 		LOG_DOWNLOAD 1
 		LOG_UPDATE 1
 		LOG_CONFIGURE 1
 		LOG_BUILD 1
 		LOG_INSTALL 1
 
-		CMAKE_COMMAND cmake
-		CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
+		CONFIGURE_COMMAND ""
 		BUILD_COMMAND make
-		INSTALL_COMMAND make install -Wno-dev
+		INSTALL_COMMAND   ""
+		# Auto installation not possible: problem is the variable path where built libraries are stored
+		# Custom installation steps below
+	)
+
+	# Install libraries
+	ExternalProject_Add_Step(${PACKAGE_NAME} install_libs
+		COMMAND find "${PROJECT_BINARY_DIR}/src/TBB/build/" -iname "libtbb*" | xargs -I {} cp {} "${CONTRIB_INSTALL_LIB}"
+		DEPENDEES build
+	)
+
+	# Install header files
+	ExternalProject_Add_Step(${PACKAGE_NAME} install_headers
+		COMMAND cp -R "${PROJECT_BINARY_DIR}/src/TBB/include/tbb" "${CONTRIB_INSTALL_INC}"
+		DEPENDEES build
 	)
 
 ENDIF()
