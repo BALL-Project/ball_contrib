@@ -53,7 +53,7 @@ IF(OS_WINDOWS)
 		LOG_BUILD 1
 		LOG_INSTALL 1
 
-		PATCH_COMMAND patch "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake/EigenDetermineVSServicePack.cmake" < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/EigenDetermineVSServicePack.cmake.diff"
+		PATCH_COMMAND ${PROJECT_BINARY_DIR}/patch -d "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake" -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/EigenDetermineVSServicePack.cmake.diff"
 
 		CMAKE_COMMAND cmake
 		CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
