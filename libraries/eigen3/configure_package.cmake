@@ -53,18 +53,14 @@ IF(OS_WINDOWS)
 		LOG_BUILD 1
 		LOG_INSTALL 1
 
+		PATCH_COMMAND patch "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake/EigenDetermineVSServicePack.cmake" < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/EigenDetermineVSServicePack.cmake.diff"
+
 		CMAKE_COMMAND cmake
 		CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
 		BUILD_COMMAND make
 		INSTALL_COMMAND make install -Wno-dev
 	)
 
-	# Apply Makefile patch
-	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake"
-		COMMAND patch EigenDetermineVSServicePack.cmake < "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/EigenDetermineVSServicePack.cmake.diff"
-		DEPENDEES patch
-	)
 
 ELSE()
 
