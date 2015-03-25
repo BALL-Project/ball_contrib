@@ -59,6 +59,12 @@ IF(OS_WINDOWS)
 		INSTALL_COMMAND make install -Wno-dev
 	)
 
+	# Apply Makefile patch
+	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
+		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake"
+		COMMAND patch EigenDetermineVSServicePack.cmake < "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/EigenDetermineVSServicePack.cmake.diff"
+		DEPENDEES patch
+	)
 
 ELSE()
 
