@@ -39,6 +39,7 @@ SET(ARCHIVE_MD5 "4d0d77e06fef87b4fcd2c9b72cc8dc55")
 FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
 
 
+# Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
 	URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
@@ -54,12 +55,13 @@ ExternalProject_Add(${PACKAGE_NAME}
 )
 
 
+# System specififc steps
 IF(OS_WINDOWS)
 
 	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
 		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake"
 		COMMAND ${PROJECT_BINARY_DIR}/patch -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/EigenDetermineVSServicePack.cmake.diff"
-		DEPENDEES patch
+		DEPENDEES download
 		DEPENDERS configure
 	)
 

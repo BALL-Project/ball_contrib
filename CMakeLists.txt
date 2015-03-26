@@ -34,6 +34,12 @@
 
 PROJECT("BALL_contrib")
 
+SET(BALL_CONTRIB_VERSION_MAJOR "1")
+SET(BALL_CONTRIB_VERSION_MINOR "4")
+SET(BALL_CONTRIB_VERSION_PATCH "3")
+SET(BALL_CONTRIB_VERSION "${BALL_CONTRIB_VERSION_MAJOR}.${BALL_CONTRIB_VERSION_MINOR}.${BALL_CONTRIB_VERSION_PATCH}")
+
+
 
 ###############################################################################
 ###    CMake settings                                                       ###
@@ -66,10 +72,10 @@ INCLUDE(BALLContribMacros)
 SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
 # URL to download the tarballs
-SET(CONTRIB_ARCHIVES_URL_1 "http://abi.inf.uni-tuebingen.de/Software/ball/contrib")
+SET(CONTRIB_ARCHIVES_URL_1 "http://abi.inf.uni-tuebingen.de/Software/ball/contrib/v${BALL_CONTRIB_VERSION}/")
 
 # Fallback URL to download the tarballs, providing some redundancy
-SET(CONTRIB_ARCHIVES_URL_2 "http://sourceforge.net/projects/ballproject/files/contrib/")
+SET(CONTRIB_ARCHIVES_URL_2 "http://sourceforge.net/projects/ballproject/files/contrib/v${BALL_CONTRIB_VERSION}/")
 
 # Folder to store the downloaded tarballs
 SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
@@ -108,10 +114,10 @@ SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
 ###############################################################################
 
 SET(PACKAGE_NAME "boost")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
+#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 SET(PACKAGE_NAME "eigen3")
-#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
 SET(PACKAGE_NAME "lpsolve")
 #INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
