@@ -56,7 +56,7 @@ ENDIF()
 ###    Check if tools needed to build the contrib are available             ###
 ###############################################################################
 
-IF(MSVC)
+IF(OS_WINDOWS)
 
 	## http://gnuwin32.sourceforge.net/packages/patch.htm
 	FIND_PROGRAM(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin")
@@ -64,7 +64,7 @@ IF(MSVC)
 		MESSAGE(FATAL_ERROR "Cannot find 'patch.exe' on your system. Please install gnuwin32-patch and add the directory to your PATH environment variable!")
 	ENDIF()
 
-ELSE() ## Linux / Mingw / OSX
+ELSE()
 
 	# patch
 	FIND_PROGRAM(PROGRAM_PATCH "patch")
