@@ -51,6 +51,15 @@ SET(ZLIB_MD5 "44d667c142d7cda120332623eab69f40")
 FETCH_PACKAGE_ARCHIVE(${ZLIB_ARCHIVE} ${ZLIB_MD5})
 
 
+# Set system dependent variables
+SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
+
+IF(OS_WINDOWS)
+	SET(BOOTSTRAP_COMMAND "bootstrap.bat")
+ENDIF()
+
+
+# Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
 	URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
@@ -64,12 +73,26 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_BUILD 1
 	LOG_INSTALL 1
 
-	CONFIGURE_COMMAND ""
-	BUILD_COMMAND ""
+	CONFIGURE_COMMAND ${BOOTSTRAP_COMMAND}
+
+	BUILD_COMMAND ./b2 install --prefix=${CONTRIB_INSTALL_BASE}
+	--with-chrono
+	--with-date_time
+	--with-iostreams
+	--with-regex
+	--with-serialization
+	--with-system
+	--with-thread
+	--layout=tagged
+	threading=multi
+	variant=release
+	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME} -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
+
 	INSTALL_COMMAND ""
 )
 
-# Extract bzip2 and zlib sources
+
+# Extract bzip2 and zlib archives
 ExternalProject_Add_Step(${PACKAGE_NAME} custom_extract
 
 	LOG 1
@@ -83,88 +106,6 @@ ExternalProject_Add_Step(${PACKAGE_NAME} custom_extract
 )
 
 
-IF(OS_WINDOWS)
-
-
-
-ELSE()
-
-# Extract bzip2 and zlib sources
-ExternalProject_Add_Step(${PACKAGE_NAME} custom_config
-
-	LOG 1
-	DEPENDEES custom_extract
-
-	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}"
-	COMMAND ./bootstrap.sh --with-libraries=chrono,date_time,iostreams,regex,serialization,system,thread
-
-	DEPENDERS configure
-)
-
-# Extract bzip2 and zlib sources
-ExternalProject_Add_Step(${PACKAGE_NAME} custom_build_osx
-
-	LOG 1
-	DEPENDEES custom_config
-
-	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}"
-	COMMAND ./b2 install --prefix=${CONTRIB_INSTALL_BASE}
-	--layout=tagged threading=multi variant=release
-	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME} -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
-
-	DEPENDERS configure
-)
-
-ENDIF()
-
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
 
-
-
-
-
-IF(FALSE)
-
-	# Windows
-
-	# Linux / Darwin
-
-	ExternalProject_Add(${PACKAGE_NAME}
-
-		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
-		PREFIX ${PROJECT_BINARY_DIR}
-
-		BUILD_IN_SOURCE 1
-
-		LOG_DOWNLOAD 1
-		LOG_UPDATE 1
-		LOG_CONFIGURE 1
-		LOG_BUILD 1
-		LOG_INSTALL 1
-
-		CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/bootstrap.sh"
-		--with-libraries=chrono,date_time,iostreams,regex,serialization,system,thread
-
-		BUILD_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/b2"
-		install
-		--prefix=${CONTRIB_INSTALL_BASE}
-		--layout=tagged
-		threading=multi
-		variant=release
-		-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME}
-		-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
-
-		INSTALL_COMMAND ""
-	)
-
-	# Extract bzip2 and zlib sources
-	ExternalProject_Add_Step(${PACKAGE_NAME} bzip2_zlib
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-		COMMAND tar -xzf "${CONTRIB_ARCHIVES_PATH}/${BZIP2_ARCHIVE}"
-		COMMAND tar -xzf "${CONTRIB_ARCHIVES_PATH}/${ZLIB_ARCHIVE}"
-		DEPENDEES configure
-	)
-
-
-ENDIF()
 
