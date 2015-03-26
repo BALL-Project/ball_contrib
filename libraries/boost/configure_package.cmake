@@ -51,11 +51,81 @@ SET(ZLIB_MD5 "44d667c142d7cda120332623eab69f40")
 FETCH_PACKAGE_ARCHIVE(${ZLIB_ARCHIVE} ${ZLIB_MD5})
 
 
-IF(MSVC)
+ExternalProject_Add(${PACKAGE_NAME}
 
-	# Windows
+	URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
+	PREFIX ${PROJECT_BINARY_DIR}
+
+	BUILD_IN_SOURCE 1
+
+	LOG_DOWNLOAD 1
+	LOG_UPDATE 1
+	LOG_CONFIGURE 1
+	LOG_BUILD 1
+	LOG_INSTALL 1
+
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+)
+
+# Extract bzip2 and zlib sources
+ExternalProject_Add_Step(${PACKAGE_NAME} custom_extract
+
+	LOG 1
+	DEPENDEES download
+
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
+	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${BZIP2_ARCHIVE}"
+	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${ZLIB_ARCHIVE}"
+
+	DEPENDERS configure
+)
+
+
+IF(OS_WINDOWS)
+
+
 
 ELSE()
+
+# Extract bzip2 and zlib sources
+ExternalProject_Add_Step(${PACKAGE_NAME} custom_config
+
+	LOG 1
+	DEPENDEES custom_extract
+
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}"
+	COMMAND ./bootstrap.sh --with-libraries=chrono,date_time,iostreams,regex,serialization,system,thread
+
+	DEPENDERS configure
+)
+
+# Extract bzip2 and zlib sources
+ExternalProject_Add_Step(${PACKAGE_NAME} custom_build_osx
+
+	LOG 1
+	DEPENDEES custom_config
+
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}"
+	COMMAND ./b2 install --prefix=${CONTRIB_INSTALL_BASE}
+	--layout=tagged threading=multi variant=release
+	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME} -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
+
+	DEPENDERS configure
+)
+
+ENDIF()
+
+MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
+
+
+
+
+
+IF(FALSE)
+
+	# Windows
 
 	# Linux / Darwin
 
@@ -97,6 +167,4 @@ ELSE()
 
 
 ENDIF()
-
-MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
 
