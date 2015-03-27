@@ -72,7 +72,7 @@ ELSE()
 	# Apply Makefile patch
 	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
 		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/"
-		COMMAND patch Makefile < "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/makefile_glew_dest.diff"
+		COMMAND ${PROGRAM_PATCH} Makefile < "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/makefile_glew_dest.diff"
 		DEPENDEES patch
 	)
 

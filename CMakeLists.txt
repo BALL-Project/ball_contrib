@@ -128,6 +128,9 @@ SET(PACKAGE_NAME "gsl")
 SET(PACKAGE_NAME "tbb")
 #INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
+SET(PACKAGE_NAME "openbabel")
+INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
+
 SET(PACKAGE_NAME "fftw")
 #INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
