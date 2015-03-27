@@ -1,0 +1,23 @@
+--- CMakeLists.txt	2015-03-27 13:16:04.000000000 +0100
++++ CMakeLists.txt.patched	2015-03-27 13:09:53.000000000 +0100
+@@ -163,9 +163,10 @@
+ find_package(LibXml2)
+ if(NOT LIBXML2_FOUND)
+   message(WARNING "libxml2 not found - disabling CML support!")
++  set(LIBXML2_LIBRARIES "")
+ endif()
+ 
+-find_package(ZLIB)
++SET(ZLIB_FOUND FALSE)
+ if(ZLIB_FOUND)
+   add_definitions(-DHAVE_LIBZ)
+   include_directories(${ZLIB_INCLUDE_DIR})
+@@ -173,6 +174,8 @@
+   if(WIN32)
+     add_definitions(-DDISABLE_WRITE_COMPRESSION)
+   endif()
++ELSE()
++  set(ZLIB_LIBRARY "")
+ endif()
+ 
+ # wxWidgets instructions based on http://wiki.wxwidgets.org/CMake

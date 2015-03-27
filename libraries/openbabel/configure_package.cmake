@@ -65,4 +65,11 @@ ExternalProject_Add(${PACKAGE_NAME}
 		   -Wno-dev
 )
 
+ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}"
+	COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/CMakeLists.txt.diff"
+	DEPENDEES download
+	DEPENDERS configure
+)
+
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
