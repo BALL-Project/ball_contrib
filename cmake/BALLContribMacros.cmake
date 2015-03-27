@@ -134,6 +134,41 @@ ENDMACRO()
 ###    Messages                                                             ###
 ###############################################################################
 
+MACRO(MSG_HELP)
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS "BALL contrib (dependency) packages installation system:")
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "* This program will allow you to compile and install all BALL dependencies.")
+	MESSAGE(STATUS "* By default, all contrib packages are build. ")
+	MESSAGE(STATUS "* Use the CMake variable -DWITH_PACKAGES to select only a subset for building.")
+	MESSAGE(STATUS "  For multiple choices please use a semicolon-separated and double quoted argument.")
+	MESSAGE(STATUS "* A list of available contrib packages is listed using -WITH_PACKAGES=list")
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS "")
+ENDMACRO()
+
+
+MACRO(MSG_LIST contrib_packages)
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS "Available BALL contrib packages:")
+	MESSAGE(STATUS "")
+
+	MESSAGE(STATUS " * all  (build all packages)")
+	MESSAGE(STATUS " * core (build only packages nedded to build BALL core library)")
+
+	FOREACH(p ${contrib_packages})
+		MESSAGE(STATUS " * ${p}")
+	ENDFOREACH()
+
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS "")
+ENDMACRO()
+
+
 MACRO(MSG_CONFIGURE_PACKAGE_BEGIN package_name)
 	MESSAGE(STATUS "Configuring project: ${package_name}")
 ENDMACRO()

@@ -62,6 +62,66 @@ INCLUDE(BALLContribMacros)
 
 
 ###############################################################################
+###    Print help and setup packages to be installed                        ###
+###############################################################################
+
+SET(CORE_PACKAGES "boost" "eigen3" "lpsolve" "gsl" "tbb" "openbabel" "fftw")
+SET(VIEW_PACKAGES "glew")
+SET(CONTRIB_PACKAGES "${CORE_PACKAGES};${VIEW_PACKAGES}")
+SET(WITH_PACKAGES "help" CACHE STRING "Variable to control which packages are build.")
+SET(BUILD_PACKAGES "")
+
+IF(WITH_PACKAGES STREQUAL "help")
+	MSG_HELP()
+	RETURN(0)
+ENDIF()
+
+IF(WITH_PACKAGES STREQUAL "list")
+	MSG_LIST("${CONTRIB_PACKAGES}")
+	RETURN(0)
+ENDIF()
+
+IF(WITH_PACKAGES STREQUAL "all")
+
+	SET(BUILD_PACKAGES "${CONTRIB_PACKAGES}")
+
+ELSEIF(WITH_PACKAGES STREQUAL "core")
+
+	SET(BUILD_PACKAGES "${CORE_PACKAGES}")
+
+ELSE()
+
+	FOREACH(p ${WITH_PACKAGES})
+
+		LIST(FIND CONTRIB_PACKAGES ${p} VALID_ITEM)
+
+		IF(VALID_ITEM STREQUAL "-1")
+			MSG_LIST("${CONTRIB_PACKAGES}")
+			MESSAGE(FATAL_ERROR "No valid contrib package: ${p}")
+			RETURN(0)
+		ELSE()
+			LIST(APPEND BUILD_PACKAGES ${p})
+		ENDIF()
+	ENDFOREACH()
+
+ENDIF()
+
+
+# Cleanup list
+LIST(REMOVE_DUPLICATES BUILD_PACKAGES)
+
+
+# Cross dependencies between contrib packages have to be specified manually
+# Important: prepend the required package to the list
+
+# openbabel requires eigen3
+LIST(FIND BUILD_PACKAGES "openbabel" SELECTED_ITEM)
+IF(NOT SELECTED_ITEM STREQUAL "-1")
+	SET(BUILD_PACKAGES "eigen3" "${BUILD_PACKAGES}")
+ENDIF()
+
+
+###############################################################################
 ###    Set variables and create necessary directories                       ###
 ###############################################################################
 
@@ -106,39 +166,26 @@ SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
 # Path that contains configured patch file
 SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
 
+# Logging options
+SET(CUSTOM_BUILD_IN_SOURCE 1 CACHE STRING  "Build projects in sources (default 1).")
+SET(CUSTOM_LOG_DOWNLOAD 1 CACHE STRING  "Write logfile for download step instead of printing (default 1).")
+SET(CUSTOM_LOG_UPDATE 1 CACHE STRING  "Write logfile for update/patch step instead of printing (default 1).")
+SET(CUSTOM_LOG_CONFIGURE 1 CACHE STRING  "Write logfile for configure step instead of printing (default 1).")
+SET(CUSTOM_LOG_BUILD 1 CACHE STRING  "Write logfile for build step instead of printing (default 1).")
+SET(CUSTOM_LOG_INSTALL 1 CACHE STRING  "Write logfile for install step instead of printing (default 1).")
+
 
 
 ###############################################################################
-###    Include all contrib packages here                                    ###
-###    The package name must match its corresponding folder name            ###
+###    Include selected contrib packages here                               ###
 ###############################################################################
 
-SET(PACKAGE_NAME "boost")
-#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
-SET(PACKAGE_NAME "eigen3")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
+FOREACH(p ${BUILD_PACKAGES})
 
-SET(PACKAGE_NAME "lpsolve")
-#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
+	SET(PACKAGE_NAME "${p}")
+	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
-SET(PACKAGE_NAME "gsl")
-#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
-
-SET(PACKAGE_NAME "tbb")
-#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
-
-SET(PACKAGE_NAME "openbabel")
-INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
-
-SET(PACKAGE_NAME "fftw")
-#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
-
-SET(PACKAGE_NAME "glew")
-#INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
-
-
-
-
+ENDFOREACH()
 
 
