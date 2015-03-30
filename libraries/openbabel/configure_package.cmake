@@ -57,19 +57,31 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
 		   -DCMAKE_PREFIX_PATH=${CONTRIB_INSTALL_BASE}
+		   -DMINIMAL_BUILD=ON
 		   -DBUILD_GUI=OFF
 		   -DWITH_INCHI=OFF
-		   -DMINIMAL_BUILD=ON
+		   -DBUILD_TESTING=OFF
 		   -DENABLE_TESTS=OFF
-		   -DOB_USE_PREBUILT_BINARIES=OFF # Relevant only on windows systems
-		   -Wno-dev
+		   -DOPENBABEL_USE_SYSTEM_INCHI=OFF
+		   -DOB_USE_PREBUILT_BINARIES=OFF
 )
 
 ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
 	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}"
-	COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/CMakeLists.txt.diff"
+	COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/patch_1_CMakeLists.txt.diff"
 	DEPENDEES download
 	DEPENDERS configure
 )
+
+IF(OS_WINDOWS)
+
+	ExternalProject_Add_Step(${PACKAGE_NAME} patch_2
+		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/src/formats"
+		COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/patch_2_CMakeLists.txt.diff"
+		DEPENDEES download
+		DEPENDERS configure
+	)
+
+ENDIF()
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

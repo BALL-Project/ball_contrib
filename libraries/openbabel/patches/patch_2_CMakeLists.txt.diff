@@ -1,0 +1,27 @@
+--- CMakeLists.txt	2015-03-23 15:34:24.000000000 +0100
++++ CMakeLists.txt.patched	2015-03-30 14:21:22.000000000 +0200
+@@ -251,24 +251,6 @@
+ 
+ 
+ if(MSVC)
+-  foreach(formatgroup formats_common formats_utility formats_compchem formats_misc ${optional_formatgroups})
+-    set(formatsources "")
+-    foreach(format ${${formatgroup}})
+-      set(formatsources ${formatsources} ${format}.cpp ${${format}_additional_sources})
+-    endforeach(format)
+-    add_library(${formatgroup} ${PLUGIN_TYPE} ${formatsources}
+-        "${openbabel_BINARY_DIR}/include/openbabel/babelconfig.h")
+-    target_link_libraries(${formatgroup} ${libs} ${XDR_LIBRARY} openbabel)
+-    install(TARGETS ${formatgroup}
+-                  RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+-                  LIBRARY DESTINATION ${OB_PLUGIN_INSTALL_DIR}
+-                  ARCHIVE DESTINATION ${OB_PLUGIN_INSTALL_DIR})
+-    set_target_properties(${formatgroup} PROPERTIES
+-                  OUTPUT_NAME ${formatgroup}
+-                  PREFIX ""
+-                  SUFFIX ${MODULE_EXTENSION})
+-  endforeach(formatgroup)
+-else(MSVC)
+ foreach(format ${formats})
+   add_library(${format} ${PLUGIN_TYPE} ${format}.cpp
+     ${${format}_additional_sources}

@@ -107,10 +107,6 @@ ELSE()
 ENDIF()
 
 
-# Cleanup list
-LIST(REMOVE_DUPLICATES BUILD_PACKAGES)
-
-
 # Cross dependencies between contrib packages have to be specified manually
 # Important: prepend the required package to the list
 
@@ -119,6 +115,12 @@ LIST(FIND BUILD_PACKAGES "openbabel" SELECTED_ITEM)
 IF(NOT SELECTED_ITEM STREQUAL "-1")
 	SET(BUILD_PACKAGES "eigen3" "${BUILD_PACKAGES}")
 ENDIF()
+
+
+# Cleanup list
+LIST(REMOVE_DUPLICATES BUILD_PACKAGES)
+
+
 
 
 ###############################################################################
