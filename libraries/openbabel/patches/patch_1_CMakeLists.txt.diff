@@ -1,23 +1,48 @@
---- CMakeLists.txt	2015-03-27 13:16:04.000000000 +0100
-+++ CMakeLists.txt.patched	2015-03-27 13:09:53.000000000 +0100
-@@ -163,9 +163,10 @@
- find_package(LibXml2)
- if(NOT LIBXML2_FOUND)
-   message(WARNING "libxml2 not found - disabling CML support!")
-+  set(LIBXML2_LIBRARIES "")
+--- CMakeLists.txt	2015-03-30 18:01:56.000000000 +0200
++++ CMakeLists.txt.patched	2015-03-30 18:03:58.000000000 +0200
+@@ -160,20 +160,11 @@
  endif()
+ 
+ # configure checks
+-find_package(LibXml2)
+-if(NOT LIBXML2_FOUND)
+-  message(WARNING "libxml2 not found - disabling CML support!")
+-endif()
++SET(LIBXML2_FOUND FALSE)
++set(LIBXML2_LIBRARIES "")
  
 -find_package(ZLIB)
+-if(ZLIB_FOUND)
+-  add_definitions(-DHAVE_LIBZ)
+-  include_directories(${ZLIB_INCLUDE_DIR})
+-  # Longstanding unsolved problem with compression under Windows
+-  if(WIN32)
+-    add_definitions(-DDISABLE_WRITE_COMPRESSION)
+-  endif()
+-endif()
 +SET(ZLIB_FOUND FALSE)
- if(ZLIB_FOUND)
-   add_definitions(-DHAVE_LIBZ)
-   include_directories(${ZLIB_INCLUDE_DIR})
-@@ -173,6 +174,8 @@
-   if(WIN32)
-     add_definitions(-DDISABLE_WRITE_COMPRESSION)
-   endif()
-+ELSE()
-+  set(ZLIB_LIBRARY "")
- endif()
++set(ZLIB_LIBRARY "")
  
  # wxWidgets instructions based on http://wiki.wxwidgets.org/CMake
+ #find_package(wxWidgets COMPONENTS base core REQUIRED)
+@@ -437,18 +428,8 @@
+ )
+ 
+ #cjh
+-find_package(Eigen3)
+-if(EIGEN3_FOUND)
+-  add_definitions(-DHAVE_EIGEN -DHAVE_EIGEN3)
+-  include_directories(${EIGEN3_INCLUDE_DIR})
+-else()
+-  find_package(Eigen2) # find and setup Eigen2
+-  if(EIGEN2_FOUND)
+-    add_definitions (-DHAVE_EIGEN)
+-    include_directories(${EIGEN2_INCLUDE_DIR})
+-  endif()
+-endif()
+-#cjh
++SET(EIGEN3_FOUND FALSE)
++SET(EIGEN2_FOUND FALSE)
+ 
+ find_package(Cairo)
+ if(CAIRO_FOUND)
