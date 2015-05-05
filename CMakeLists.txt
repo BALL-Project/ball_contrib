@@ -118,7 +118,7 @@ SET(CUSTOM_LOG_INSTALL 1 CACHE STRING  "Write logfile for install step instead o
 ###############################################################################
 
 # Contrib packages needed to build BALL_core are listed in CORE_PACKAGES
-SET(CORE_PACKAGES "boost" "eigen3" "lpsolve" "gsl" "tbb" "openbabel" "fftw")
+SET(CORE_PACKAGES "boost" "eigen3" "lpsolve" "gsl" "tbb" "openbabel" "fftw" "sip")
 
 # Contrib packages needed to build BALL_core are listed in VIEW_PACKAGES
 SET(VIEW_PACKAGES "glew")
