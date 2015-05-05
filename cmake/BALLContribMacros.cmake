@@ -102,19 +102,7 @@ MACRO(DOWNLOAD_PACKAGE_ARCHIVE archive archive_md5)
 	IF(NOT IS_VALID)
 
 		FILE(DOWNLOAD
-			"${CONTRIB_ARCHIVES_URL_1}/${archive}"
-			"${ARCHIVE_DEST}"
-		)
-
-	ENDIF()
-
-	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${archive_md5}" IS_VALID)
-
-	# Try download from mirror 1
-	IF(NOT IS_VALID)
-
-		FILE(DOWNLOAD
-			"${CONTRIB_ARCHIVES_URL_2}/${archive}"
+			"${CONTRIB_ARCHIVES_URL}/${archive}"
 			"${ARCHIVE_DEST}"
 		)
 

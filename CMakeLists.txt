@@ -62,13 +62,74 @@ INCLUDE(BALLContribMacros)
 
 
 ###############################################################################
-###    Print help and setup packages to be installed                        ###
+###    Set variables and create necessary directories                       ###
 ###############################################################################
 
+# OPTIONAL:
+# Path to directory that contains the archives of the contrib packages needed.
+# This is a mechanism to install old contrib versions
+# for which we don't hostthe archives anymore
+SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
+
+# URL to download the tarballs
+SET(CONTRIB_ARCHIVES_URL "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/tarballs/")
+
+# Folder to store the downloaded tarballs
+SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
+FILE(MAKE_DIRECTORY "${CONTRIB_PACKAGE_PATH}")
+
+# Install directory
+SET(CONTRIB_INSTALL_BASE "${PROJECT_BINARY_DIR}/install")
+FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_BASE}")
+
+# Install directory: binaries
+SET(CONTRIB_INSTALL_BIN "${CONTRIB_INSTALL_BASE}/bin")
+FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_BIN}")
+
+# Install directory: libraries
+SET(CONTRIB_INSTALL_LIB "${CONTRIB_INSTALL_BASE}/lib")
+FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_LIB}")
+
+# Install directory: headers
+SET(CONTRIB_INSTALL_INC "${CONTRIB_INSTALL_BASE}/include")
+FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_INC}")
+
+# Path that contains the contrib libraries
+SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
+
+# Path that contains extracted sources (usually <build_dir>/src)
+SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
+
+# Path that contains configured patch file
+SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
+
+# Logging options
+SET(CUSTOM_BUILD_IN_SOURCE 1 CACHE STRING  "Build projects in sources (default 1).")
+SET(CUSTOM_LOG_DOWNLOAD 1 CACHE STRING  "Write logfile for download step instead of printing (default 1).")
+SET(CUSTOM_LOG_UPDATE 1 CACHE STRING  "Write logfile for update/patch step instead of printing (default 1).")
+SET(CUSTOM_LOG_CONFIGURE 1 CACHE STRING  "Write logfile for configure step instead of printing (default 1).")
+SET(CUSTOM_LOG_BUILD 1 CACHE STRING  "Write logfile for build step instead of printing (default 1).")
+SET(CUSTOM_LOG_INSTALL 1 CACHE STRING  "Write logfile for install step instead of printing (default 1).")
+
+
+
+###############################################################################
+###    Select and check packages to be installed                            ###
+###############################################################################
+
+# Contrib packages needed to build BALL_core are listed in CORE_PACKAGES
 SET(CORE_PACKAGES "boost" "eigen3" "lpsolve" "gsl" "tbb" "openbabel" "fftw")
+
+# Contrib packages needed to build BALL_core are listed in VIEW_PACKAGES
 SET(VIEW_PACKAGES "glew")
+
+# Contrib packages needed to build BALL completely  are listed in CONTRIB_PACKAGES
 SET(CONTRIB_PACKAGES "${CORE_PACKAGES};${VIEW_PACKAGES}")
+
+# Variable to be set by the user in order to specify the packages to be build
 SET(WITH_PACKAGES "help" CACHE STRING "Variable to control which packages are build.")
+
+# Internal variable used to store the validated selection of packages to be installed
 SET(BUILD_PACKAGES "")
 
 IF(WITH_PACKAGES STREQUAL "help")
@@ -115,69 +176,7 @@ ENDIF()
 # Cleanup list
 LIST(REMOVE_DUPLICATES BUILD_PACKAGES)
 
-
-
-
-###############################################################################
-###    Set variables and create necessary directories                       ###
-###############################################################################
-
-# OPTIONAL:
-# Path to directory that contains the archives of the contrib packages needed.
-# This is a mechanism to install old contrib versions
-# for which we don't hostthe archives anymore
-SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
-
-# URL to download the tarballs
-SET(CONTRIB_ARCHIVES_URL_1 "http://abi.inf.uni-tuebingen.de/Software/ball/contrib/v${BALL_CONTRIB_VERSION}/")
-
-# Fallback URL to download the tarballs, providing some redundancy
-SET(CONTRIB_ARCHIVES_URL_2 "http://sourceforge.net/projects/ballproject/files/contrib/v${BALL_CONTRIB_VERSION}/")
-
-# Folder to store the downloaded tarballs
-SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
-FILE(MAKE_DIRECTORY "${CONTRIB_PACKAGE_PATH}")
-
-# Install directory
-SET(CONTRIB_INSTALL_BASE "${PROJECT_BINARY_DIR}/install")
-FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_BASE}")
-
-# Install directory: binaries
-SET(CONTRIB_INSTALL_BIN "${CONTRIB_INSTALL_BASE}/bin")
-FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_BIN}")
-
-# Install directory: libraries
-SET(CONTRIB_INSTALL_LIB "${CONTRIB_INSTALL_BASE}/lib")
-FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_LIB}")
-
-# Install directory: headers
-SET(CONTRIB_INSTALL_INC "${CONTRIB_INSTALL_BASE}/include")
-FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_INC}")
-
-# Path that contains the contrib libraries
-SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
-
-# Path that contains extracted sources (usually <build_dir>/src)
-SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
-
-# Path that contains configured patch file
-SET(CONTRIB_BINARY_PATCHES "${PROJECT_BINARY_DIR}/patches")
-
-# Logging options
-SET(CUSTOM_BUILD_IN_SOURCE 1 CACHE STRING  "Build projects in sources (default 1).")
-SET(CUSTOM_LOG_DOWNLOAD 1 CACHE STRING  "Write logfile for download step instead of printing (default 1).")
-SET(CUSTOM_LOG_UPDATE 1 CACHE STRING  "Write logfile for update/patch step instead of printing (default 1).")
-SET(CUSTOM_LOG_CONFIGURE 1 CACHE STRING  "Write logfile for configure step instead of printing (default 1).")
-SET(CUSTOM_LOG_BUILD 1 CACHE STRING  "Write logfile for build step instead of printing (default 1).")
-SET(CUSTOM_LOG_INSTALL 1 CACHE STRING  "Write logfile for install step instead of printing (default 1).")
-
-
-
-###############################################################################
-###    Include selected contrib packages here                               ###
-###############################################################################
-
-
+# Iterate list of selected and valid packages and include them now
 FOREACH(p ${BUILD_PACKAGES})
 
 	SET(PACKAGE_NAME "${p}")
