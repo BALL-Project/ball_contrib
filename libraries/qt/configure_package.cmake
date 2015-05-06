@@ -62,9 +62,13 @@ ELSE()
 
 		CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure"
 		-prefix "${CONTRIB_INSTALL_BASE}"
-		-opensource -confirm-license -silent
+		-opensource
+		-confirm-license
+		-silent
 		-release
-		-no-wayland -no-nis
+		-no-wayland
+		-no-nis
+		-skip webengine
 
 		BUILD_COMMAND make
 		INSTALL_COMMAND make install

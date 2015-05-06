@@ -72,7 +72,7 @@ INCLUDE(BALLContribMacros)
 SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
 # URL to download the tarballs
-SET(CONTRIB_ARCHIVES_URL "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/tarballs/")
+SET(CONTRIB_ARCHIVES_URL "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/archives/")
 
 # Folder to store the downloaded tarballs
 SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
