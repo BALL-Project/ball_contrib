@@ -66,9 +66,13 @@ ELSE()
 		-confirm-license
 		-silent
 		-release
-		-no-wayland
 		-no-nis
+		-nomake examples
+		-nomake tests
+		-skip enginio
+		-skip wayland
 		-skip webengine
+		-skip webkit-examples
 
 		BUILD_COMMAND make
 		INSTALL_COMMAND make install
