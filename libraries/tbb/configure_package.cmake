@@ -62,7 +62,7 @@ ELSE()
 
 		CONFIGURE_COMMAND ""
 		BUILD_COMMAND make
-		INSTALL_COMMAND   ""
+		INSTALL_COMMAND ""
 		# Auto installation not possible: problem is the variable path where built libraries are stored
 		# Custom installation steps below
 	)
