@@ -49,27 +49,3 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 ELSE()
 	MESSAGE(FATAL_ERROR "The underlying system (${CMAKE_SYSTEM_NAME}) is not supported.")
 ENDIF()
-
-
-
-###############################################################################
-###    Check if tools needed to build the contrib are available             ###
-###############################################################################
-
-IF(OS_WINDOWS)
-
-	## http://gnuwin32.sourceforge.net/packages/patch.htm
-	FIND_PROGRAM(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin")
-	IF(NOT PROGRAM_PATCH)
-		MESSAGE(FATAL_ERROR "Cannot find 'patch.exe' on your system. Please install gnuwin32-patch and add the directory to your PATH environment variable!")
-	ENDIF()
-
-ELSE()
-
-	# patch
-	FIND_PROGRAM(PROGRAM_PATCH "patch")
-	IF(NOT PROGRAM_PATCH)
-		MESSAGE(FATAL_ERROR "Cannot find 'patch' on your system. Please install patch and add the directory to your PATH environment variable!")
-	ENDIF()
-
-ENDIF()

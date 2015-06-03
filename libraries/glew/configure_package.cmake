@@ -45,13 +45,13 @@ IF(OS_WINDOWS)
 
 ELSE()
 
-	# Linux / Darwin
-
 	# Generate Makefile patch: the generated Makefile has GLEW_DEST set to CONTRIB_INSTALL_BASE
 	CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/makefile_glew_dest.diff.in"
 		       "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/makefile_glew_dest.diff")
 
 	ExternalProject_Add(${PACKAGE_NAME}
+
+		DEPENDS patch
 
 		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
 		PREFIX ${PROJECT_BINARY_DIR}
@@ -71,7 +71,7 @@ ELSE()
 
 	# Apply Makefile patch
 	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/"
+		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}"
 		COMMAND ${PROGRAM_PATCH} Makefile < "${CONTRIB_BINARY_PATCHES}/${PACKAGE_NAME}/makefile_glew_dest.diff"
 		DEPENDEES patch
 	)

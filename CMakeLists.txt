@@ -112,7 +112,6 @@ SET(CUSTOM_LOG_BUILD 1 CACHE STRING  "Write logfile for build step instead of pr
 SET(CUSTOM_LOG_INSTALL 1 CACHE STRING  "Write logfile for install step instead of printing (default 1).")
 
 
-
 ###############################################################################
 ###    Select and check packages to be installed                            ###
 ###############################################################################
@@ -173,8 +172,24 @@ ENDIF()
 
 	# Currently no cross dependency
 
+
 # Cleanup list
 LIST(REMOVE_DUPLICATES BUILD_PACKAGES)
+
+
+# Add and check for GNU patch
+# On windows it will be downloaded as a binary from GnuWin32 using the ExternalProject mechanism
+LIST(INSERT BUILD_PACKAGES 0 "patch")
+
+IF(OS_WINDOWS)
+	SET(PROGRAM_PATCH "${CONTRIB_BINARY_SRC}/patch/bin/patch.exe")
+ELSE()
+	FIND_PROGRAM(PROGRAM_PATCH "patch")
+	IF(NOT PROGRAM_PATCH)
+		MESSAGE(FATAL_ERROR "Cannot find 'patch' on your system. Please install patch and add the directory to your PATH environment variable!")
+	ENDIF()
+ENDIF()
+
 
 # Iterate list of selected and valid packages and include them now
 FOREACH(p ${BUILD_PACKAGES})
