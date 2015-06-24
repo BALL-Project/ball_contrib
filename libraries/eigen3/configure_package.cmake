@@ -33,18 +33,11 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# Download archive
-SET(PACKAGE_ARCHIVE "eigen-eigen-10219c95fe65.tar.gz")
-SET(ARCHIVE_MD5 "4d0d77e06fef87b4fcd2c9b72cc8dc55")
-FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
-
-
 # Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
-	DEPENDS patch
+	GIT_REPOSITORY "git@github.com:ball-project/ball_contrib_eigen3.git"
 
-	URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
 	PREFIX ${PROJECT_BINARY_DIR}
 
 	# Not allowed for eigen3
@@ -61,15 +54,14 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 
 # System specififc steps
-IF(OS_WINDOWS)
-
-	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake"
-		COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/patch_1_EigenDetermineVSServicePack.cmake.diff"
-		DEPENDEES download
-		DEPENDERS configure
-	)
-
-ENDIF()
+# IF(OS_WINDOWS)
+# 
+# 	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
+# 		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake"
+# 		COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/patch_1_EigenDetermineVSServicePack.cmake.diff"
+# 		DEPENDEES download
+# 		DEPENDERS configure
+# 	)
+#ENDIF()
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

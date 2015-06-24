@@ -33,12 +33,6 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# Download archive
-SET(PACKAGE_ARCHIVE "tbb43_20150316oss_src.tgz")
-SET(ARCHIVE_MD5 "bf090eaa86cf89ea014b7b462786a440")
-FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
-
-
 IF(OS_WINDOWS)
 
 	# Windows
@@ -49,7 +43,8 @@ ELSE()
 
 	ExternalProject_Add(${PACKAGE_NAME}
 
-		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
+		GIT_REPOSITORY "git@github.com:ball-project/ball_contrib_tbb.git"
+
 		PREFIX ${PROJECT_BINARY_DIR}
 
 		BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
@@ -69,13 +64,13 @@ ELSE()
 
 	# Install libraries
 	ExternalProject_Add_Step(${PACKAGE_NAME} install_libs
-		COMMAND find "${PROJECT_BINARY_DIR}/src/TBB/build/" -iname "libtbb*" | xargs -I {} cp {} "${CONTRIB_INSTALL_LIB}"
+		COMMAND find "${PROJECT_BINARY_DIR}/src/tbb/build/" -iname "libtbb*" | xargs -I {} cp {} "${CONTRIB_INSTALL_LIB}"
 		DEPENDEES build
 	)
 
 	# Install header files
 	ExternalProject_Add_Step(${PACKAGE_NAME} install_headers
-		COMMAND cp -R "${PROJECT_BINARY_DIR}/src/TBB/include/tbb" "${CONTRIB_INSTALL_INC}"
+		COMMAND cp -R "${PROJECT_BINARY_DIR}/src/tbb/include/tbb" "${CONTRIB_INSTALL_INC}"
 		DEPENDEES build
 	)
 

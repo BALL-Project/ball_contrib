@@ -33,12 +33,6 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# Download archive
-SET(PACKAGE_ARCHIVE "qt-everywhere-opensource-src-5.4.1.tar.gz")
-SET(ARCHIVE_MD5 "90f3fbce38ed16e5dc2cd0909ae86ca4")
-FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
-
-
 IF(OS_WINDOWS)
 
 	# Windows
@@ -49,7 +43,9 @@ ELSE()
 
 	ExternalProject_Add(${PACKAGE_NAME}
 
-		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
+		GIT_REPOSITORY "https://gitorious.org/qt/qt.git"
+		GIT_TAG "4.8"
+
 		PREFIX ${PROJECT_BINARY_DIR}
 
 		BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
@@ -70,10 +66,10 @@ ELSE()
 		-nomake examples
 		-nomake tests
 		-optimized-qmake
-		-skip enginio
-		-skip wayland
-		-skip webengine
-		-skip webkit-examples
+		#		-skip enginio
+		#-skip wayland
+		#-skip webengine
+		# -skip webkit-examples
 
 		BUILD_COMMAND make
 		INSTALL_COMMAND make install

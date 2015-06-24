@@ -203,6 +203,6 @@ FOREACH(p ${BUILD_PACKAGES})
 	SET(PACKAGE_NAME "${p}")
 	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
+	ADD_DEPENDENCIES(update "${p}-update")
+
 ENDFOREACH()
-
-

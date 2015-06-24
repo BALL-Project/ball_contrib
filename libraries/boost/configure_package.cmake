@@ -33,23 +33,47 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# Download archive
-SET(PACKAGE_ARCHIVE "boost_1_54_0.tar.gz")
-SET(ARCHIVE_MD5 "efbfbff5a85a9330951f243d0a46e4b9")
-FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
+# We need bzip2 and zlib sources for boost::iostreams
 
-# Download Bzip2 archive
-SET(BZIP2_NAME "bzip2-1.0.6")
-SET(BZIP2_ARCHIVE "${BZIP2_NAME}.tar.gz")
-SET(BZIP2_MD5 "00b516f4704d4a7cb50a1d97e6e8e15b")
-FETCH_PACKAGE_ARCHIVE(${BZIP2_ARCHIVE} ${BZIP2_MD5})
+# We add both as an external project without build step, since they are being built
+# by boost itself
 
-# Download Zlib archive
-SET(ZLIB_NAME "zlib-1.2.8")
-SET(ZLIB_ARCHIVE "${ZLIB_NAME}.tar.gz")
-SET(ZLIB_MD5 "44d667c142d7cda120332623eab69f40")
-FETCH_PACKAGE_ARCHIVE(${ZLIB_ARCHIVE} ${ZLIB_MD5})
+# bzip2 is not hosted officially on github, so we offer a fork
+ExternalProject_Add("bzip2"
 
+	GIT_REPOSITORY "https://github.com/ball-project/ball_contrib_bzip2"
+
+	PREFIX ${PROJECT_BINARY_DIR}
+
+	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
+	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
+	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
+	LOG_BUILD ${CUSTOM_LOG_BUILD}
+	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
+
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+)
+SET(BZIP2_NAME "bzip2")
+
+ExternalProject_Add("zlib"
+
+	GIT_REPOSITORY "https://github.com/madler/zlib.git"
+
+	PREFIX ${PROJECT_BINARY_DIR}
+
+	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
+	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
+	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
+	LOG_BUILD ${CUSTOM_LOG_BUILD}
+	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
+
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+)
+SET(ZLIB_NAME "zlib")
 
 # Set system dependent variables
 SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
@@ -62,7 +86,10 @@ ENDIF()
 # Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
-	URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
+	DEPENDS "bzip2" "zlib"
+
+	GIT_REPOSITORY "git@github.com:boostorg/boost.git"
+
 	PREFIX ${PROJECT_BINARY_DIR}
 
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
@@ -100,21 +127,4 @@ ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
         DEPENDERS configure
 )
 
-
-# Extract bzip2 and zlib archives
-ExternalProject_Add_Step(${PACKAGE_NAME} custom_extract
-
-	LOG 1
-	DEPENDEES download
-
-	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${BZIP2_ARCHIVE}"
-	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${ZLIB_ARCHIVE}"
-
-	DEPENDERS configure
-)
-
-
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
-
-
