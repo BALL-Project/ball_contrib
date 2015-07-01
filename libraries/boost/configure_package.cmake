@@ -82,13 +82,28 @@ IF(OS_WINDOWS)
 	SET(BOOTSTRAP_COMMAND "bootstrap.bat")
 ENDIF()
 
+# Determine the correct b2 switches according to build type and platform
+SET(BOOST_BUILD_TYPE "release")
+
+IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	SET(BOOST_BUILD_TYPE "debug")
+ENDIF()
+
+IF(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+	SET(BOOST_BUILD_TYPE "release debug-symbols=on")
+ENDIF()
 
 # Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
 	DEPENDS "bzip2" "zlib"
 
-	GIT_REPOSITORY "git@github.com:boostorg/boost.git"
+	GIT_REPOSITORY "https://github.com/boostorg/boost.git"
+	#GIT_SUBMODULES "libs/assert libs/atomic libs/chrono libs/config libs/date_time"
+	#               "libs/iostreams libs/mpl libs/predef libs/preprocessor libs/regex"
+	#							 "libs/serialization libs/static_assert libs/system libs/thread"
+	#							 "libs/throw_exception libs/type_traits"
+	#							 "libs/wave tools/build tools/inspect"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
@@ -102,7 +117,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	CONFIGURE_COMMAND ${BOOTSTRAP_COMMAND}
 
-	BUILD_COMMAND ./b2 install
+	BUILD_COMMAND ./b2 headers install
 	-j "${N_MAKE_THREADS}"
 	--prefix=${CONTRIB_INSTALL_BASE}
 	--with-chrono
@@ -113,9 +128,11 @@ ExternalProject_Add(${PACKAGE_NAME}
 	--with-system
 	--with-thread
 	--layout=tagged
+	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME}
+	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
 	threading=multi
-	variant=release
-	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME} -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
+	variant=${BOOST_BUILD_TYPE}
+	address-model=${BITS}
 
 	INSTALL_COMMAND ""
 )
