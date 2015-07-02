@@ -42,7 +42,7 @@ ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
 
-	GIT_REPOSITORY "git@github.com:ball-project/ball_contrib_openbabel.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}ball-project/ball_contrib_openbabel.git"
 	GIT_TAG ${OPENBABEL_GIT_BRANCH}
 
 	PREFIX ${PROJECT_BINARY_DIR}

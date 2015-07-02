@@ -36,7 +36,7 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 ExternalProject_Add(${PACKAGE_NAME}
 
-	GIT_REPOSITORY "git@github.com:ball-project/ball_contrib_sip.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}ball-project/ball_contrib_sip.git"
 	GIT_TAG "4.16.8"
 
 	PREFIX ${PROJECT_BINARY_DIR}

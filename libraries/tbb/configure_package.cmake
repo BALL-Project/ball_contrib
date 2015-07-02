@@ -41,26 +41,28 @@ ELSE()
 
 	# Linux / Darwin
 
-	ExternalProject_Add(${PACKAGE_NAME}
+ENDIF()
 
-		GIT_REPOSITORY "git@github.com:ball-project/ball_contrib_tbb.git"
+ExternalProject_Add(${PACKAGE_NAME}
 
-		PREFIX ${PROJECT_BINARY_DIR}
+	GIT_REPOSITORY "${GITHUB_BASE_URL}ball-project/ball_contrib_tbb.git"
 
-		BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
+	PREFIX ${PROJECT_BINARY_DIR}
 
-		LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
-		LOG_UPDATE ${CUSTOM_LOG_UPDATE}
-		LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
-		LOG_BUILD ${CUSTOM_LOG_BUILD}
-		LOG_INSTALL ${CUSTOM_LOG_INSTALL}
+	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
-		CONFIGURE_COMMAND ""
+	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
+	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
+	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
+	LOG_BUILD ${CUSTOM_LOG_BUILD}
+	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
+
+	CONFIGURE_COMMAND ""
 		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
-		INSTALL_COMMAND ""
-		# Auto installation not possible: problem is the variable path where built libraries are stored
-		# Custom installation steps below
-	)
+	INSTALL_COMMAND ""
+	# Auto installation not possible: problem is the variable path where built libraries are stored
+	# Custom installation steps below
+)
 
 	# Install libraries
 	ExternalProject_Add_Step(${PACKAGE_NAME} install_libs
@@ -73,7 +75,5 @@ ELSE()
 		COMMAND cp -R "${PROJECT_BINARY_DIR}/src/tbb/include/tbb" "${CONTRIB_INSTALL_INC}"
 		DEPENDEES build
 	)
-
-ENDIF()
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

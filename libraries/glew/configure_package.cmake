@@ -35,7 +35,7 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 ExternalProject_Add(${PACKAGE_NAME}
 
-	GIT_REPOSITORY "git@github.com:ball-project/ball_contrib_glew.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}ball-project/ball_contrib_glew.git"
 	GIT_TAG "ball-contrib"
 
 	PREFIX ${PROJECT_BINARY_DIR}

@@ -41,7 +41,7 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 # bzip2 is not hosted officially on github, so we offer a fork
 ExternalProject_Add("bzip2"
 
-	GIT_REPOSITORY "https://github.com/ball-project/ball_contrib_bzip2"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}ball-project/ball_contrib_bzip2"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
@@ -59,7 +59,7 @@ SET(BZIP2_NAME "bzip2")
 
 ExternalProject_Add("zlib"
 
-	GIT_REPOSITORY "https://github.com/madler/zlib.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}madler/zlib.git"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
@@ -98,7 +98,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	DEPENDS "bzip2" "zlib"
 
-	GIT_REPOSITORY "https://github.com/boostorg/boost.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}boostorg/boost.git"
 	#GIT_SUBMODULES "libs/assert libs/atomic libs/chrono libs/config libs/date_time"
 	#               "libs/iostreams libs/mpl libs/predef libs/preprocessor libs/regex"
 	#							 "libs/serialization libs/static_assert libs/system libs/thread"
