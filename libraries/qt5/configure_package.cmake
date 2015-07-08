@@ -44,7 +44,7 @@ ELSE()
 	ExternalProject_Add(${PACKAGE_NAME}
 
 		GIT_REPOSITORY "https://github.com/qtproject/qt.git"
-		GIT_TAG "4.8.7"
+		GIT_TAG "v4.8.7"
 
 		PREFIX ${PROJECT_BINARY_DIR}
 
