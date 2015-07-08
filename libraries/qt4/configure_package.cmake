@@ -34,8 +34,8 @@
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 # Download archive
-SET(PACKAGE_ARCHIVE "qt-everywhere-opensource-src-4.8.6.tar.gz")
-SET(ARCHIVE_MD5 "2edbe4d6c2eff33ef91732602f3518eb")
+SET(PACKAGE_ARCHIVE "qt-everywhere-opensource-src-4.8.7.tar.gz")
+SET(ARCHIVE_MD5 "d990ee66bf7ab0c785589776f35ba6ad")
 FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
 
 
@@ -75,17 +75,17 @@ ELSE()
 		INSTALL_COMMAND make install
 	)
 
-	IF(OS_DARWIN)
-
-		# Apply patch for darwin systems
-		ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
-			WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/src/gui/kernel"
-			COMMAND ${PROGRAM_PATCH} -F3 "qcocoaapplicationdelegate_mac.mm" < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/qt-everywhere-opensource-src-4.8.6-osx-10.10.patch"
-			DEPENDEES download
-			DEPENDERS configure
-		)
-
-	ENDIF()
+#	IF(OS_DARWIN)
+#
+#		# Apply patch for darwin systems
+#		ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
+#			WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/src/gui/kernel"
+#			COMMAND ${PROGRAM_PATCH} -F3 "qcocoaapplicationdelegate_mac.mm" < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/qt-everywhere-opensource-src-4.8.6-osx-10.10.patch"
+#			DEPENDEES download
+#			DEPENDERS configure
+#		)
+#
+#	ENDIF()
 
 ENDIF()
 
