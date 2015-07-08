@@ -44,7 +44,8 @@ ELSE()
 	ExternalProject_Add(${PACKAGE_NAME}
 
 		GIT_REPOSITORY "${GITHUB_BASE_URL}FFTW/fftw3.git"
-		
+		GIT_TAG "fftw-3.3.4"
+
 		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
 		PREFIX ${PROJECT_BINARY_DIR}
 
@@ -56,7 +57,7 @@ ELSE()
 		LOG_BUILD ${CUSTOM_LOG_BUILD}
 		LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
-		CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure" --enable-shared --with-pic -q --prefix=${CONTRIB_INSTALL_BASE}
+		CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/bootstrap.sh" --enable-shared --with-pic -q --prefix=${CONTRIB_INSTALL_BASE}
 		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
 		INSTALL_COMMAND make install
 	)
