@@ -61,7 +61,7 @@ ELSE()
 		LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 		CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure" --enable-shared --with-pic -q --prefix=${CONTRIB_INSTALL_BASE}
-		BUILD_COMMAND make
+		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
 		INSTALL_COMMAND make install
 	)
 

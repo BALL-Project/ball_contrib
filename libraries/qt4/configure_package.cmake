@@ -71,7 +71,7 @@ ELSE()
 		-opensource
 		-confirm-license
 
-		BUILD_COMMAND make
+		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
 		INSTALL_COMMAND make install
 	)
 

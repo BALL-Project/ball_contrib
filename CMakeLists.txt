@@ -111,6 +111,9 @@ SET(CUSTOM_LOG_CONFIGURE 1 CACHE STRING  "Write logfile for configure step inste
 SET(CUSTOM_LOG_BUILD 1 CACHE STRING  "Write logfile for build step instead of printing (default 1).")
 SET(CUSTOM_LOG_INSTALL 1 CACHE STRING  "Write logfile for install step instead of printing (default 1).")
 
+# Option to specify number of threads used by make
+SET(N_MAKE_THREADS 1 CACHE STRING "Number of threads used by make steps (default 1).")
+
 
 ###############################################################################
 ###    Select and check packages to be installed                            ###

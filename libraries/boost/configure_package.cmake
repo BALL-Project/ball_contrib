@@ -75,7 +75,9 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	CONFIGURE_COMMAND ${BOOTSTRAP_COMMAND}
 
-	BUILD_COMMAND ./b2 install --prefix=${CONTRIB_INSTALL_BASE}
+	BUILD_COMMAND ./b2 install
+	-j "${N_MAKE_THREADS}"
+	--prefix=${CONTRIB_INSTALL_BASE}
 	--with-chrono
 	--with-date_time
 	--with-iostreams
