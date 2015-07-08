@@ -61,7 +61,7 @@ ELSE()
 		LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 		CONFIGURE_COMMAND ""
-		BUILD_COMMAND make
+		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
 		INSTALL_COMMAND ""
 		# Auto installation not possible: problem is the variable path where built libraries are stored
 		# Custom installation steps below

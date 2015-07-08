@@ -62,6 +62,9 @@ ExternalProject_Add(${PACKAGE_NAME}
 		   -DENABLE_TESTS=OFF
 		   -DOPENBABEL_USE_SYSTEM_INCHI=OFF
 		   -DOB_USE_PREBUILT_BINARIES=OFF
+
+	BUILD_COMMAND make -j "${N_MAKE_THREADS}"
+	INSTALL_COMMAND make install
 )
 
 ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
