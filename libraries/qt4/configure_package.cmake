@@ -75,6 +75,18 @@ ELSE()
 		INSTALL_COMMAND make install
 	)
 
+	IF(OS_DARWIN)
+
+		# Apply patch for darwin systems
+		ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
+			WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/src/gui/kernel"
+			COMMAND ${PROGRAM_PATCH} -F3 "qcocoaapplicationdelegate_mac.mm" < "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/qt-everywhere-opensource-src-4.8.6-osx-10.10.patch"
+			DEPENDEES download
+			DEPENDERS configure
+		)
+
+	ENDIF()
+
 ENDIF()
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
