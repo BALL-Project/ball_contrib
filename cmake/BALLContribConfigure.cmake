@@ -33,9 +33,18 @@
 
 
 ###############################################################################
-###    Determine appropriate system settings                                ###
+###    Check for appropriate system settings                                ###
 ###############################################################################
 
+
+# Find git
+FIND_PACKAGE(Git)
+IF(NOT GIT_FOUND)
+	MESSAGE(FATAL_ERROR "Could not find git binaries! Try setting GIT_EXECUTABLE to the path of your git binary.")
+ENDIF()
+
+
+# Operating system
 SET(OS_LINUX FALSE)
 SET(OS_DARWIN FALSE)
 SET(OS_WINDOWS FALSE)
