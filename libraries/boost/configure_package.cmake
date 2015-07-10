@@ -41,7 +41,7 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 # bzip2 is not hosted officially on github, so we offer a fork
 ExternalProject_Add("bzip2"
 
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/bzip2"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/bzip2.git"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
