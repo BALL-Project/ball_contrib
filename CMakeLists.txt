@@ -138,7 +138,7 @@ ENDIF()
 ###############################################################################
 
 # Contrib packages needed to build BALL_core are listed in CORE_PACKAGES
-SET(CORE_PACKAGES "boost" "eigen3" "lpsolve" "tbb" "openbabel" "fftw" "qt4" "sip")
+SET(CORE_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "qt" "sip")
 
 # Contrib packages needed to build BALL_core are listed in VIEW_PACKAGES
 SET(VIEW_PACKAGES "glew")
@@ -203,6 +203,6 @@ FOREACH(p ${BUILD_PACKAGES})
 	SET(PACKAGE_NAME "${p}")
 	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
 
+	ADD_DEPENDENCIES(update "${p}-update")
+
 ENDFOREACH()
-
-

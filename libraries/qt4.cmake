@@ -31,28 +31,44 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-# TODO: ensure that flex, bison, and python mercurial bindings are installed
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-ExternalProject_Add(${PACKAGE_NAME}
+IF(OS_WINDOWS)
 
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/sip.git"
-	GIT_TAG "4.16.8"
+	# Windows
 
-	PREFIX ${PROJECT_BINARY_DIR}
+ELSE()
 
-	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
+	# Linux / Darwin
 
-	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
-	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
-	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
-	LOG_BUILD ${CUSTOM_LOG_BUILD}
-	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
+	ExternalProject_Add(${PACKAGE_NAME}
 
-	CONFIGURE_COMMAND python build.py prepare
-	COMMAND python configure.py -b "${CONTRIB_INSTALL_BIN}" -d "${CONTRIB_INSTALL_LIB}" -e "${CONTRIB_INSTALL_INC}"
+		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
+		PREFIX ${PROJECT_BINARY_DIR}
+
+		BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
+
+		LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
+		LOG_UPDATE ${CUSTOM_LOG_UPDATE}
+		LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
+		LOG_BUILD ${CUSTOM_LOG_BUILD}
+		LOG_INSTALL ${CUSTOM_LOG_INSTALL}
+
+		CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure"
+		-prefix "${CONTRIB_INSTALL_BASE}"
+		-no-phonon
+		-no-qt3support
+		-silent
+		-nomake examples
+		-nomake demos
+		-no-nis
+		-opensource
+		-confirm-license
+
 		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
-	INSTALL_COMMAND make install
-)
+		INSTALL_COMMAND make install
+	)
+
+ENDIF()
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

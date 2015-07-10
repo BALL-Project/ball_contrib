@@ -31,61 +31,28 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
+# TODO: ensure that flex, bison, and python mercurial bindings are installed
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# Download archive
-SET(PACKAGE_ARCHIVE "lp_solve_5.5.2.0_source.tar.gz")
-SET(ARCHIVE_MD5 "167c0fb4ab178e0b7ab50bf0a635a836")
-FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
+ExternalProject_Add(${PACKAGE_NAME}
 
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/sip.git"
+	GIT_TAG "4.16.8"
 
-IF(OS_WINDOWS)
+	PREFIX ${PROJECT_BINARY_DIR}
 
-	# Windows
+	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
-ELSE()
+	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
+	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
+	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
+	LOG_BUILD ${CUSTOM_LOG_BUILD}
+	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
-	# Linux / Darwin
-
-	ExternalProject_Add(${PACKAGE_NAME}
-
-		URL "${CONTRIB_ARCHIVES_PATH}/${PACKAGE_ARCHIVE}"
-		PREFIX ${PROJECT_BINARY_DIR}
-
-		BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
-
-		LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
-		LOG_UPDATE ${CUSTOM_LOG_UPDATE}
-		LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
-		LOG_BUILD ${CUSTOM_LOG_BUILD}
-		LOG_INSTALL ${CUSTOM_LOG_INSTALL}
-
-		CONFIGURE_COMMAND ""
-		BUILD_COMMAND ""
-		INSTALL_COMMAND ""
-	)
-
-	# Build step
-	ExternalProject_Add_Step(${PACKAGE_NAME} custom_build
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/lpsolve55/"
-		COMMAND sh "ccc.osx"
-		LOG 1
-		DEPENDEES install
-	)
-
-	# Install library
-	ExternalProject_Add_Step(${PACKAGE_NAME} custom_install_lib
-		COMMAND find "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/lpsolve55/bin" -iname "liblpsolve55*" | xargs -I {} install {} "${CONTRIB_INSTALL_LIB}"
-		DEPENDEES custom_build
-	)
-
-	# Install headers
-	ExternalProject_Add_Step(${PACKAGE_NAME} custom_install_headers
-		COMMAND cd "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/" && install -d "${CONTRIB_INSTALL_INC}/lpsolve"
-		COMMAND find "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/" -iname "*.h" | xargs -I {} install {} "${CONTRIB_INSTALL_INC}/lpsolve"
-		DEPENDEES custom_install_lib
-	)
-
-ENDIF()
+	CONFIGURE_COMMAND python build.py prepare
+	COMMAND python configure.py -b "${CONTRIB_INSTALL_BIN}" -d "${CONTRIB_INSTALL_LIB}" -e "${CONTRIB_INSTALL_INC}"
+		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
+	INSTALL_COMMAND make install
+)
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

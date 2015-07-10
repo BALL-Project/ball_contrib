@@ -31,15 +31,18 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-# TODO: ensure that flex, bison, and python mercurial bindings are installed
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
+
+IF(OS_WINDOWS)
+	SET(OPENBABEL_GIT_BRANCH "patched_windows")
+ELSE()
+	SET(OPENBABEL_GIT_BRANCH "patched")
+ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
 
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/sip.git"
-	GIT_TAG "4.16.8"
-
 	PREFIX ${PROJECT_BINARY_DIR}
+	DOWNLOAD_COMMAND git clone "${GITHUB_BASE_URL}/${PACKAGE_NAME}.git" --depth 1 --branch ${OPENBABEL_GIT_BRANCH}
 
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -49,9 +52,15 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_BUILD ${CUSTOM_LOG_BUILD}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
-	CONFIGURE_COMMAND python build.py prepare
-	COMMAND python configure.py -b "${CONTRIB_INSTALL_BIN}" -d "${CONTRIB_INSTALL_LIB}" -e "${CONTRIB_INSTALL_INC}"
-		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
+	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
+		   -DMINIMAL_BUILD=ON
+		   -DBUILD_GUI=OFF
+		   -DWITH_INCHI=OFF
+		   -DENABLE_TESTS=OFF
+		   -DOPENBABEL_USE_SYSTEM_INCHI=OFF
+		   -DOB_USE_PREBUILT_BINARIES=OFF
+
+	BUILD_COMMAND make -j "${N_MAKE_THREADS}"
 	INSTALL_COMMAND make install
 )
 
