@@ -33,14 +33,17 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-IF(OS_WINDOWS)
 
-	# Windows
+IF(MSVC) # Windows
+	SET(TBB_SOLUTION "${PROJECT_BINARY_DIR}/src/tbb/build/vs2012/makefile.sln")
+	IF(MSVC10)
+		SET(TBB_SOLUTION "${PROJECT_BINARY_DIR}/src/tbb/build/vs2010/makefile.sln")
+	ENDIF()
 
-ELSE()
 
-	# Linux / Darwin
-
+	SET(TBB_BUILD_COMMAND ${MSBUILD} "${TBB_SOLUTION}")
+ELSE() # Linux / Darwin
+	SET(TBB_BUILD_COMMAND "make -j ${N_MAKE_THREADS}")
 ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
@@ -58,7 +61,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 	CONFIGURE_COMMAND ""
-		BUILD_COMMAND make -j "${N_MAKE_THREADS}"
+	BUILD_COMMAND ${TBB_BUILD_COMMAND}
 	INSTALL_COMMAND ""
 	# Auto installation not possible: problem is the variable path where built libraries are stored
 	# Custom installation steps below
