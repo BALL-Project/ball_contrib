@@ -63,10 +63,12 @@ INCLUDE(BALLContribMacros)
 
 # Prevent cmake from trying to update the git repositories every time we try to build.
 # We also add a custom "update" target which will depend on the individual update step targets
-SET_PROPERTY(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED 1)
-SET_PROPERTY(DIRECTORY PROPERTY EP_STEP_TARGETS update)
-
-ADD_CUSTOM_TARGET(update)
+OPTION(UPDATE_DISABLED ON CACHE)
+IF(UPDATE_DISABLED)
+	SET_PROPERTY(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED 1)
+	SET_PROPERTY(DIRECTORY PROPERTY EP_STEP_TARGETS update)
+	ADD_CUSTOM_TARGET(update)
+ENDIF()
 
 
 ###############################################################################
@@ -138,7 +140,7 @@ ENDIF()
 ###############################################################################
 
 # Contrib packages needed to build BALL_core are listed in CORE_PACKAGES
-SET(CORE_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "qt" "sip")
+SET(CORE_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "qt4" "sip")
 
 # Contrib packages needed to build BALL_core are listed in VIEW_PACKAGES
 SET(VIEW_PACKAGES "glew")
@@ -201,8 +203,10 @@ LIST(REMOVE_DUPLICATES BUILD_PACKAGES)
 FOREACH(p ${BUILD_PACKAGES})
 
 	SET(PACKAGE_NAME "${p}")
-	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/configure_package.cmake")
+	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}.cmake")
 
-	ADD_DEPENDENCIES(update "${p}-update")
+	IF(UPDATE_DISABLED)
+		ADD_DEPENDENCIES(update "${p}-update")
+	ENDIF()
 
 ENDFOREACH()
