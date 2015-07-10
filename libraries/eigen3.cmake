@@ -52,16 +52,4 @@ ExternalProject_Add(${PACKAGE_NAME}
 	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
 )
 
-
-# System specififc steps
-# IF(OS_WINDOWS)
-# 
-# 	ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
-# 		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/cmake"
-# 		COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/patch_1_EigenDetermineVSServicePack.cmake.diff"
-# 		DEPENDEES download
-# 		DEPENDERS configure
-# 	)
-#ENDIF()
-
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

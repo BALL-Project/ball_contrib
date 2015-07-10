@@ -140,7 +140,7 @@ ENDIF()
 ###############################################################################
 
 # Contrib packages needed to build BALL_core are listed in CORE_PACKAGES
-SET(CORE_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "qt4" "sip")
+SET(CORE_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw3" "qt4" "sip")
 
 # Contrib packages needed to build BALL_core are listed in VIEW_PACKAGES
 SET(VIEW_PACKAGES "glew")
