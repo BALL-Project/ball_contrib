@@ -45,7 +45,7 @@ ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
 
-	GIT_REPOSITORY "${GITHUB_BASE_URL}ball-project/ball_contrib_tbb.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/tbb.git"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 

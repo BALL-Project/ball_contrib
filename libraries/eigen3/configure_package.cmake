@@ -36,7 +36,7 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 # Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
-	GIT_REPOSITORY "${GITHUB_BASE_URL}ball-project/ball_contrib_eigen3.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/eigen3.git"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
