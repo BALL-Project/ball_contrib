@@ -59,17 +59,11 @@ INCLUDE(BALLContribConfigure)
 # Load contrib-specific macros and messages
 INCLUDE(BALLContribMacros)
 
-
-
 # Prevent cmake from trying to update the git repositories every time we try to build.
 # We also add a custom "update" target which will depend on the individual update step targets
-OPTION(UPDATE_DISABLED ON CACHE)
-IF(UPDATE_DISABLED)
-	SET_PROPERTY(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED 1)
-	SET_PROPERTY(DIRECTORY PROPERTY EP_STEP_TARGETS update)
-	ADD_CUSTOM_TARGET(update)
-ENDIF()
-
+SET_PROPERTY(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED 1)
+SET_PROPERTY(DIRECTORY PROPERTY EP_STEP_TARGETS update)
+ADD_CUSTOM_TARGET(update)
 
 ###############################################################################
 ###    Global settings                                                      ###
@@ -205,8 +199,6 @@ FOREACH(p ${BUILD_PACKAGES})
 	SET(PACKAGE_NAME "${p}")
 	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}.cmake")
 
-	IF(UPDATE_DISABLED)
-		ADD_DEPENDENCIES(update "${p}-update")
-	ENDIF()
+	ADD_DEPENDENCIES(update "${p}-update")
 
 ENDFOREACH()
