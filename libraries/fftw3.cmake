@@ -33,13 +33,13 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-ExternalProject_Add(${PACKAGE_NAME}
-
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/fftw3.git"
-	GIT_TAG "ball-contrib"
-	GIT_DEPTH "1"
+ExternalProject_Add("${PACKAGE_NAME}"
 
 	PREFIX ${PROJECT_BINARY_DIR}
+
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/${PACKAGE_NAME}.git"
+	GIT_TAG "ball-contrib"
+	GIT_DEPTH "1"
 
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -50,6 +50,11 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 	CONFIGURE_COMMAND ./configure
+	--prefix=${CONTRIB_INSTALL_BASE}
+	--enable-shared
+	--with-pic
+	-q
+
 	BUILD_COMMAND make -j "${N_MAKE_THREADS}"
 	INSTALL_COMMAND make install
 )
