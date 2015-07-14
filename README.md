@@ -1,7 +1,7 @@
 # ball_contrib
 Third-party libraries used by the Biochemical Algorithms Library (BALL)
 
-This repository is intended for end-users of BALL.
+This repository is intended for end-users of BALL. \s\s
 Third party libraries are mostly forks of their original repositories.
 
 Installation requirements:
