@@ -2,6 +2,7 @@
 Third-party libraries used by the Biochemical Algorithms Library (BALL)
 
 This repository is intended for end-users of BALL.
+
 Third party libraries are mostly forks of their original repositories.
 
 Installation requirements:
@@ -12,10 +13,15 @@ Installation requirements:
 Possible installation on OSX / Linux:
 
   $ git clone https://github.com/BALL-Project/ball_contrib.git
+
   $ cd ball_contrib
+
   $ mkdir build
+
   $ cd build
+
   $ cmake ..
+
   $ make
 
   If the build process succeeds, the directory <path_to_ball_contrib>/build/install
@@ -25,6 +31,7 @@ Possible installation on OSX / Linux:
 The cmake project provides the following variables:
 
   - WITH_PACKAGES:   Select only a subset of third-party libraries to be installed.
+
   - N_MAKE_THREADS:  number of parallel threads to use for build steps
 
 
