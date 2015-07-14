@@ -33,17 +33,15 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-
 IF(MSVC) # Windows
 	SET(TBB_SOLUTION "${PROJECT_BINARY_DIR}/src/tbb/build/vs2012/makefile.sln")
 	IF(MSVC10)
 		SET(TBB_SOLUTION "${PROJECT_BINARY_DIR}/src/tbb/build/vs2010/makefile.sln")
 	ENDIF()
 
-
 	SET(TBB_BUILD_COMMAND ${MSBUILD} "${TBB_SOLUTION}")
 ELSE() # Linux / Darwin
-	SET(TBB_BUILD_COMMAND "make -j ${N_MAKE_THREADS}")
+	SET(TBB_BUILD_COMMAND make "-j${N_MAKE_THREADS}")
 ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
@@ -58,25 +56,11 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
 	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
 	LOG_BUILD ${CUSTOM_LOG_BUILD}
-	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 	CONFIGURE_COMMAND ""
 	BUILD_COMMAND ${TBB_BUILD_COMMAND}
 	INSTALL_COMMAND ""
-	# Auto installation not possible: problem is the variable path where built libraries are stored
-	# Custom installation steps below
+	COMMAND find "${PROJECT_BINARY_DIR}/src/tbb/build/" -iname "libtbb*" | xargs -I {} cp {} "${CONTRIB_INSTALL_LIB}"
 )
-
-	# Install libraries
-	ExternalProject_Add_Step(${PACKAGE_NAME} install_libs
-		COMMAND find "${PROJECT_BINARY_DIR}/src/tbb/build/" -iname "libtbb*" | xargs -I {} cp {} "${CONTRIB_INSTALL_LIB}"
-		DEPENDEES build
-	)
-
-	# Install header files
-	ExternalProject_Add_Step(${PACKAGE_NAME} install_headers
-		COMMAND cp -R "${PROJECT_BINARY_DIR}/src/tbb/include/tbb" "${CONTRIB_INSTALL_INC}"
-		DEPENDEES build
-	)
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
