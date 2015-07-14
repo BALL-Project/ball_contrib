@@ -143,7 +143,7 @@ SET(VIEW_PACKAGES "glew")
 SET(CONTRIB_PACKAGES "${CORE_PACKAGES};${VIEW_PACKAGES}")
 
 # Variable to be set by the user in order to specify the packages to be build
-SET(WITH_PACKAGES "help" CACHE STRING "Variable to control which packages are build.")
+SET(WITH_PACKAGES "all" CACHE STRING "Variable to control which packages are build.")
 
 # Internal variable used to store the validated selection of packages to be installed
 SET(BUILD_PACKAGES "")
