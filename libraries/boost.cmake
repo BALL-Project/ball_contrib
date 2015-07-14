@@ -35,49 +35,41 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 # We need bzip2 and zlib sources for boost::iostreams
 
-# We add both as an external project without build step, since they are being built
-# by boost itself
+# We add both as an external project without build step,
+# since they are being built by boost itself
 
-# bzip2 is not hosted officially on github, so we offer a fork
-ExternalProject_Add("bzip2"
-
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/bzip2.git"
-
-	PREFIX ${PROJECT_BINARY_DIR}
-
-	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
-	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
-	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
-	LOG_BUILD ${CUSTOM_LOG_BUILD}
-	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
-
-	CONFIGURE_COMMAND ""
-	BUILD_COMMAND ""
-	INSTALL_COMMAND ""
-)
 SET(BZIP2_NAME "bzip2")
+ExternalProject_Add("${BZIP2_NAME}"
 
-ExternalProject_Add("zlib"
-
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/zlib.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/${BZIP2_NAME}.git"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
 	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
 	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
-	LOG_CONFIGURE ${CUSTOM_LOG_CONFIGURE}
-	LOG_BUILD ${CUSTOM_LOG_BUILD}
-	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 	CONFIGURE_COMMAND ""
 	BUILD_COMMAND ""
 	INSTALL_COMMAND ""
 )
+
 SET(ZLIB_NAME "zlib")
+ExternalProject_Add("${ZLIB_NAME}"
+
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/${ZLIB_NAME}.git"
+
+	PREFIX ${PROJECT_BINARY_DIR}
+
+	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
+	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
+
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+)
 
 # Set system dependent variables
 SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
-
 IF(OS_WINDOWS)
 	SET(BOOTSTRAP_COMMAND "bootstrap.bat")
 ENDIF()
@@ -98,7 +90,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	DEPENDS "bzip2" "zlib"
 
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/boost.git"
+	GIT_REPOSITORY "${GITHUB_BASE_URL}/${PACKAGE_NAME}.git"
 	#GIT_SUBMODULES "libs/assert libs/atomic libs/chrono libs/config libs/date_time"
 	#               "libs/iostreams libs/mpl libs/predef libs/preprocessor libs/regex"
 	#							 "libs/serialization libs/static_assert libs/system libs/thread"
@@ -135,13 +127,6 @@ ExternalProject_Add(${PACKAGE_NAME}
 	address-model=${BITS}
 
 	INSTALL_COMMAND ""
-)
-
-ExternalProject_Add_Step(${PACKAGE_NAME} patch_1
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/boost/"
-        COMMAND ${PROGRAM_PATCH} -p0 --binary -b -N -i "${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}/patches/patch_boost_cstdint.hpp"
-        DEPENDEES download
-        DEPENDERS configure
 )
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
