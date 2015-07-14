@@ -42,6 +42,7 @@ SET(BZIP2_NAME "bzip2")
 ExternalProject_Add("${BZIP2_NAME}"
 
 	GIT_REPOSITORY "${GITHUB_BASE_URL}/${BZIP2_NAME}.git"
+	GIT_DEPTH "1"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
@@ -57,6 +58,7 @@ SET(ZLIB_NAME "zlib")
 ExternalProject_Add("${ZLIB_NAME}"
 
 	GIT_REPOSITORY "${GITHUB_BASE_URL}/${ZLIB_NAME}.git"
+	GIT_DEPTH "1"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
@@ -91,6 +93,8 @@ ExternalProject_Add(${PACKAGE_NAME}
 	DEPENDS "bzip2" "zlib"
 
 	GIT_REPOSITORY "${GITHUB_BASE_URL}/${PACKAGE_NAME}.git"
+	GIT_DEPTH "1"
+	GIT_TAG "ball-contrib"
 	#GIT_SUBMODULES "libs/assert libs/atomic libs/chrono libs/config libs/date_time"
 	#               "libs/iostreams libs/mpl libs/predef libs/preprocessor libs/regex"
 	#							 "libs/serialization libs/static_assert libs/system libs/thread"
