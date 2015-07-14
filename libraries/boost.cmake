@@ -126,6 +126,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 	--layout=tagged
 	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME}
 	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
+	link=shared
 	threading=multi
 	variant=${BOOST_BUILD_TYPE}
 	address-model=${BITS}
