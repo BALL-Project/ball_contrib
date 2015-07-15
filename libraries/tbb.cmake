@@ -34,15 +34,18 @@
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 IF(MSVC) # Windows
-	SET(TBB_SOLUTION "${PROJECT_BINARY_DIR}/src/tbb/build/vs2012/makefile.sln")
+	SET(BUILDDIR "${PROJECT_BINARY_DIR}/src/tbb/build/vs2012")
 	IF(MSVC10)
-		SET(TBB_SOLUTION "${PROJECT_BINARY_DIR}/src/tbb/build/vs2010/makefile.sln")
+		SET(BUILDDIR "${PROJECT_BINARY_DIR}/src/tbb/build/vs2010")
 	ENDIF()
 
-	SET(TBB_BUILD_COMMAND ${MSBUILD} "/m:${N_MAKE_THREADS}" "${TBB_SOLUTION}")
+	SET(TBB_BUILD_COMMAND ${MSBUILD} "/m:${N_MAKE_THREADS}" "${BUILDDIR}/makefile.sln")
 ELSE() # Linux / Darwin
 	SET(TBB_BUILD_COMMAND make "-j${N_MAKE_THREADS}")
 ENDIF()
+
+SET(DOLLAR "$") # Don't ask... please, please, don't ask...
+CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/libraries/tbb_install.cmake.in ${BUILDDIR}/tbb_install.cmake)
 
 ExternalProject_Add(${PACKAGE_NAME}
 
@@ -60,8 +63,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	CONFIGURE_COMMAND ""
 	BUILD_COMMAND ${TBB_BUILD_COMMAND}
-	INSTALL_COMMAND ""
-	COMMAND find "${PROJECT_BINARY_DIR}/src/tbb/build/" -iname "libtbb*" | xargs -I {} cp {} "${CONTRIB_INSTALL_LIB}"
+	INSTALL_COMMAND "${CMAKE_COMMAND}" -Dconfig=${CMAKE_CFG_INTDIR} -P ${BUILDDIR}/tbb_install.cmake
 )
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
