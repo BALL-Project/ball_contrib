@@ -33,6 +33,26 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
+IF(MSVC) # Windows
+	SET(BUILDDIR "${PROJECT_BINARY_DIR}/src/fftw3/vs2013")
+	IF(MSVC10)
+		SET(BUILDDIR "${PROJECT_BINARY_DIR}/src/fftw3/vs2010")
+	ENDIF()
+
+	SET(FFTW3_CONFIGURE_COMMAND "cmd" "/c echo nothing to do")
+	SET(FFTW3_BUILD_COMMAND ${MSBUILD} "/m:${N_MAKE_THREADS}" "${BUILDDIR}/fftw-3.3-libs.sln")
+	SET(FFTW3_INSTALL_COMMAND "${CMAKE_COMMAND}" -Dconfig=${CMAKE_CFG_INTDIR} -P ${BUILDDIR}/fftw3_install.cmake)
+ELSE() # Linux / Darwin
+	SET(BUILDDIR "${PROJECT_BINARY_DIR}/src/fftw3")
+
+	SET(FFTW3_CONFIGURE_COMMAND ./configure --prefix=${CONTRIB_INSTALL_BASE} --enable-shared --with-pic -q)
+	SET(FFTW3_BUILD_COMMAND make "-j${N_MAKE_THREADS}")
+	SET(FFTW3_INSTALL_COMMAND make install)
+ENDIF()
+
+SET(DOLLAR "$") # Don't ask... please, please, don't ask...
+CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/libraries/fftw3_install.cmake.in ${BUILDDIR}/fftw3_install.cmake)
+
 ExternalProject_Add("${PACKAGE_NAME}"
 
 	PREFIX ${PROJECT_BINARY_DIR}
@@ -49,14 +69,9 @@ ExternalProject_Add("${PACKAGE_NAME}"
 	LOG_BUILD ${CUSTOM_LOG_BUILD}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
-	CONFIGURE_COMMAND ./configure
-	--prefix=${CONTRIB_INSTALL_BASE}
-	--enable-shared
-	--with-pic
-	-q
-
-	BUILD_COMMAND make -j "${N_MAKE_THREADS}"
-	INSTALL_COMMAND make install
+	CONFIGURE_COMMAND ${FFTW3_CONFIGURE_COMMAND}
+	BUILD_COMMAND ${FFTW3_BUILD_COMMAND}
+	INSTALL_COMMAND ${FFTW3_INSTALL_COMMAND}
 )
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
