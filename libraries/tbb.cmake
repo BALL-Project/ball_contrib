@@ -41,6 +41,8 @@ IF(MSVC) # Windows
 
 	SET(TBB_BUILD_COMMAND ${MSBUILD} "/m:${N_MAKE_THREADS}" "${BUILDDIR}/makefile.sln")
 ELSE() # Linux / Darwin
+	SET(BUILDDIR "${PROJECT_BINARY_DIR}/src/tbb/build")
+
 	SET(TBB_BUILD_COMMAND make "-j${N_MAKE_THREADS}")
 ENDIF()
 
