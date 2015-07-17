@@ -33,6 +33,34 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
+FIND_PACKAGE(Perl QUIET)
+IF(NOT PERL_EXECUTABLE)
+	IF(NOT OS_WINDOWS)
+		MESSAGE(SEND_ERROR "Compiling Qt requires perl! Cannot continue!")
+	ELSE()
+		MESSAGE(SEND_ERROR "Compiling Qt requires perl! Please install ActivePerl from http://www.activestate.com/downloads")
+	ENDIF()
+ENDIF()
+
+# TODO: openssl
+
+IF(MSVC) # Windows
+	IF(N_MAKE_THREADS GREATER 1)
+		FILE(WRITE "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat" "set CL=/MP\nnmake")
+	ELSE()
+		FILE(WRITE "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat" "nmake")
+	ENDIF()
+
+
+	SET(QT_CONFIGURE_COMMAND cmd /c "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure")
+	SET(QT_BUILD_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat")
+	SET(QT_INSTALL_COMMAND nmake install)
+ELSE() # Linux / Darwin
+	SET(QT_CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure")
+	SET(QT_BUILD_COMMAND make "-j${N_MAKE_THREADS}")
+	SET(QT_BUILD_COMMAND make install)
+ENDIF()
+
 ExternalProject_Add(${PACKAGE_NAME}
 
 	PREFIX ${PROJECT_BINARY_DIR}
@@ -49,19 +77,19 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_BUILD ${CUSTOM_LOG_BUILD}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
-	CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure"
+	CONFIGURE_COMMAND ${QT_CONFIGURE_COMMAND}
 		-prefix "${CONTRIB_INSTALL_BASE}"
+		-webkit
 		-no-phonon
 		-no-qt3support
-		-silent
 		-nomake examples
 		-nomake demos
 		-no-nis
 		-opensource
 		-confirm-license
 
-	BUILD_COMMAND make -j "${N_MAKE_THREADS}"
-	INSTALL_COMMAND make install
+	BUILD_COMMAND ${QT_BUILD_COMMAND}
+	INSTALL_COMMAND ${QT_INSTALL_COMMAND}
 )
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
