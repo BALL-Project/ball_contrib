@@ -136,6 +136,12 @@ ENDIF()
 # Contrib packages needed to build BALL_core are listed in CORE_PACKAGES
 SET(CORE_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw3" "qt" "sip")
 
+# For Visual Studio, we need to build oncrpc for persistence in BALL to work correctly.
+# All other compilers contain support for it out of the box.
+IF(MSVC)
+	LIST(APPEND CORE_PACKAGES "oncrpc")
+ENDIF()
+
 # Contrib packages needed to build BALL_core are listed in VIEW_PACKAGES
 SET(VIEW_PACKAGES "glew")
 
