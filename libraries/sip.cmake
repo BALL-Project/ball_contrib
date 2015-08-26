@@ -52,9 +52,8 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	DEPENDS python
 
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/${PACKAGE_NAME}.git"
-	GIT_TAG "ball-contrib"
-	GIT_DEPTH 1
+	GIT_REPOSITORY "${GITHUB_PTH_URL}/${PACKAGE_NAME}.git"
+	GIT_TAG "ball_contrib-1.4.3"
 
 	PREFIX ${PROJECT_BINARY_DIR}
 
