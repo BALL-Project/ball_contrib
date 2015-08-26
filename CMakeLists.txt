@@ -154,19 +154,20 @@ IF(HELP)
 ENDIF()
 
 # Variable to be set by the user in order to select the packages to be build.
-SET(PACKAGES "all" CACHE STRING "Variable to control which packages are build.")
+SET(PACKAGES "" CACHE STRING "Variable to control which packages are build.")
 
 # List of selected packages to be build.
 SET(BUILD_PACKAGES "")
 
-IF(PACKAGES STREQUAL "all")
+IF(PACKAGES STREQUAL "")
 	# All packages selected for installation
-	SET(BUILD_PACKAGES "${CONTRIB_PACKAGES}")
-ELSE()
-	# Check if selected packages are correct
-	# and populate BUILD_PACKAGES variable
-	VALIDATE_SELECTION()
+	SET(PACKAGES "${CONTRIB_PACKAGES}")
 ENDIF()
+
+# Check if selected packages are correct
+# and populate BUILD_PACKAGES variable
+VALIDATE_SELECTION()
+
 
 # Iterate list of selected and valid packages and include them now
 FOREACH(p ${BUILD_PACKAGES})
