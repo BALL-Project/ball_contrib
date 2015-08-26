@@ -36,8 +36,50 @@
 ###    Macros                                                               ###
 ###############################################################################
 
+# Validate user package selection against provided packages in CONTRIB_PACKAGES
+# Additionally, populate top-level BUILD_PACKAGES list that holds the packages that will be  build.
+MACRO(VALIDATE_SELECTION)
 
+	SET(VALID_PACKAGES "")
+	SET(INVALID_PACKAGES "")
 
+	# Iterate list of selected packages and check
+	# if every item indeed exists as a provided contrib package
+	FOREACH(p ${PACKAGES})
+
+		LIST(FIND CONTRIB_PACKAGES ${p} VALID_ITEM)
+		IF(VALID_ITEM EQUAL -1)
+			LIST(APPEND INVALID_PACKAGES ${p})
+		ELSE()
+			LIST(APPEND VALID_PACKAGES ${p})
+		ENDIF()
+
+	ENDFOREACH()
+
+	# Check if invalid packages were detected.
+	# If true, print error message and exit with error.
+	LIST(LENGTH INVALID_PACKAGES N_INVALID_PACKAGES)
+	IF(NOT N_INVALID_PACKAGES EQUAL 0)
+		MSG_LIST()
+		MESSAGE(STATUS "")
+		MESSAGE(FATAL_ERROR " ERROR: invalid contrib package(s) selected: ${INVALID_PACKAGES}")
+	ENDIF()
+
+	# Generate list of packages to be build from the list of selected valid packages
+	FOREACH(p ${VALID_PACKAGES})
+
+		# Check if dependency for package p exists.
+		# If true, first add dependency to BUILD_PACKAGES list
+		IF(DEP_${p})
+			LIST(APPEND BUILD_PACKAGES "${DEP_${p}}")
+		ENDIF()
+
+		# Now add package itself
+		LIST(APPEND BUILD_PACKAGES ${p})
+
+	ENDFOREACH()
+
+ENDMACRO()
 
 
 ###############################################################################
@@ -47,35 +89,31 @@
 MACRO(MSG_HELP)
 	MESSAGE(STATUS "")
 	MESSAGE(STATUS "===========================================================================")
-	MESSAGE(STATUS "BALL contrib (dependency) packages installation system:")
+	MESSAGE(STATUS "BALL contrib packages installation:")
 	MESSAGE(STATUS "")
-	MESSAGE(STATUS "* This program will allow you to compile and install all BALL dependencies.")
+	MESSAGE(STATUS "* This program will allow you to compile and install almost all BALL dependencies.")
 	MESSAGE(STATUS "* By default, all contrib packages are build. ")
-	MESSAGE(STATUS "* Use the CMake variable -DWITH_PACKAGES to select only a subset for building.")
+	MESSAGE(STATUS "* Use the CMake variable -DPACKAGES to select only a subset for building.")
 	MESSAGE(STATUS "  For multiple choices please use a semicolon-separated and double quoted argument.")
-	MESSAGE(STATUS "* A list of available contrib packages is listed using -DWITH_PACKAGES=list")
+
+	MSG_LIST()
+
 	MESSAGE(STATUS "")
 	MESSAGE(STATUS "===========================================================================")
 	MESSAGE(STATUS "")
 ENDMACRO()
 
 
-MACRO(MSG_LIST contrib_packages)
+MACRO(MSG_LIST)
+
 	MESSAGE(STATUS "")
-	MESSAGE(STATUS "===========================================================================")
 	MESSAGE(STATUS "Available BALL contrib packages:")
 	MESSAGE(STATUS "")
 
-	MESSAGE(STATUS " * all  (build all packages)")
-	MESSAGE(STATUS " * core (build only packages nedded to build BALL core library)")
-
-	FOREACH(p ${contrib_packages})
+	FOREACH(p ${CONTRIB_PACKAGES})
 		MESSAGE(STATUS " * ${p}")
 	ENDFOREACH()
 
-	MESSAGE(STATUS "")
-	MESSAGE(STATUS "===========================================================================")
-	MESSAGE(STATUS "")
 ENDMACRO()
 
 

@@ -71,6 +71,7 @@ ADD_CUSTOM_TARGET(update)
 
 # URL of GitHub project that contains all repositories
 SET(GITHUB_BASE_URL "https://github.com/BALL-contrib")
+SET(GITHUB_PTH_URL "https://github.com/philthiel")
 
 # Allow users to decide between https and ssh for cloning (default: off)
 OPTION(GIT_USE_SSH OFF CACHE)
@@ -133,71 +134,39 @@ ENDIF()
 ###    Select and check packages to be installed                            ###
 ###############################################################################
 
-# Contrib packages needed to build BALL_core are listed in CORE_PACKAGES
-SET(CORE_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw3" "qt" "sip")
+# Available contrib packages
+SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "qt" "sip")
+
+# Add internal dependencies here as single CMake variables of the form:
+# SET(DEP_<contrib_package> "dependency_1" "dependency_2" ... )
+SET(DEP_sip "python")
 
 # For Visual Studio, we need to build oncrpc for persistence in BALL to work correctly.
 # All other compilers contain support for it out of the box.
 IF(MSVC)
-	LIST(APPEND CORE_PACKAGES "oncrpc")
+	LIST(APPEND CONTRIB_PACKAGES "oncrpc")
 ENDIF()
 
-# Contrib packages needed to build BALL_core are listed in VIEW_PACKAGES
-SET(VIEW_PACKAGES "glew")
-
-# Contrib packages needed to build BALL completely  are listed in CONTRIB_PACKAGES
-SET(CONTRIB_PACKAGES "${CORE_PACKAGES};${VIEW_PACKAGES}")
-
-# Variable to be set by the user in order to specify the packages to be build
-SET(WITH_PACKAGES "all" CACHE STRING "Variable to control which packages are build.")
-
-# Internal variable used to store the validated selection of packages to be installed
-SET(BUILD_PACKAGES "")
-
-IF(WITH_PACKAGES STREQUAL "help")
+OPTION(HELP "Show help for ball_contrib installation." FALSE)
+IF(HELP)
 	MSG_HELP()
 	RETURN(0)
 ENDIF()
 
-IF(WITH_PACKAGES STREQUAL "list")
-	MSG_LIST("${CONTRIB_PACKAGES}")
-	RETURN(0)
-ENDIF()
+# Variable to be set by the user in order to select the packages to be build.
+SET(PACKAGES "all" CACHE STRING "Variable to control which packages are build.")
 
-IF(WITH_PACKAGES STREQUAL "all")
+# List of selected packages to be build.
+SET(BUILD_PACKAGES "")
 
+IF(PACKAGES STREQUAL "all")
+	# All packages selected for installation
 	SET(BUILD_PACKAGES "${CONTRIB_PACKAGES}")
-
-ELSEIF(WITH_PACKAGES STREQUAL "core")
-
-	SET(BUILD_PACKAGES "${CORE_PACKAGES}")
-
 ELSE()
-
-	FOREACH(p ${WITH_PACKAGES})
-
-		LIST(FIND CONTRIB_PACKAGES ${p} VALID_ITEM)
-
-		IF(VALID_ITEM STREQUAL "-1")
-			MSG_LIST("${CONTRIB_PACKAGES}")
-			MESSAGE(FATAL_ERROR "No valid contrib package: ${p}")
-			RETURN(0)
-		ELSE()
-			LIST(APPEND BUILD_PACKAGES ${p})
-		ENDIF()
-	ENDFOREACH()
-
+	# Check if selected packages are correct
+	# and populate BUILD_PACKAGES variable
+	VALIDATE_SELECTION()
 ENDIF()
-
-
-# Cross dependencies between contrib packages have to be specified manually
-# Important: prepend the required package to the list
-
-	# Currently no cross dependency
-
-
-# Cleanup list
-LIST(REMOVE_DUPLICATES BUILD_PACKAGES)
 
 # Iterate list of selected and valid packages and include them now
 FOREACH(p ${BUILD_PACKAGES})
@@ -208,3 +177,10 @@ FOREACH(p ${BUILD_PACKAGES})
 	ADD_DEPENDENCIES(update "${p}-update")
 
 ENDFOREACH()
+
+
+
+
+
+
+
