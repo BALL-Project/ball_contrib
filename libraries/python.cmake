@@ -48,7 +48,7 @@ ExternalProject_Add("${PACKAGE_NAME}"
 	LOG_BUILD ${CUSTOM_LOG_BUILD}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
-	CONFIGURE_COMMAND ./configure --prefix=${CONTRIB_INSTALL_BASE}
+	CONFIGURE_COMMAND ./configure --prefix=${CONTRIB_INSTALL_BASE} --enable-shared
 	BUILD_COMMAND make "-j${N_MAKE_THREADS}"
 	INSTALL_COMMAND make install
 )
