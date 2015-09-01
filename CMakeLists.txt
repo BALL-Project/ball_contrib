@@ -59,25 +59,23 @@ INCLUDE(BALLContribConfigure)
 # Load contrib-specific macros and messages
 INCLUDE(BALLContribMacros)
 
-# Prevent cmake from trying to update the git repositories every time we try to build.
-# We also add a custom "update" target which will depend on the individual update step targets
-SET_PROPERTY(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED 1)
-SET_PROPERTY(DIRECTORY PROPERTY EP_STEP_TARGETS update)
-ADD_CUSTOM_TARGET(update)
 
 ###############################################################################
 ###    Global settings                                                      ###
 ###############################################################################
 
-# URL of GitHub project that contains all repositories
-SET(GITHUB_BASE_URL "https://github.com/BALL-contrib")
-SET(GITHUB_PTH_URL "https://github.com/philthiel")
+# OPTIONAL:
+# Path to directory that contains the archives of the contrib packages needed.
+# This is a mechanism to install old contrib versions
+# for which we don't hostthe archives anymore
+SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
-# Allow users to decide between https and ssh for cloning (default: off)
-OPTION(GIT_USE_SSH OFF CACHE)
-IF(GIT_USE_SSH)
-	SET(GITHUB_BASE_URL "git@github.com:BALL-contrib")
-ENDIF()
+# URL to download the tarballs
+SET(CONTRIB_ARCHIVES_URL "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/archives/")
+
+# Folder to store the downloaded tarballs
+SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
+FILE(MAKE_DIRECTORY "${CONTRIB_PACKAGE_PATH}")
 
 # Install directory
 SET(CONTRIB_INSTALL_BASE "${PROJECT_BINARY_DIR}/install")
@@ -97,9 +95,11 @@ FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_INC}")
 
 # Path that contains the contrib libraries
 SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
+FILE(MAKE_DIRECTORY "${CONTRIB_LIBRARY_PATH}")
 
 # Path that contains extracted sources (usually <build_dir>/src)
 SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
+FILE(MAKE_DIRECTORY "${CONTRIB_BINARY_SRC}")
 
 # Logging options
 SET(CUSTOM_BUILD_IN_SOURCE 1 CACHE STRING  "Build projects in sources (default 1).")
@@ -110,23 +110,24 @@ SET(CUSTOM_LOG_BUILD 1 CACHE STRING  "Write logfile for build step instead of pr
 SET(CUSTOM_LOG_INSTALL 1 CACHE STRING  "Write logfile for install step instead of printing (default 1).")
 
 # Option to specify number of threads used by make
-SET(N_MAKE_THREADS 1 CACHE STRING "Number of threads used by make steps (default 1).")
+SET(THREADS 1 CACHE STRING "Number of threads used by make steps (default 1).")
 
-# Determine whether this is a 32 or 64 bit build
-SET(BITS 32)
-IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	SET(BITS 64)
+# Set contrib build type
+IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	SET(CONTRIB_BUILD_TYPE "Debug")
+ELSEIF(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+	SET(CONTRIB_BUILD_TYPE "RelWithDebInfo")
+ELSE()
+	SET(CONTRIB_BUILD_TYPE "Release")
 ENDIF()
 
-# On Windows, we need to be very careful when building libraries that do not use CMake themselves.
-# We need to manually ensure that the platform (32/64 bit) is identical, and that the build type
-# is correctly forwarded to the build system. This is difficult, as CMAKE_BUILD_TYPE is ignored
-# by the Visual Studio generators. The only hack I can think of is to use the name of the build
-# output directory, which should equal the build configuration, to switch msbuild parameters
-IF(BITS EQUAL 32)
-	SET(MSBUILD "msbuild" "/p:Platform=win32" "/p:Configuration=${CMAKE_CFG_INTDIR}")
+# Determine whether this is a 32 or 64 bit build
+IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	SET(CONTRIB_ADDRESSMODEL 64)
+	SET(MSBUILD "msbuild" "/p:Platform=x64"   "/p:Configuration=${CONTRIB_BUILD_TYPE}")
 ELSE()
-	SET(MSBUILD "msbuild" "/p:Platform=x64"   "/p:Configuration=${CMAKE_CFG_INTDIR}")
+	SET(CONTRIB_ADDRESSMODEL 32)
+	SET(MSBUILD "msbuild" "/p:Platform=win32" "/p:Configuration=${CONTRIB_BUILD_TYPE}")
 ENDIF()
 
 
@@ -135,11 +136,12 @@ ENDIF()
 ###############################################################################
 
 # Available contrib packages
-SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "qt" "sip")
+SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip")
 
 # Add internal dependencies here as single CMake variables of the form:
 # SET(DEP_<contrib_package> "dependency_1" "dependency_2" ... )
-SET(DEP_sip "python")
+# ... no dependencies yet
+
 
 # For Visual Studio, we need to build oncrpc for persistence in BALL to work correctly.
 # All other compilers contain support for it out of the box.
@@ -174,8 +176,6 @@ FOREACH(p ${BUILD_PACKAGES})
 
 	SET(PACKAGE_NAME "${p}")
 	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}.cmake")
-
-	ADD_DEPENDENCIES(update "${p}-update")
 
 ENDFOREACH()
 

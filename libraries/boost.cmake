@@ -33,68 +33,54 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# We need bzip2 and zlib sources for boost::iostreams
+# Download archive
+SET(PACKAGE_ARCHIVE "boost_1_55_0.tar.gz")
+SET(ARCHIVE_MD5 "93780777cfbf999a600f62883bd54b17")
+FETCH_PACKAGE_ARCHIVE(${PACKAGE_ARCHIVE} ${ARCHIVE_MD5})
 
-# We add both as an external project without build step,
-# since they are being built by boost itself
+# Download and extract Bzip2 archive
+SET(BZIP2_NAME "bzip2-1.0.6")
+SET(BZIP2_ARCHIVE "${BZIP2_NAME}.tar.gz")
+SET(BZIP2_MD5 "00b516f4704d4a7cb50a1d97e6e8e15b")
 
-SET(BZIP2_NAME "bzip2")
-ExternalProject_Add("${BZIP2_NAME}"
+FETCH_PACKAGE_ARCHIVE(${BZIP2_ARCHIVE} ${BZIP2_MD5})
 
-	GIT_REPOSITORY "${GITHUB_PTH_URL}/${BZIP2_NAME}.git"
-
-	PREFIX ${PROJECT_BINARY_DIR}
-
-	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
-	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
-
-	CONFIGURE_COMMAND ""
-	BUILD_COMMAND ""
-	INSTALL_COMMAND ""
+EXECUTE_PROCESS(COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${BZIP2_ARCHIVE}"
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
 )
 
-SET(ZLIB_NAME "zlib")
-ExternalProject_Add("${ZLIB_NAME}"
+# Download and extract Zlib archive
+SET(ZLIB_NAME "zlib-1.2.8")
+SET(ZLIB_ARCHIVE "${ZLIB_NAME}.tar.gz")
+SET(ZLIB_MD5 "44d667c142d7cda120332623eab69f40")
 
-	GIT_REPOSITORY "${GITHUB_PTH_URL}/${ZLIB_NAME}.git"
+FETCH_PACKAGE_ARCHIVE(${ZLIB_ARCHIVE} ${ZLIB_MD5})
 
-	PREFIX ${PROJECT_BINARY_DIR}
-
-	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
-	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
-
-	CONFIGURE_COMMAND ""
-	BUILD_COMMAND ""
-	INSTALL_COMMAND ""
+EXECUTE_PROCESS(COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${ZLIB_ARCHIVE}"
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
 )
 
 # Set system dependent variables
-SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
-IF(OS_WINDOWS)
+IF(MSVC)
 	SET(BOOTSTRAP_COMMAND "bootstrap.bat")
+ELSE()
+	SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
 ENDIF()
 
 # Determine the correct b2 switches according to build type and platform
-SET(BOOST_BUILD_TYPE "release")
-
-IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+IF(CONTRIB_BUILD_TYPE STREQUAL "Debug")
 	SET(BOOST_BUILD_TYPE "debug")
-ENDIF()
-
-IF(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+ELSEIF(CONTRIB_BUILD_TYPE STREQUAL "RelWithDebInfo")
 	SET(BOOST_BUILD_TYPE "release debug-symbols=on")
+ELSE()
+	SET(BOOST_BUILD_TYPE "release")
 ENDIF()
 
 # Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
-	DEPENDS "bzip2" "zlib"
-
-	GIT_REPOSITORY "${GITHUB_PTH_URL}/${PACKAGE_NAME}.git"
-	GIT_TAG "ball_contrib-1.4.3"
-
+	URL ${CONTRIB_ARCHIVES_URL}/${PACKAGE_ARCHIVE}
 	PREFIX ${PROJECT_BINARY_DIR}
-
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
 	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
@@ -106,24 +92,22 @@ ExternalProject_Add(${PACKAGE_NAME}
 	CONFIGURE_COMMAND ${BOOTSTRAP_COMMAND}
 
 	BUILD_COMMAND ./b2 install
-	-j "${N_MAKE_THREADS}"
+	-j "${THREADS}"
 	--prefix=${CONTRIB_INSTALL_BASE}
 	--with-chrono
 	--with-date_time
 	--with-iostreams
-	--with-regex
-	--with-serialization
-	--with-system
-	--with-thread
-	--layout=tagged
+#	--with-regex
+#	--with-serialization
+#	--with-system
+#	--with-thread
+#	--layout=tagged
 	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME}
 	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
 	link=shared
 	threading=multi
 	variant=${BOOST_BUILD_TYPE}
-	address-model=${BITS}
-
-	INSTALL_COMMAND ""
+	address-model=${CONTRIB_ADDRESSMODEL}
 )
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
