@@ -22,8 +22,8 @@ SET(eigen3 "eigen-eigen-bdd17ee3b1b3")
 SET(eigen3_archive "eigen-eigen-bdd17ee3b1b3.tar.bz2")
 SET(eigen3_archive_md5 "21a928f6e0f1c7f24b6f63ff823593f5")
 
-SET(tbb "tbb43_20150611oss_src")
-SET(tbb_archive "tbb43_20150611oss_src.tgz")
+SET(tbb "tbb43_20150611oss_ball_contrib")
+SET(tbb_archive "tbb43_20150611oss_ball_contrib.tar.gz")
 SET(tbb_archive_md5 "bb144ec868c53244ea6be11921d86f03")
 
 SET(openbabel "openbabel-master_ball_contrib")
