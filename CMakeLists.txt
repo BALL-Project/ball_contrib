@@ -172,8 +172,14 @@ FOREACH(PACKAGE_NAME ${BUILD_PACKAGES})
 
 ENDFOREACH()
 
-# Finally, download archives
+
+# Option to skip MD5 checks of downloaded archives.
+OPTION(SKIP_MD5_CHECKS "Skip download verification. For development purpose only." OFF)
+
+# Try to download archives using scp.
 OPTION(SCP "Use scp to download library tarballs." OFF)
+
+# Finally, download archives
 FETCH_PACKAGE_ARCHIVES()
 
 
