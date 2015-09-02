@@ -102,7 +102,7 @@ ENDMACRO()
 # This mechanism can be used to build older contrib packages
 MACRO(FETCH_PACKAGE_ARCHIVES)
 
-	FOREACH(p ${BUILD_PACKAGES})
+	FOREACH(p ${DOWNLOAD_ARCHIVES})
 
 		# Package archive and md5 checksum
 		SET(ARCHIVE "${${p}_archive}")
@@ -140,6 +140,17 @@ MACRO(DOWNLOAD_ARCHIVE ARCHIVE ARCHIVE_MD5)
 	SET(SCP_USER "buildusr")
 	SET(SCP_HOST "buildarchive.informatik.uni-tuebingen.de")
 	SET(SCP_PATH "/nfs/wsi/abi/buildarchive/ball/contrib/archives")
+
+	IF(MSVC)
+		SET(SCP False)
+	ELSE()
+		IF(SCP)
+			EXECUTE_PROCESS(COMMAND which scp OUTPUT_VARIABLE SCP_BINARY)
+			IF("${SCP_BINARY}" STREQUAL "")
+				MESSAGE(FATAL_ERROR "SCP not found. Cannot use scp download option.")
+			ENDIF()
+		ENDIF()
+	ENDIF()
 
 	MESSAGE(STATUS "Downloading: ${ARCHIVE}")
 

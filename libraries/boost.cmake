@@ -33,6 +33,9 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
+# Further packages to be downloaded
+LIST(APPEND DOWNLOAD_ARCHIVES "bzip2" "zlib")
+
 # Set system dependent variables
 IF(MSVC)
 	SET(BOOTSTRAP_COMMAND "bootstrap.bat")
@@ -70,17 +73,36 @@ ExternalProject_Add(${PACKAGE_NAME}
 	--with-chrono
 	--with-date_time
 	--with-iostreams
-#	--with-regex
-#	--with-serialization
-#	--with-system
-#	--with-thread
-#	--layout=tagged
-#	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${BZIP2_NAME}
-#	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${ZLIB_NAME}
+	--with-regex
+	--with-serialization
+	--with-system
+	--with-thread
+	--layout=tagged
+	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
+	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib}
 	link=shared
 	threading=multi
 	variant=${BOOST_BUILD_TYPE}
 	address-model=${CONTRIB_ADDRESSMODEL}
 )
 
+# Extract bzip2 and zlib archives
+ExternalProject_Add_Step(${PACKAGE_NAME} extract_bzip2_zlib
+
+	LOG 1
+	DEPENDEES download
+
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
+	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${bzip2_archive}"
+	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${zlib_archive}"
+
+	DEPENDERS configure
+)
+
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
+
+
+
+
+
+

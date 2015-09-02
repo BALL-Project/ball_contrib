@@ -168,15 +168,15 @@ IF(PACKAGES STREQUAL "")
 	SET(PACKAGES "${CONTRIB_PACKAGES}")
 ENDIF()
 
-# Check if selected packages are correct
-# and populate BUILD_PACKAGES variable
+# Check if selected packages are correct and populate BUILD_PACKAGES variable
 VALIDATE_SELECTION()
 
-# Iterate list of selected and valid packages and include them now
-FOREACH(p ${BUILD_PACKAGES})
+# Iterate selected and valid packages, configure them, and add them to the download list
+SET(DOWNLOAD_ARCHIVES "")
+FOREACH(PACKAGE_NAME ${BUILD_PACKAGES})
 
-	SET(PACKAGE_NAME "${p}")
 	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}.cmake")
+	LIST(APPEND DOWNLOAD_ARCHIVES "${PACKAGE_NAME}")
 
 ENDFOREACH()
 
