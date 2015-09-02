@@ -84,6 +84,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 	threading=multi
 	variant=${BOOST_BUILD_TYPE}
 	address-model=${CONTRIB_ADDRESSMODEL}
+	INSTALL_COMMAND ""
 )
 
 # Extract bzip2 and zlib archives

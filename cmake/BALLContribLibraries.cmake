@@ -6,7 +6,7 @@ IF(MSVC)
 	LIST(APPEND CONTRIB_PACKAGES "oncrpc")
 ENDIF()
 
-SET(boost "boost_1_55_0")
+SET(boost "boost_1_55_0_ball_contrib")
 SET(boost_archive "boost_1_55_0_ball_contrib.tar.gz")
 SET(boost_archive_md5 "99e98dfe34bb4c0597a40c7672b06f83")
 
@@ -18,23 +18,23 @@ SET(zlib "zlib-1.2.8")
 SET(zlib_archive "zlib-1.2.8.tar.gz")
 SET(zlib_archive_md5 "44d667c142d7cda120332623eab69f40")
 
-SET(boost "eigen-eigen-bdd17ee3b1b3")
+SET(eigen3 "eigen-eigen-bdd17ee3b1b3")
 SET(eigen3_archive "eigen-eigen-bdd17ee3b1b3.tar.bz2")
 SET(eigen3_archive_md5 "21a928f6e0f1c7f24b6f63ff823593f5")
 
-SET(boost "tbb43_20150611oss_src")
+SET(tbb "tbb43_20150611oss_src")
 SET(tbb_archive "tbb43_20150611oss_src.tgz")
 SET(tbb_archive_md5 "bb144ec868c53244ea6be11921d86f03")
 
-SET(boost "openbabel-master")
-SET(openbabel_archive "openbabel-master.zip")
+SET(openbabel "openbabel-master_ball_contrib")
+SET(openbabel_archive "openbabel-master_ball_contrib.tar.gz")
 SET(openbabel_archive_md5 "4330fd8a31c95c01a2925e27123182f7")
 
-SET(boost "fftw-3.3.4")
+SET(fftw "fftw-3.3.4")
 SET(fftw_archive "fftw-3.3.4.tar.gz")
 SET(fftw_archive_md5 "2edab8c06b24feeb3b82bbb3ebf3e7b3")
 
-SET(boost "sip-4.16.9")
+SET(sip "sip-4.16.9")
 SET(sip_archive "sip-4.16.9.tar.gz")
 SET(sip_archive_md5 "7a1dfff4e6fade0e4adee2c4e3d3aa9a")
 
