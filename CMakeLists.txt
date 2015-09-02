@@ -75,7 +75,7 @@ SET(CONTRIB_ARCHIVES_URL "ftp://buildarchive.informatik.uni-tuebingen.de/ball/co
 
 # Folder to store the downloaded tarballs
 SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
-FILE(MAKE_DIRECTORY "${CONTRIB_PACKAGE_PATH}")
+FILE(MAKE_DIRECTORY "${CONTRIB_ARCHIVES_PATH}")
 
 # Install directory
 SET(CONTRIB_INSTALL_BASE "${PROJECT_BINARY_DIR}/install")
@@ -135,6 +135,8 @@ ENDIF()
 ###    Select and check packages to be installed                            ###
 ###############################################################################
 
+INCLUDE(BALLContribLibraries)
+
 # Available contrib packages
 SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip")
 
@@ -170,7 +172,6 @@ ENDIF()
 # and populate BUILD_PACKAGES variable
 VALIDATE_SELECTION()
 
-
 # Iterate list of selected and valid packages and include them now
 FOREACH(p ${BUILD_PACKAGES})
 
@@ -178,6 +179,10 @@ FOREACH(p ${BUILD_PACKAGES})
 	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}.cmake")
 
 ENDFOREACH()
+
+# Finally, download archives
+OPTION(SCP "Use scp to download library tarballs." OFF)
+FETCH_PACKAGE_ARCHIVES()
 
 
 

@@ -82,76 +82,87 @@ MACRO(VALIDATE_SELECTION)
 ENDMACRO()
 
 
-# Fetch ARCHIVE either from a local directory or download
-# Using a local directoy can manually be specified by setting the optional variable ARCHIVES_PATH
-# This mechanism can be used to build older contrib packages
-MACRO(FETCH_PACKAGE_ARCHIVE archive archive_md5)
+# Check MD5 sum of ARCHIVE and set IS_VALID=TRUE if it matches ARCHIVE_MD5
+MACRO(CHECK_PACKAGE_ARCHIVE ARCHIVE_SRC ARCHIVE_MD5 IS_VALID)
 
-	# Check if ARCHIVE_PATH variable has been specified manually
-	IF(ARCHIVES_PATH)
+	# Check if archive has already been downloaded
+	IF(EXISTS "${ARCHIVE_SRC}")
 
-		SET(IS_VALID FALSE)
-		SET(ARCHIVE_SRC "${ARCHIVES_PATH}/${archive}")
-
-		CHECK_PACKAGE_ARCHIVE("${ARCHIVE_SRC}" "${archive_md5}" IS_VALID)
-
-		IF(IS_VALID)
-			FILE(COPY "${ARCHIVE_SRC}" DESTINATION "${CONTRIB_ARCHIVES_PATH}")
-		ELSE()
-			MSG_INVALID_ARCHIVE_PATH("${archive}")
-		ENDIF()
-
-	ELSE()
-
-		DOWNLOAD_PACKAGE_ARCHIVE("${archive}" "${archive_md5}")
+		# Check if archive MD5 sum is correct
+		FILE(MD5 "${ARCHIVE_SRC}" ARCHIVE_MD5_CALC)
+		STRING(COMPARE EQUAL "${ARCHIVE_MD5_CALC}" "${ARCHIVE_MD5}" IS_VALID)
 
 	ENDIF()
 
 ENDMACRO()
 
 
-# Check MD5 sum of ARCHIVE and set IS_VALID=TRUE if it matches ARCHIVE_MD5
-MACRO(CHECK_PACKAGE_ARCHIVE archive archive_md5 is_valid)
+# Fetch ARCHIVE either from a local directory or download
+# Using a local directoy can manually be specified by setting the optional variable ARCHIVES_PATH
+# This mechanism can be used to build older contrib packages
+MACRO(FETCH_PACKAGE_ARCHIVES)
 
-	# Check if archive has already been downloaded
-	IF(EXISTS "${archive}")
+	FOREACH(p ${BUILD_PACKAGES})
 
-		FILE(MD5 "${archive}" ARCHIVE_MD5_CALC)
+		# Package archive and md5 checksum
+		SET(ARCHIVE "${${p}_archive}")
+		SET(ARCHIVE_MD5 "${${p}_archive_md5}")
 
-		# Check if archive MD5 sum is correct
-		IF("${ARCHIVE_MD5_CALC}" STREQUAL "${archive_md5}")
-			SET(${is_valid} TRUE)
+		# Check if ARCHIVE_PATH variable has been specified manually
+		IF(ARCHIVES_PATH)
+
+			SET(IS_VALID FALSE)
+			SET(ARCHIVE_SRC "${ARCHIVES_PATH}/${ARCHIVE}")
+
+			CHECK_PACKAGE_ARCHIVE("${ARCHIVE_SRC}" "${ARCHIVE_MD5}" IS_VALID)
+
+			IF(IS_VALID)
+				FILE(COPY "${ARCHIVE_SRC}" DESTINATION "${CONTRIB_ARCHIVES_PATH}")
+			ELSE()
+				MSG_INVALID_ARCHIVE_PATH("${ARCHIVE}")
+			ENDIF()
+
+		ELSE()
+
+			# Not yet locally available so download archive
+			DOWNLOAD_ARCHIVE("${ARCHIVE}" "${ARCHIVE_MD5}")
+
 		ENDIF()
 
-	ENDIF()
+	ENDFOREACH()
 
 ENDMACRO()
 
 
 # Download archive
-MACRO(DOWNLOAD_PACKAGE_ARCHIVE archive archive_md5)
+MACRO(DOWNLOAD_ARCHIVE ARCHIVE ARCHIVE_MD5)
 
-	MESSAGE(STATUS "Downloading: ${archive}")
+	SET(SCP_USER "buildusr")
+	SET(SCP_HOST "buildarchive.informatik.uni-tuebingen.de")
+	SET(SCP_PATH "/nfs/wsi/abi/buildarchive/ball/contrib/archives")
+
+	MESSAGE(STATUS "Downloading: ${ARCHIVE}")
 
 	SET(IS_VALID FALSE)
-	SET(ARCHIVE_DEST "${CONTRIB_ARCHIVES_PATH}/${archive}")
+	SET(ARCHIVE_DEST "${CONTRIB_ARCHIVES_PATH}/${ARCHIVE}")
 
-	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${archive_md5}" IS_VALID)
+	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${ARCHIVE_MD5}" IS_VALID)
 
-	# Try download from mirror 1
 	IF(NOT IS_VALID)
 
-		FILE(DOWNLOAD
-			"${CONTRIB_ARCHIVES_URL}/${archive}"
-			"${ARCHIVE_DEST}"
-		)
+		IF(SCP)
+			EXECUTE_PROCESS(COMMAND scp -r "${SCP_USER}@${SCP_HOST}:${SCP_PATH}/${ARCHIVE}" .
+				WORKING_DIRECTORY "${CONTRIB_ARCHIVES_PATH}")
+		ELSE()
+			FILE(DOWNLOAD "${CONTRIB_ARCHIVES_URL}/${ARCHIVE}" "${ARCHIVE_DEST}")
+		ENDIF()
 
 	ENDIF()
 
-	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${archive_md5}" IS_VALID)
+	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${ARCHIVE_MD5}" IS_VALID)
 
 	IF(NOT IS_VALID)
-		MSG_DOWNLOAD_FAILED("${archive}")
+		MSG_DOWNLOAD_FAILED("${ARCHIVE}")
 	ENDIF()
 
 ENDMACRO()
@@ -202,10 +213,10 @@ MACRO(MSG_CONFIGURE_PACKAGE_END package_name)
 ENDMACRO()
 
 
-MACRO(MSG_DOWNLOAD_FAILED archive)
+MACRO(MSG_DOWNLOAD_FAILED ARCHIVE)
 	MESSAGE(STATUS "")
 	MESSAGE(STATUS "=============================================================================================")
-	MESSAGE(STATUS " FATAL ERROR: Download of contrib archive failed: ${archive}")
+	MESSAGE(STATUS " FATAL ERROR: Download of contrib archive failed: ${ARCHIVE}")
 	MESSAGE(STATUS "")
 	MESSAGE(STATUS " - Please verify that your internet connection works and try again.")
 	MESSAGE(STATUS " - If this error occurrs again please contact the developers.")
@@ -215,10 +226,10 @@ MACRO(MSG_DOWNLOAD_FAILED archive)
 ENDMACRO()
 
 
-MACRO(MSG_INVALID_ARCHIVE_PATH archive)
+MACRO(MSG_INVALID_ARCHIVE_PATH ARCHIVE)
 	MESSAGE(STATUS "")
 	MESSAGE(STATUS "=============================================================================================")
-	MESSAGE(STATUS " FATAL ERROR: Contrib archive ${archive} not found or invalid." )
+	MESSAGE(STATUS " FATAL ERROR: Contrib archive ${ARCHIVE} not found or invalid." )
 	MESSAGE(STATUS "")
 	MESSAGE(STATUS " - Please verify that ARCHIVES_PATH (${ARCHIVES_PATH}) is set correctly")
 	MESSAGE(STATUS "")
