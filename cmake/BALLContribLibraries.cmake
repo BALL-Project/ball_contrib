@@ -38,3 +38,6 @@ SET(boost "sip-4.16.9")
 SET(sip_archive "sip-4.16.9.tar.gz")
 SET(sip_archive_md5 "7a1dfff4e6fade0e4adee2c4e3d3aa9a")
 
+SET(oncrpc "oncrpc")
+SET(oncrpc_archive "oncrpc.zip")
+SET(oncrpc_archive_md5 "403c2db7fa54bccaedf0ba9f00392af4")
