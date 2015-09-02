@@ -7,8 +7,8 @@ IF(MSVC)
 ENDIF()
 
 SET(boost "boost_1_55_0")
-SET(boost_archive "boost_1_55_0.tar.gz")
-SET(boost_archive_md5 "93780777cfbf999a600f62883bd54b17")
+SET(boost_archive "boost_1_55_0_ball_contrib.tar.gz")
+SET(boost_archive_md5 "99e98dfe34bb4c0597a40c7672b06f83")
 
 SET(bzip2 "bzip2-1.0.6")
 SET(bzip2_archive "bzip2-1.0.6.tar.gz")
@@ -41,3 +41,4 @@ SET(sip_archive_md5 "7a1dfff4e6fade0e4adee2c4e3d3aa9a")
 SET(oncrpc "oncrpc")
 SET(oncrpc_archive "oncrpc.zip")
 SET(oncrpc_archive_md5 "403c2db7fa54bccaedf0ba9f00392af4")
+

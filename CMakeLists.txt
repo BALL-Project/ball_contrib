@@ -93,13 +93,13 @@ FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_LIB}")
 SET(CONTRIB_INSTALL_INC "${CONTRIB_INSTALL_BASE}/include")
 FILE(MAKE_DIRECTORY "${CONTRIB_INSTALL_INC}")
 
-# Path that contains the contrib libraries
-SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
-FILE(MAKE_DIRECTORY "${CONTRIB_LIBRARY_PATH}")
-
 # Path that contains extracted sources (usually <build_dir>/src)
 SET(CONTRIB_BINARY_SRC "${PROJECT_BINARY_DIR}/src")
 FILE(MAKE_DIRECTORY "${CONTRIB_BINARY_SRC}")
+
+# Path that contains the contrib libraries
+# Directory already exists (git)
+SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
 
 # Logging options
 SET(CUSTOM_BUILD_IN_SOURCE 1 CACHE STRING  "Build projects in sources (default 1).")
