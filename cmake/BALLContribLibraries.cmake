@@ -30,8 +30,8 @@ SET(openbabel "openbabel-master_ball_contrib")
 SET(openbabel_archive "openbabel-master_ball_contrib.tar.gz")
 SET(openbabel_archive_md5 "4330fd8a31c95c01a2925e27123182f7")
 
-SET(fftw "fftw-3.3.4")
-SET(fftw_archive "fftw-3.3.4.tar.gz")
+SET(fftw "fftw-3.3.4_ball_contrib")
+SET(fftw_archive "fftw-3.3.4_ball_contrib.tar.gz")
 SET(fftw_archive_md5 "2edab8c06b24feeb3b82bbb3ebf3e7b3")
 
 SET(sip "sip-4.16.9")
