@@ -135,21 +135,8 @@ ENDIF()
 ###    Select and check packages to be installed                            ###
 ###############################################################################
 
+# Get list and information of available contrib packages
 INCLUDE(BALLContribLibraries)
-
-# Available contrib packages
-SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip")
-
-# Add internal dependencies here as single CMake variables of the form:
-# SET(DEP_<contrib_package> "dependency_1" "dependency_2" ... )
-# ... no dependencies yet
-
-
-# For Visual Studio, we need to build oncrpc for persistence in BALL to work correctly.
-# All other compilers contain support for it out of the box.
-IF(MSVC)
-	LIST(APPEND CONTRIB_PACKAGES "oncrpc")
-ENDIF()
 
 OPTION(HELP "Show help for ball_contrib installation." FALSE)
 IF(HELP)
@@ -157,19 +144,24 @@ IF(HELP)
 	RETURN(0)
 ENDIF()
 
+
 # Variable to be set by the user in order to select the packages to be build.
 SET(PACKAGES "" CACHE STRING "Variable to control which packages are build.")
-
-# List of selected packages to be build.
-SET(BUILD_PACKAGES "")
 
 IF(PACKAGES STREQUAL "")
 	# All packages selected for installation
 	SET(PACKAGES "${CONTRIB_PACKAGES}")
 ENDIF()
 
+
 # Check if selected packages are correct and populate BUILD_PACKAGES variable
+IF(MSVC)
+	SET(BUILD_PACKAGES "oncrpc")
+ELSE()
+	SET(BUILD_PACKAGES "")
+ENDIF()
 VALIDATE_SELECTION()
+
 
 # Iterate selected and valid packages, configure them, and add them to the download list
 SET(DOWNLOAD_ARCHIVES "")

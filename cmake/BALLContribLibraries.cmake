@@ -1,4 +1,10 @@
+# Available contrib packages
 SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip")
+
+# For Visual Studio, we need to build oncrpc for persistence in BALL to work correctly.
+IF(MSVC)
+	LIST(APPEND CONTRIB_PACKAGES "oncrpc")
+ENDIF()
 
 SET(boost "boost_1_55_0")
 SET(boost_archive "boost_1_55_0.tar.gz")
