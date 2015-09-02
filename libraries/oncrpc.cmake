@@ -33,18 +33,10 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-IF(NOT MSVC) # Windows
-	MESSAGE(SEND_ERROR "The oncrpc package is only supported for -- and only needed by -- Visual Studio.")
-ENDIF()
-
 ExternalProject_Add("${PACKAGE_NAME}"
 
+	URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
 	PREFIX ${PROJECT_BINARY_DIR}
-
-	GIT_REPOSITORY "${GITHUB_BASE_URL}/${PACKAGE_NAME}.git"
-	GIT_TAG "ball-contrib"
-	GIT_DEPTH 1
-
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
 	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
