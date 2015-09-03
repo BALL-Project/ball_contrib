@@ -1,5 +1,5 @@
 # Available contrib packages
-SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip")
+SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip" "flex")
 
 # For Visual Studio, we need to build oncrpc for persistence in BALL to work correctly.
 IF(MSVC)
