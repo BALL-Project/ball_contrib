@@ -161,7 +161,7 @@ ENDIF()
 
 # Check if selected packages are correct and populate BUILD_PACKAGES variable
 IF(MSVC)
-	SET(BUILD_PACKAGES "oncrpc")
+	SET(BUILD_PACKAGES "oncrpc" "flex" "bison")
 ELSE()
 	SET(BUILD_PACKAGES "")
 ENDIF()

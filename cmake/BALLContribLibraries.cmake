@@ -3,7 +3,7 @@ SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip")
 
 # For Visual Studio, we need to build oncrpc for persistence in BALL to work correctly.
 IF(MSVC)
-	LIST(APPEND CONTRIB_PACKAGES "oncrpc")
+	LIST(APPEND CONTRIB_PACKAGES "oncrpc" "flex" "bison")
 ENDIF()
 
 SET(boost "boost_1_55_0_ball_contrib")
@@ -38,7 +38,19 @@ SET(sip "sip-4.16.9")
 SET(sip_archive "sip-4.16.9.tar.gz")
 SET(sip_archive_md5 "7a1dfff4e6fade0e4adee2c4e3d3aa9a")
 
+
+# From here: win-only dependencies
+
 SET(oncrpc "oncrpc")
 SET(oncrpc_archive "oncrpc.zip")
 SET(oncrpc_archive_md5 "403c2db7fa54bccaedf0ba9f00392af4")
+
+SET(flex "flex-2.5.4a-1-bin")
+SET(flex_archive "flex-2.5.4a-1-bin.zip")
+SET(flex_archive_md5 "0e6dfc5bb7b80924e9f20c653199890e")
+
+SET(bison "bison-2.4.1-bin")
+SET(bison_archive "bison-2.4.1-bin.zip")
+SET(bison_archive_md5 "9d3ccf30fc00ba5e18176c33f45aee0e")
+
 
