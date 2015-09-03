@@ -36,6 +36,33 @@
 ###    Macros                                                               ###
 ###############################################################################
 
+# Check which URL to use for archive download
+MACRO(SET_CONTRIB_ARCHIVES_URL)
+
+	# Check first URL
+	FILE(DOWNLOAD "${ARCHIVES_URL}/README" "${PROJECT_BINARY_DIR}/README" TIMEOUT 10 STATUS URL_STATUS)
+	LIST(GET URL_STATUS 0 STATUS)
+
+	IF(STATUS STREQUAL "0")
+		SET(CONTRIB_ARCHIVES_URL "${ARCHIVES_URL}")
+	ELSE()
+		# Check second URL
+		FILE(DOWNLOAD "${ARCHIVES_URL_FALLBACK}/README" "${PROJECT_BINARY_DIR}/README" TIMEOUT 10 STATUS URL_STATUS)
+		LIST(GET URL_STATUS 0 STATUS)
+
+		IF(STATUS STREQUAL "0")
+			SET(CONTRIB_ARCHIVES_URL "${ARCHIVES_URL_FALLBACK}")
+		ELSE()
+			MESSAGE(FATAL_ERROR "Servers for archive download are not accessible. Please try again later.
+					    If the problem remains please contact the BALL developers!")
+		ENDIF()
+	ENDIF()
+
+	MESSAGE(STATUS "Download resource: ${CONTRIB_ARCHIVES_URL}" )
+
+ENDMACRO()
+
+
 # Validate user package selection against provided packages in CONTRIB_PACKAGES
 # Additionally, populate top-level BUILD_PACKAGES list that holds the packages that will be  build.
 MACRO(VALIDATE_SELECTION)

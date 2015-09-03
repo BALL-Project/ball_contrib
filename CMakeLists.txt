@@ -70,8 +70,13 @@ INCLUDE(BALLContribMacros)
 # for which we don't hostthe archives anymore
 SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
-# URL to download the tarballs
-SET(CONTRIB_ARCHIVES_URL "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/ball_contrib-${BALL_CONTRIB_VERSION}/")
+# URLs for archive download
+SET(ARCHIVES_URL "http://sourceforge.net/projects/ballproject/files/ball_contrib-${BALL_CONTRIB_VERSION}/")
+SET(ARCHIVES_URL_FALLBACK "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/ball_contrib-${BALL_CONTRIB_VERSION}/")
+
+# Check which URL to be used for archive download and set CONTRIB_ARCHIVES_URL appropriately
+SET(CONTRIB_ARCHIVES_URL "")
+SET_CONTRIB_ARCHIVES_URL()
 
 # Folder to store the downloaded tarballs
 SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
@@ -174,10 +179,10 @@ ENDFOREACH()
 
 
 # Option to skip MD5 checks of downloaded archives.
-OPTION(SKIP_MD5_CHECKS "Skip download verification. For development purpose only." OFF)
+OPTION(SKIP_MD5_CHECKS "Skip download verification. For development purpose only." FALSE)
 
 # Try to download archives using scp.
-OPTION(SCP "Use scp to download library tarballs." OFF)
+OPTION(SCP "Use scp to download library tarballs." FALSE)
 
 # Finally, download archives
 FETCH_PACKAGE_ARCHIVES()
