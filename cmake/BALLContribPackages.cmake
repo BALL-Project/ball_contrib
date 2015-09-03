@@ -51,5 +51,9 @@ IF(MSVC)
 	SET(bison "bison-2.4.1-bin")
 	SET(bison_archive "bison-2.4.1-bin.zip")
 	SET(bison_archive_md5 "9d3ccf30fc00ba5e18176c33f45aee0e")
+
+	SET(bison_deps "bison-2.4.1-dep")
+	SET(bison_deps_archive "bison-2.4.1-dep.zip")
+	SET(bison_deps_archive_md5 "9d3ccf30fc00ba5e18176c33f45aee0e")
 ENDIF()
 
