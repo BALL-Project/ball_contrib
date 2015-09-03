@@ -65,7 +65,7 @@ ENDMACRO()
 
 # Validate user package selection against provided packages in CONTRIB_PACKAGES
 # Additionally, populate top-level BUILD_PACKAGES list that holds the packages that will be  build.
-MACRO(VALIDATE_SELECTION)
+MACRO(EVALUATE_SELECTION)
 
 	SET(VALID_PACKAGES "")
 	SET(INVALID_PACKAGES "")

@@ -141,42 +141,37 @@ ENDIF()
 ###############################################################################
 
 # Get list and information of available contrib packages
-INCLUDE(BALLContribLibraries)
+INCLUDE(BALLContribPackages)
 
+# Print help message if HELP is set
 OPTION(HELP "Show help for ball_contrib installation." FALSE)
 IF(HELP)
 	MSG_HELP()
 	RETURN(0)
 ENDIF()
 
-
-# Variable to be set by the user in order to select the packages to be build.
+# Optional variable set by the user to select the packages to be build.
+# If not set by the user, all packages are selected.
 SET(PACKAGES "" CACHE STRING "Variable to control which packages are build.")
-
 IF(PACKAGES STREQUAL "")
-	# All packages selected for installation
 	SET(PACKAGES "${CONTRIB_PACKAGES}")
 ENDIF()
 
+# Check if selected packages are valid.
+# Macro populates BUILD_PACKAGES variable
+SET(BUILD_PACKAGES "")
+EVALUATE_SELECTION()
 
-# Check if selected packages are correct and populate BUILD_PACKAGES variable
-IF(MSVC)
-	SET(BUILD_PACKAGES "oncrpc" "flex" "bison")
-ELSE()
-	SET(BUILD_PACKAGES "")
-ENDIF()
-VALIDATE_SELECTION()
-
-
-# Iterate selected and valid packages, configure them, and add them to the download list
+# Iterate valid packages, configure them, and add them to DOWNLOAD_ARCHIVES
 SET(DOWNLOAD_ARCHIVES "")
 FOREACH(PACKAGE_NAME ${BUILD_PACKAGES})
 
-	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}.cmake")
-	LIST(APPEND DOWNLOAD_ARCHIVES "${PACKAGE_NAME}")
+	INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE_NAME}.cmake" RESULT_VARIABLE SUCCESS)
+	IF(NOT ${SUCCESS} STREQUAL "NOTFOUND")
+		LIST(APPEND DOWNLOAD_ARCHIVES "${PACKAGE_NAME}")
+	ENDIF()
 
 ENDFOREACH()
-
 
 # Option to skip MD5 checks of downloaded archives.
 OPTION(SKIP_MD5_CHECKS "Skip download verification. For development purpose only." FALSE)
