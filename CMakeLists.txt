@@ -49,6 +49,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3 FATAL_ERROR)
 
 # Path to contrib-specific CMake modules
 LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_BINARY_DIR}/cmake")
 
 # ExternalProjects package
 INCLUDE(ExternalProject)
@@ -64,19 +65,9 @@ INCLUDE(BALLContribMacros)
 ###    Global settings                                                      ###
 ###############################################################################
 
-# OPTIONAL:
-# Path to directory that contains the archives of the contrib packages needed.
-# This is a mechanism to install old contrib versions
-# for which we don't hostthe archives anymore
-SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
-
-# URLs for archive download
-SET(ARCHIVES_URL "http://sourceforge.net/projects/ballproject/files/ball_contrib-${BALL_CONTRIB_VERSION}/")
-SET(ARCHIVES_URL_FALLBACK "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/ball_contrib-${BALL_CONTRIB_VERSION}/")
-
-# Check which URL to be used for archive download and set CONTRIB_ARCHIVES_URL appropriately
-SET(CONTRIB_ARCHIVES_URL "")
-SET_CONTRIB_ARCHIVES_URL()
+# Binary CMake module folder
+SET(CONTRIB_CMAKE_MODULES "${PROJECT_BINARY_DIR}/cmake")
+FILE(MAKE_DIRECTORY "${CONTRIB_CMAKE_MODULES}")
 
 # Folder to store the downloaded tarballs
 SET(CONTRIB_ARCHIVES_PATH "${PROJECT_BINARY_DIR}/archives")
@@ -105,6 +96,20 @@ FILE(MAKE_DIRECTORY "${CONTRIB_BINARY_SRC}")
 # Path that contains the contrib libraries
 # Directory already exists (git)
 SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
+
+# OPTIONAL:
+# Path to directory that contains the archives of the contrib packages needed.
+# This is a mechanism to install old contrib versions
+# for which we don't hostthe archives anymore
+SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
+
+# URLs for archive download
+SET(ARCHIVES_URL "http://sourceforge.net/projects/ballproject/files/ball_contrib-${BALL_CONTRIB_VERSION}/")
+SET(ARCHIVES_URL_FALLBACK "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/ball_contrib-${BALL_CONTRIB_VERSION}/")
+
+# Check which URL to be used for archive download and set CONTRIB_ARCHIVES_URL appropriately
+SET(CONTRIB_ARCHIVES_URL "")
+SET_CONTRIB_ARCHIVES_URL()
 
 # Logging options
 SET(CUSTOM_BUILD_IN_SOURCE 1 CACHE STRING  "Build projects in sources (default 1).")
