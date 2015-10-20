@@ -46,7 +46,7 @@ ELSE()
 ENDIF()
 
 # Libraries to be build
-SET(BOOST_LIBRARIES "--with-chrono" "--with-date_time" "--with-iostreams" "--with-regex" "--with-serialization" "--with-system" "--with-thread" "--layout=tagged")
+SET(BOOST_LIBRARIES "--with-chrono" "--with-date_time" "--with-iostreams" "--with-regex" "--with-serialization" "--with-system" "--with-thread")
 
 # Boost b2 options
 SET(BOOST_B2_OPTIONS "link=shared" "threading=multi" "variant=${BOOST_BUILD_TYPE}" "address-model=${CONTRIB_ADDRESSMODEL}")
@@ -58,9 +58,6 @@ ELSE()
 	SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
 	LIST(APPEND BOOST_B2_OPTIONS "--layout=tagged")
 ENDIF()
-
-MESSAGE("${CMAKE_CXX_COMPILER}")
-MESSAGE("${CMAKE_C_COMPILER}")
 
 # Add project
 ExternalProject_Add(${PACKAGE_NAME}
