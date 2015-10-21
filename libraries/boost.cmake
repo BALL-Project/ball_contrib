@@ -37,12 +37,10 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 LIST(APPEND DOWNLOAD_ARCHIVES "bzip2" "zlib")
 
 # Determine the correct b2 switches according to build type and platform
-IF(CONTRIB_BUILD_TYPE STREQUAL "Debug")
-	SET(BOOST_BUILD_TYPE "debug")
-ELSEIF(CONTRIB_BUILD_TYPE STREQUAL "RelWithDebInfo")
+IF(CONTRIB_BUILD_TYPE STREQUAL "RelWithDebInfo")
 	SET(BOOST_BUILD_TYPE "release debug-symbols=on")
 ELSE()
-	SET(BOOST_BUILD_TYPE "release")
+	STRING(TOLOWER "${CONTRIB_BUILD_TYPE}" BOOST_BUILD_TYPE)
 ENDIF()
 
 # Libraries to be build
@@ -78,10 +76,10 @@ ExternalProject_Add(${PACKAGE_NAME}
 	install
 	-j "${THREADS}"
 	--prefix=${CONTRIB_INSTALL_BASE}
-	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
-	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib}
 	${BOOST_B2_OPTIONS}
 	${BOOST_LIBRARIES}
+	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
+	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib}
 
 	INSTALL_COMMAND ""
 )
