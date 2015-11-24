@@ -104,8 +104,9 @@ SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
 SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
 # URLs for archive download
-SET(ARCHIVES_URL "http://sourceforge.net/projects/ballproject/files/ball_contrib-${BALL_CONTRIB_VERSION}/")
-SET(ARCHIVES_URL_FALLBACK "ftp://buildarchive.informatik.uni-tuebingen.de/ball/contrib/ball_contrib-${BALL_CONTRIB_VERSION}/")
+SET(ARCHIVES_URL "http://build-archive.informatik.uni-tuebingen.de/ball/contrib/v${BALL_CONTRIB_VERSION}/archives/")
+SET(ARCHIVES_URL_FALLBACK "http://sourceforge.net/projects/ballproject/files/ball_contrib-${BALL_CONTRIB_VERSION}/")
+
 
 # Check which URL to be used for archive download and set CONTRIB_ARCHIVES_URL appropriately
 SET(CONTRIB_ARCHIVES_URL "")
