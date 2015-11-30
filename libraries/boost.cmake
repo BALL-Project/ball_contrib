@@ -51,7 +51,7 @@ SET(BOOST_B2_OPTIONS "link=shared" "threading=multi" "variant=${BOOST_BUILD_TYPE
 
 # Set system dependent variables
 IF(MSVC)
-	SET(BOOTSTRAP_COMMAND "bootstrap.bat")
+	SET(BOOTSTRAP_COMMAND "bootstrap")
 ELSE()
 	SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
 	LIST(APPEND BOOST_B2_OPTIONS "--layout=tagged")

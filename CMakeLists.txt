@@ -55,7 +55,7 @@ LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_BINARY_DIR}/cmake")
 INCLUDE(ExternalProject)
 
 # Global system configuration
-INCLUDE(BALLContribConfigure)
+#INCLUDE(BALLContribConfigure)
 
 # Load contrib-specific macros and messages
 INCLUDE(BALLContribMacros)
