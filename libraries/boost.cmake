@@ -52,8 +52,10 @@ SET(BOOST_B2_OPTIONS "link=shared" "threading=multi" "variant=${BOOST_BUILD_TYPE
 # Set system dependent variables
 IF(MSVC)
 	SET(BOOTSTRAP_COMMAND "bootstrap.bat")
+	SET(B2_COMMAND "b2.exe")
 ELSE()
-	SET(BOOTSTRAP_COMMAND "./bootstrap.sh")
+	SET(BOOTSTRAP_COMMAND "bootstrap.sh")
+	SET(B2_COMMAND "b2")
 	LIST(APPEND BOOST_B2_OPTIONS "--layout=tagged")
 ENDIF()
 
@@ -72,7 +74,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	CONFIGURE_COMMAND ${BOOTSTRAP_COMMAND}
 
-	BUILD_COMMAND b2
+	BUILD_COMMAND ${B2_COMMAND}
 	install
 	-j "${THREADS}"
 	--prefix=${CONTRIB_INSTALL_BASE}
