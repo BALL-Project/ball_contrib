@@ -51,11 +51,11 @@ SET(BOOST_B2_OPTIONS "link=shared" "threading=multi" "variant=${BOOST_BUILD_TYPE
 
 # Set system dependent variables
 IF(MSVC)
-	SET(BOOST_BOOTSTRAP_CMD "bootstrap.bat")
-	SET(BOOST_B2_CMD "b2.exe")
+	SET(BOOST_BOOTSTRAP_CMD bootstrap.bat)
+	SET(BOOST_B2_CMD b2.exe)
 ELSE()
-	SET(BOOST_BOOTSTRAP_CMD "./bootstrap.sh")
-	SET(BOOST_B2_CMD "./b2")
+	SET(BOOST_BOOTSTRAP_CMD ./bootstrap.sh)
+	SET(BOOST_B2_CMD ./b2)
 	LIST(APPEND BOOST_B2_OPTIONS "--layout=tagged")
 ENDIF()
 
@@ -76,12 +76,12 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	BUILD_COMMAND ${BOOST_B2_CMD}
 	install
-	-j "${THREADS}"
+	-j ${THREADS}
 	--prefix=${CONTRIB_INSTALL_BASE}
 	${BOOST_B2_OPTIONS}
 	${BOOST_LIBRARIES}
-	-sBZIP2_SOURCE="${CONTRIB_BINARY_SRC}/${bzip2}"
-	-sZLIB_SOURCE="${CONTRIB_BINARY_SRC}/${zlib}"
+	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
+	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib}
 
 	INSTALL_COMMAND ""
 )
