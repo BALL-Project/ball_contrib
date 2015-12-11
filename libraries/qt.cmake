@@ -75,9 +75,6 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	CONFIGURE_COMMAND ${QT_CONFIGURE_COMMAND}
 		-prefix "${CONTRIB_INSTALL_BASE}"
-		-webkit
-		-no-phonon
-		-no-qt3support
 		-nomake examples
 		-nomake demos
 		-no-nis
