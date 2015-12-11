@@ -45,7 +45,7 @@ ENDIF()
 # TODO: openssl
 
 IF(MSVC) # Windows
-	IF(N_MAKE_THREADS GREATER 1)
+	IF(THREADS GREATER 1)
 		FILE(WRITE "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat" "set CL=/MP\nnmake")
 	ELSE()
 		FILE(WRITE "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat" "nmake")
@@ -57,8 +57,8 @@ IF(MSVC) # Windows
 	SET(QT_INSTALL_COMMAND nmake install)
 ELSE() # Linux / Darwin
 	SET(QT_CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure")
-	SET(QT_BUILD_COMMAND make "-j${N_MAKE_THREADS}")
-	SET(QT_BUILD_COMMAND make install)
+	SET(QT_BUILD_COMMAND make "-j${THREADS}")
+	SET(QT_INSTALL_COMMAND make install)
 ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
@@ -77,6 +77,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 		-prefix "${CONTRIB_INSTALL_BASE}"
 		-nomake examples
 		-no-nis
+		-no-harfbuzz
 		-opensource
 		-confirm-license
 
