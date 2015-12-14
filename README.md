@@ -26,7 +26,8 @@ Possible installation on OSX / Linux:
 
   If the build process succeeds, the directory <path_to_ball_contrib>/build/install
   will contain the installation of all third-party libraries and can be used to build
-  BALL by setting the CMake variable CMAKE_PREFIX_PATH to this directory.
+  BALL by setting either one of the following CMake variables CMAKE_PREFIX_PATH or 
+  BALL_CONTRIB_PATH to this directory.
 
 The cmake project provides the following variables:
 
