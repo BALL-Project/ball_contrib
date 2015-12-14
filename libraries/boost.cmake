@@ -99,6 +99,11 @@ ExternalProject_Add_Step(${PACKAGE_NAME} extract_bzip2_zlib
 	DEPENDERS configure
 )
 
+# On Mac OS X we have to use absolute paths as install names for dylibs
+IF(APPLE)
+	FIX_DYLIB_INSTALL_NAMES(libboost)
+ENDIF()
+
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
 
 

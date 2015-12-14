@@ -64,4 +64,9 @@ ExternalProject_Add("${PACKAGE_NAME}"
 	INSTALL_COMMAND ${FFTW3_INSTALL_COMMAND}
 )
 
+# On Mac OS X we have to use absolute paths as install names for dylibs
+IF(APPLE)
+	FIX_DYLIB_INSTALL_NAMES(libfftw)
+ENDIF()
+
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

@@ -63,4 +63,9 @@ ExternalProject_Add("${PACKAGE_NAME}"
 	BUILD_COMMAND ${OPENBABEL_BUILD_COMMAND}
 )
 
+# On Mac OS X we have to use absolute paths as install names for dylibs
+IF(APPLE)
+	FIX_DYLIB_INSTALL_NAMES(libopenbabel)
+ENDIF()
+
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

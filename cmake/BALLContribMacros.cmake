@@ -36,6 +36,20 @@
 ###    Macros                                                               ###
 ###############################################################################
 
+# Macro to write absolute paths as install names for dylibs using install_name_tool
+MACRO(FIX_DYLIB_INSTALL_NAMES DYLIB_PREFIX)
+
+	ExternalProject_Add_Step(${PACKAGE_NAME} fixnames
+
+		LOG 1
+		DEPENDEES install
+
+		WORKING_DIRECTORY "${CONTRIB_INSTALL_LIB}"
+		COMMAND cmake -DLIBNAME=${DYLIB_PREFIX} -P "${PROJECT_SOURCE_DIR}/cmake/FixDylibInstallNames.cmake"
+	)
+
+ENDMACRO()
+
 # Check which URL to use for archive download
 MACRO(SET_CONTRIB_ARCHIVES_URL)
 

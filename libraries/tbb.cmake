@@ -62,4 +62,9 @@ ExternalProject_Add(${PACKAGE_NAME}
 	INSTALL_COMMAND "${CMAKE_COMMAND}" -Dconfig=${CONTRIB_BUILD_TYPE} -P "${CONTRIB_BINARY_SRC}/tbb_install.cmake"
 )
 
+# On Mac OS X we have to use absolute paths as install names for dylibs
+IF(APPLE)
+	FIX_DYLIB_INSTALL_NAMES(libtbb)
+ENDIF()
+
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

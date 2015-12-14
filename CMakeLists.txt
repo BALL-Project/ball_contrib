@@ -54,9 +54,6 @@ LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_BINARY_DIR}/cmake")
 # ExternalProjects package
 INCLUDE(ExternalProject)
 
-# Global system configuration
-#INCLUDE(BALLContribConfigure)
-
 # Load contrib-specific macros and messages
 INCLUDE(BALLContribMacros)
 
@@ -104,8 +101,8 @@ SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
 SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
 # URLs for archive download
-SET(ARCHIVES_URL "http://build-archive.informatik.uni-tuebingen.de/ball/contrib/v${BALL_CONTRIB_VERSION}/archives/")
-SET(ARCHIVES_URL_FALLBACK "http://sourceforge.net/projects/ballproject/files/ball_contrib-${BALL_CONTRIB_VERSION}/")
+SET(ARCHIVES_URL "http://build-archive.informatik.uni-tuebingen.de/ball/contrib/v${BALL_CONTRIB_VERSION}/archives")
+SET(ARCHIVES_URL_FALLBACK "http://sourceforge.net/projects/ballproject/files/contrib/v${BALL_CONTRIB_VERSION}/archives")
 
 
 # Check which URL to be used for archive download and set CONTRIB_ARCHIVES_URL appropriately
