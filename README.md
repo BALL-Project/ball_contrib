@@ -11,7 +11,7 @@ In such a case, please use source distributions provided by the original supplie
 Installation requirements:  
 - git 
 - CMake >= 2.8.12
-- Perl (Windows only)
+- Perl (ActivePerl on Windows)
 - Python (if BALL Python support is desired)
 
 Installation example (OSX/Linux):  
