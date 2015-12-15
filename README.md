@@ -11,8 +11,7 @@ Installation requirements:
  - git
  - Perl (Windows only)
 
-Possible installation on OSX / Linux:
-
+Possible installation on OSX / Linux:  
   $ git clone https://github.com/BALL-Project/ball_contrib.git  
   $ cd ball_contrib  
   $ mkdir build  
@@ -36,7 +35,8 @@ This project provides the following CMake variables:
    Number of threads to use for build steps.  
    * Example: use four threads  
      $ cmake .. -DTHREADS=4
-
+  
+  
  If the build process succeeds, the directory <path_to_ball_contrib>/build/install
  will contain the installation of third-party dependencies and can be used to build
  BALL.  
