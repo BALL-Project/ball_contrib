@@ -50,8 +50,8 @@ IF(MSVC) # Windows
 	SET(QT_INSTALL_COMMAND nmake install)
 ELSE() # Linux / Darwin
         SET(QT_CONFIGURE_COMMAND ./configure)
-	SET(QT_BUILD_COMMAND make "-j${THREADS}")
-	SET(QT_INSTALL_COMMAND make install)
+	SET(QT_BUILD_COMMAND make "-j${THREADS}" "module-qtwebkit")
+	SET(QT_INSTALL_COMMAND make "module-qtwebkit-install_subtargets")
 ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
@@ -73,6 +73,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 		-no-harfbuzz
 		-opensource
 		-confirm-license
+		-qt-xcb 
 
 	BUILD_COMMAND ${QT_BUILD_COMMAND}
 	INSTALL_COMMAND ${QT_INSTALL_COMMAND}
