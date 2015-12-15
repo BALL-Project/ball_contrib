@@ -3,7 +3,10 @@
 
 Third-party dependencies used by the Biochemical Algorithms Library (BALL) 
 This repository is intended for end-users of BALL.
-Third party libraries are mostly forks of their original repositories.
+Third party dependencies are mostly original source tarballs but some are patched to fit our needs.
+
+**NOTICE**: Do not use our tarballs if you need one these packages for other purposes than a BALL installation.
+In such a case, please use source distributions provided by the original suppliers.
 
 Installation requirements:  
 - git 
@@ -11,28 +14,28 @@ Installation requirements:
 - Perl (Windows only)
 - Python (if BALL Python support is desired)
 
-Possible installation on OSX / Linux:  
-$ git clone https://github.com/BALL-Project/ball_contrib.git  
-$ cd ball_contrib  
-$ mkdir build  
-$ cd build  
-$ cmake ..  
-$ make  
+Installation example (OSX/Linux):  
+- git clone https://github.com/BALL-Project/ball_contrib.git  
+- cd ball_contrib  
+- mkdir build  
+- cd build  
+- cmake ..  
+- make  
 
 This project provides the following CMake variables:
  - PACKAGES  
-   Select only a subset of third-party libraries to be installed.  
+   Select only a subset of third-party dependencies to be installed.  
    Available packages are: boost, qt, fftw, eigen3, tbb, sip, openbabel, bison, flex, oncrpc
    * Example 1: build all dependencies (recommended)  
-     $ cmake ..
+     cmake ..
    * Example 2: build only Boost  
-     $ cmake .. -DPACKAGES=boost
+     cmake .. -DPACKAGES=boost
    * Example 3: build Boost and Qt  
-     $ cmake .. -DPACKAGES="boost;qt"  
+     cmake .. -DPACKAGES="boost;qt"  
  - THREADS   
    Number of threads to use for build steps.  
    * Example: use four threads  
-     $ cmake .. -DTHREADS=4  
+     cmake .. -DTHREADS=4  
 
 If the build process as given in the above example succeeds, the following directory 
 will contain the installation of third-party dependencies:  
