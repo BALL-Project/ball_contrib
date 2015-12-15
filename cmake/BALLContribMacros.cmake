@@ -39,6 +39,8 @@
 # Macro to write absolute paths as install names for dylibs using install_name_tool
 MACRO(FIX_DYLIB_INSTALL_NAMES DYLIB_PREFIX)
 
+        # As this procedure has to wait until the libraries are built and installed,
+        # fixing the names is added as an ExternalProject step depending on the install step.
 	ExternalProject_Add_Step(${PACKAGE_NAME} fixnames
 
 		LOG 1
