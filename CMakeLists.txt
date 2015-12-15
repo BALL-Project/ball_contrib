@@ -145,6 +145,15 @@ ENDIF()
 
 # Get list and information of available contrib packages
 INCLUDE(BALLContribPackages)
+# TODO: Remove the following 7 lines (they should be in BALLContribPackages)
+SET(CONTRIB_PACKAGES "boost" "eigen3" "tbb" "openbabel" "fftw" "sip" "qt" "ctd2galaxy")
+SET(ctd2galaxy "CTD2Galaxy")
+SET(ctd2galaxy_archive "ctd2galaxy-374a364167ba343ff4daf217f695775cf9b61945.tar.gz")
+SET(ctd2galaxy_archive_md5 "a555ecfda68c0cbb0a149427e0a4dddb")
+SET(ctdopts "CTDopts")
+SET(ctdopts_archive "ctdopts-010b3ede6dd1ed6a99eb0c7599aa148c8159f446.tar.gz")
+SET(ctdopts_archive_md5 "9d37d621708627d0fdf901e9ca05f8a4")
+# STOP DELETING LINES
 
 # Print help message if HELP is set
 OPTION(HELP "Show help for ball_contrib installation." FALSE)
