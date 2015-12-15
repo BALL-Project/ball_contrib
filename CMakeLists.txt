@@ -45,7 +45,7 @@ SET(BALL_CONTRIB_VERSION "${BALL_CONTRIB_VERSION_MAJOR}.${BALL_CONTRIB_VERSION_M
 ###    CMake settings                                                       ###
 ###############################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12 FATAL_ERROR)
 
 # Path to contrib-specific CMake modules
 LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
