@@ -36,27 +36,20 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 FIND_PACKAGE(Perl QUIET)
 IF(NOT PERL_EXECUTABLE)
 	IF(NOT OS_WINDOWS)
-		MESSAGE(SEND_ERROR "Compiling Qt requires perl! Cannot continue!")
+                MESSAGE(SEND_ERROR "Compiling Qt requires Perl! Cannot continue!")
 	ELSE()
-		MESSAGE(SEND_ERROR "Compiling Qt requires perl! Please install ActivePerl from http://www.activestate.com/downloads")
+                MESSAGE(SEND_ERROR "Compiling Qt requires Perl! Please install ActivePerl from http://www.activestate.com/downloads")
 	ENDIF()
 ENDIF()
 
 # TODO: openssl
 
 IF(MSVC) # Windows
-	IF(THREADS GREATER 1)
-		FILE(WRITE "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat" "set CL=/MP\nnmake")
-	ELSE()
-		FILE(WRITE "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat" "nmake")
-	ENDIF()
-
-
-	SET(QT_CONFIGURE_COMMAND cmd /c "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure")
-	SET(QT_BUILD_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/build.bat")
+        SET(QT_CONFIGURE_COMMAND configure.bat)
+        SET(QT_BUILD_COMMAND cmake -DTHREADS=${THREADS} -P "${PROJECT_SOURCE_DIR}/cmake/InvokeNmake.cmake")
 	SET(QT_INSTALL_COMMAND nmake install)
 ELSE() # Linux / Darwin
-	SET(QT_CONFIGURE_COMMAND "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}/configure")
+        SET(QT_CONFIGURE_COMMAND ./configure)
 	SET(QT_BUILD_COMMAND make "-j${THREADS}")
 	SET(QT_INSTALL_COMMAND make install)
 ENDIF()
