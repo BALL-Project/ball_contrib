@@ -20,7 +20,6 @@ Possible installation on OSX / Linux:
   $ make  
 
 This project provides the following CMake variables:
-
  - PACKAGES  
    Select only a subset of third-party libraries to be installed.  
    Available packages are: boost, qt, fftw, eigen3, tbb, sip, openbabel, bison, flex, oncrpc
@@ -29,14 +28,9 @@ This project provides the following CMake variables:
    * Example 2: build only Boost  
      $ cmake .. -DPACKAGES=boost
    * Example 3: build Boost and Qt  
-     $ cmake .. -DPACKAGES="boost;qt"
-
+     $ cmake .. -DPACKAGES="boost;qt"  
  - THREADS   
-   Number of threads to use for build steps.  
-   * Example: use four threads  
-     $ cmake .. -DTHREADS=4
-  
-  
+
  If the build process succeeds, the directory <path_to_ball_contrib>/build/install
  will contain the installation of third-party dependencies and can be used to build
  BALL.  
