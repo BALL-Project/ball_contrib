@@ -1,4 +1,5 @@
-# ball_contrib
+## BALL Third Party Dependencies
+### (ball_contrib)
 Third-party libraries used by the Biochemical Algorithms Library (BALL)
 
 This repository is intended for end-users of BALL.
