@@ -44,14 +44,21 @@ ENDIF()
 
 # TODO: openssl
 
-IF(MSVC) # Windows
+SET(QT_CONFIGURE_OPTIONS -prefix "${CONTRIB_INSTALL_BASE}" -opensource -confirm-license -nomake examples -no-nis -no-harfbuzz)
+
+IF(MSVC)
         SET(QT_CONFIGURE_COMMAND configure.bat)
         SET(QT_BUILD_COMMAND cmake -DTHREADS=${THREADS} -P "${PROJECT_SOURCE_DIR}/cmake/InvokeNmake.cmake")
 	SET(QT_INSTALL_COMMAND nmake install)
-ELSE() # Linux / Darwin
+ELSEIF(APPLE)
         SET(QT_CONFIGURE_COMMAND ./configure)
+	SET(QT_BUILD_COMMAND make "-j${THREADS}")
+	SET(QT_INSTALL_COMMAND make)
+ELSE()  # Linux
+	SET(QT_CONFIGURE_COMMAND ./configure)
 	SET(QT_BUILD_COMMAND make "-j${THREADS}" "module-qtwebkit")
 	SET(QT_INSTALL_COMMAND make "module-qtwebkit-install_subtargets")
+	LIST(APPEND QT_CONFIGURE_OPTIONS "-qt-xcb")
 ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
@@ -67,13 +74,7 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 	CONFIGURE_COMMAND ${QT_CONFIGURE_COMMAND}
-		-prefix "${CONTRIB_INSTALL_BASE}"
-		-nomake examples
-		-no-nis
-		-no-harfbuzz
-		-opensource
-		-confirm-license
-		-qt-xcb 
+			 ${QT_CONFIGURE_OPTIONS}
 
 	BUILD_COMMAND ${QT_BUILD_COMMAND}
 	INSTALL_COMMAND ${QT_INSTALL_COMMAND}
