@@ -52,13 +52,13 @@ IF(MSVC)
 	SET(QT_INSTALL_COMMAND nmake install)
 ELSEIF(APPLE)
         SET(QT_CONFIGURE_COMMAND ./configure)
-	SET(QT_BUILD_COMMAND make "-j${THREADS}")
-	SET(QT_INSTALL_COMMAND make)
+	SET(QT_BUILD_COMMAND make "-j${THREADS}" module-qtwebkit)
+	SET(QT_INSTALL_COMMAND make module-qtwebkit-install_subtargets)
 ELSE()  # Linux
 	SET(QT_CONFIGURE_COMMAND ./configure)
-	SET(QT_BUILD_COMMAND make "-j${THREADS}" "module-qtwebkit")
-	SET(QT_INSTALL_COMMAND make "module-qtwebkit-install_subtargets")
-	LIST(APPEND QT_CONFIGURE_OPTIONS "-qt-xcb")
+	SET(QT_BUILD_COMMAND make "-j${THREADS}" module-qtwebkit)
+	SET(QT_INSTALL_COMMAND make module-qtwebkit-install_subtargets)
+	LIST(APPEND QT_CONFIGURE_OPTIONS -qt-xcb)
 ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
