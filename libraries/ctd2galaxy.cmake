@@ -62,8 +62,7 @@ IF (PYTHONINTERP_FOUND)
 		# install CTDopts/CTD2Galaxy (since it's just a python script, there's no need to configure or build)
 		ExternalProject_Add(ctdopts
 
-			#URL "${CONTRIB_ARCHIVES_URL}/${ctdopts_archive}"
-			URL "file:///Users/delagarza/Projects/${ctdopts_archive}"
+			URL "${CONTRIB_ARCHIVES_URL}/${ctdopts_archive}"
 			PREFIX ${PROJECT_BINARY_DIR}
 			BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -75,13 +74,12 @@ IF (PYTHONINTERP_FOUND)
 
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND ""
-			INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install
+			INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install --home=${CONTRIB_INSTALL_BASE}
 		)
 	
 		ExternalProject_Add(${PACKAGE_NAME}
 	
-			#URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
-			URL "file:///Users/delagarza/Projects/${${PACKAGE_NAME}_archive}"
+			URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
 			PREFIX ${PROJECT_BINARY_DIR}
 			BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -93,7 +91,7 @@ IF (PYTHONINTERP_FOUND)
 
 			CONFIGURE_COMMAND ""
 			BUILD_COMMAND ""
-			INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install
+			INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install --home=${CONTRIB_INSTALL_BASE}
 		)	
 	ENDIF()	
 	
