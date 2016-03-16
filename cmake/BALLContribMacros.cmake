@@ -123,6 +123,11 @@ MACRO(EVALUATE_SELECTION)
 
 	ENDFOREACH()
 
+	# Add mandatory windows packages if appropriate
+	IF(MSVC)
+		LIST(APPEND BUILD_PACKAGES "${WIN_CONTRIB_PACKAGES}")
+	ENDIF()
+
 ENDMACRO()
 
 
