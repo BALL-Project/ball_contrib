@@ -56,12 +56,13 @@ SET(BOOST_LIBRARIES --with-chrono
 SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_BASE}
 		     -j ${THREADS}
 		     -sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
-		     -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib})
+		     -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib}
 		     address-model=${CONTRIB_ADDRESSMODEL}
 		     variant=${BOOST_BUILD_TYPE}
 		     --layout=tagged
 		     link=shared
 		     threading=multi
+)
 
 
 
