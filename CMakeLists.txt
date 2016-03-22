@@ -138,6 +138,9 @@ ELSE()
 	SET(MSBUILD "msbuild" "/p:Platform=win32" "/p:Configuration=${CONTRIB_BUILD_TYPE}")
 ENDIF()
 
+# Check availability of Python
+INCLUDE(BALLContribPython)
+
 
 ###############################################################################
 ###    Select and check packages to be installed                            ###
