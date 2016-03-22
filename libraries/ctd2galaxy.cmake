@@ -37,7 +37,7 @@ LIST(APPEND DOWNLOAD_ARCHIVES "ctdopts")
 
 ExternalProject_Add(ctdopts
 
-	URL "${CONTRIB_ARCHIVES_URL}/${ctdopts_archive}"
+	URL "${CONTRIB_ARCHIVES_PATH}/${ctdopts_archive}"
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -54,7 +54,7 @@ ExternalProject_Add(ctdopts
 	
 ExternalProject_Add(${PACKAGE_NAME}
 
-	URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
+	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 

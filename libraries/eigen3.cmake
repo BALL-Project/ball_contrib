@@ -36,7 +36,7 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 # Add project
 ExternalProject_Add("${PACKAGE_NAME}"
 
-	URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
+	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE 0 # Not allowed for eigen3
 
