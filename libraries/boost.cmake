@@ -50,7 +50,8 @@ SET(BOOST_LIBRARIES --with-chrono
 		    --with-regex
 		    --with-serialization
 		    --with-system
-		    --with-thread)
+		    --with-thread
+)
 
 # Boost b2 options
 SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_BASE}
@@ -63,8 +64,6 @@ SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_BASE}
 		     link=shared
 		     threading=multi
 )
-
-
 
 # Set system dependent variables
 IF(MSVC)
