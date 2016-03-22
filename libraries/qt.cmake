@@ -44,20 +44,24 @@ ENDIF()
 
 # TODO: openssl
 
-SET(QT_CONFIGURE_OPTIONS -prefix "${CONTRIB_INSTALL_BASE}" -opensource -confirm-license -nomake examples -no-nis -no-harfbuzz)
+SET(QT_CONFIGURE_OPTIONS -prefix "${CONTRIB_INSTALL_BASE}"
+			 -opensource
+			 -confirm-license
+			 -nomake examples
+			 -no-nis
+			 -no-harfbuzz
+			 -skip qtwebengine
+)
+
+SET(QT_CONFIGURE_COMMAND ./configure)
+SET(QT_BUILD_COMMAND make "-j${THREADS}")
+SET(QT_INSTALL_COMMAND make)
 
 IF(MSVC)
         SET(QT_CONFIGURE_COMMAND configure.bat)
         SET(QT_BUILD_COMMAND cmake -DTHREADS=${THREADS} -P "${PROJECT_SOURCE_DIR}/cmake/InvokeNmake.cmake")
-	SET(QT_INSTALL_COMMAND nmake install)
-ELSEIF(APPLE)
-        SET(QT_CONFIGURE_COMMAND ./configure)
-	SET(QT_BUILD_COMMAND make "-j${THREADS}" module-qtwebkit)
-	SET(QT_INSTALL_COMMAND make module-qtwebkit-install_subtargets)
-ELSE()  # Linux
-	SET(QT_CONFIGURE_COMMAND ./configure)
-	SET(QT_BUILD_COMMAND make "-j${THREADS}" module-qtwebkit)
-	SET(QT_INSTALL_COMMAND make module-qtwebkit-install_subtargets)
+	SET(QT_INSTALL_COMMAND nmake)
+ELSEIF(CMAKE_SYSTEM_NAME STREQUAL Linux)
 	LIST(APPEND QT_CONFIGURE_OPTIONS -qt-xcb)
 ENDIF()
 
@@ -74,10 +78,10 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 	CONFIGURE_COMMAND ${QT_CONFIGURE_COMMAND}
-			 ${QT_CONFIGURE_OPTIONS}
+			  ${QT_CONFIGURE_OPTIONS}
 
 	BUILD_COMMAND ${QT_BUILD_COMMAND}
-	INSTALL_COMMAND ${QT_INSTALL_COMMAND}
+	INSTALL_COMMAND ${QT_INSTALL_COMMAND} install
 )
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
