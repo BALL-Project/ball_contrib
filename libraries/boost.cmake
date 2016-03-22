@@ -44,11 +44,26 @@ ELSE()
 ENDIF()
 
 # Libraries to be build
-#SET(BOOST_LIBRARIES "--with-chrono" "--with-date_time" "--with-iostreams" "--with-regex" "--with-serialization" "--with-system" "--with-thread")
-SET(BOOST_LIBRARIES chrono,date_time,iostreams,regex,serialization,system,thread)
+SET(BOOST_LIBRARIES --with-chrono
+		    --with-date_time
+		    --with-iostreams
+		    --with-regex
+		    --with-serialization
+		    --with-system
+		    --with-thread)
 
 # Boost b2 options
-SET(BOOST_B2_OPTIONS --layout=tagged link=shared threading=multi variant=${BOOST_BUILD_TYPE} address-model=${CONTRIB_ADDRESSMODEL})
+SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_BASE}
+		     -j ${THREADS}
+		     -sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
+		     -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib})
+		     address-model=${CONTRIB_ADDRESSMODEL}
+		     variant=${BOOST_BUILD_TYPE}
+		     --layout=tagged
+		     link=shared
+		     threading=multi
+
+
 
 # Set system dependent variables
 IF(MSVC)
@@ -73,16 +88,10 @@ ExternalProject_Add(${PACKAGE_NAME}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
 	CONFIGURE_COMMAND ${BOOST_BOOTSTRAP_CMD}
-	--with-libraries=${BOOST_LIBRARIES}
 
-	BUILD_COMMAND ${BOOST_B2_CMD}
-	install
-	-j ${THREADS}
-	--prefix=${CONTRIB_INSTALL_BASE}
-	${BOOST_B2_OPTIONS}
-#	${BOOST_LIBRARIES}
-	-sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
-	-sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib}
+	BUILD_COMMAND ${BOOST_B2_CMD} install
+		      ${BOOST_B2_OPTIONS}
+		      ${BOOST_LIBRARIES}
 
 	INSTALL_COMMAND ""
 )
