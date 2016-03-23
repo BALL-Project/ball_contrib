@@ -40,7 +40,6 @@ SET(BALL_CONTRIB_VERSION_PATCH "0")
 SET(BALL_CONTRIB_VERSION "${BALL_CONTRIB_VERSION_MAJOR}.${BALL_CONTRIB_VERSION_MINOR}.${BALL_CONTRIB_VERSION_PATCH}")
 
 
-
 ###############################################################################
 ###    CMake settings                                                       ###
 ###############################################################################
@@ -178,6 +177,9 @@ OPTION(SKIP_MD5_CHECKS "Skip download verification. For development purpose only
 
 # Finally, download archives
 FETCH_PACKAGE_ARCHIVES()
+
+# Configure version file
+CONFIGURE_FILE(cmake/ball_contrib_version.cmake.in "${CONTRIB_CMAKE_MODULES}/ball_contrib_version.cmake")
 
 
 
