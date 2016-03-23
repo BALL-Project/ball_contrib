@@ -182,9 +182,6 @@ ENDFOREACH()
 # Option to skip MD5 checks of downloaded archives.
 OPTION(SKIP_MD5_CHECKS "Skip download verification. For development purpose only." FALSE)
 
-# Try to download archives using scp.
-OPTION(SCP "Use scp to download library tarballs." FALSE)
-
 # Finally, download archives
 FETCH_PACKAGE_ARCHIVES()
 
