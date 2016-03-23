@@ -70,7 +70,7 @@ MACRO(SET_CONTRIB_ARCHIVES_URL)
 			SET(CONTRIB_ARCHIVES_URL "${ARCHIVES_URL_FALLBACK}")
 		ELSE()
 			MESSAGE(FATAL_ERROR "Servers for archive download are not accessible. Please try again later.
-					    If the problem remains please contact the BALL developers!")
+					     If the problem remains please contact the BALL developers!")
 		ENDIF()
 	ENDIF()
 

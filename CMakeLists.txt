@@ -95,18 +95,13 @@ FILE(MAKE_DIRECTORY "${CONTRIB_BINARY_SRC}")
 SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
 
 # OPTIONAL:
-# Path to directory that contains the archives of the contrib packages needed.
-# This is a mechanism to install old contrib versions
-# for which we don't hostthe archives anymore
+# Path to directory that contains ball_contrib package tarballs.
+# Amongst others, this variable can be used to provide self-contained ball_contrib packages.
 SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
-# URLs for archive download
+# Set URL for archive download
 SET(ARCHIVES_URL "http://build-archive.informatik.uni-tuebingen.de/ball/contrib/v${BALL_CONTRIB_VERSION}/archives")
 SET(ARCHIVES_URL_FALLBACK "http://sourceforge.net/projects/ballproject/files/contrib/v${BALL_CONTRIB_VERSION}/archives")
-
-
-# Check which URL to be used for archive download and set CONTRIB_ARCHIVES_URL appropriately
-SET(CONTRIB_ARCHIVES_URL "")
 SET_CONTRIB_ARCHIVES_URL()
 
 # Logging options
