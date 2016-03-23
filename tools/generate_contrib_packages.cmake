@@ -46,64 +46,77 @@
 # PLEASE NOTE: this script needs cmake and git.
 
 
+# Macro to clone and configure ball_contrib
 MACRO(GENERATE_CONTRIB CONTRIB_WIN)
 
 	# Clone ball_contrib repository
 	EXECUTE_PROCESS(COMMAND git clone --depth 1 https://github.com/BALL-Project/ball_contrib.git WORKING_DIRECTORY "${PKG_DIR}")
 	# Execute cmake to download packages
-	EXECUTE_PROCESS(COMMAND cmake ../.. -DPACKAGES=sip -DMSVC=${CONTRIB_WIN} WORKING_DIRECTORY "${BUILD_DIR}")
+	EXECUTE_PROCESS(COMMAND cmake ${CONTRIB_SOURCE} -DMSVC=${CONTRIB_WIN} WORKING_DIRECTORY "${BUILD_DIR}")
 
 	# Move contrib packages to ball_contrib source directory
-	FILE(RENAME "${BUILD_DIR}/archives" "${PKG_DIR}/ball_contrib/archives")
+	FILE(RENAME "${BUILD_DIR}/archives" "${CONTRIB_SOURCE}/archives")
+	FILE(RENAME "${BUILD_DIR}/cmake/BALLContribPackages.cmake" "${CONTRIB_SOURCE}/cmake/BALLContribPackages.cmake")
 
 	# Modify CMakeLists.txt in order to use the downloaded archives and to prevent Internet access
-	FILE(READ "${PKG_DIR}/ball_contrib/CMakeLists.txt" FILE_CONTENT)
-	STRING(REGEX REPLACE "ARCHIVES_PATH \"\"" "ARCHIVES_PATH \"\${CMAKE_SOURCE_DIR}/archives\"" MODIFIED_FILE_CONTENT "${FILE_CONTENT}")
-	STRING(REGEX REPLACE "SET_CONTRIB_ARCHIVES_URL" "#SET_CONTRIB_ARCHIVES_URL" MODIFIED_FILE_CONTENT "${FILE_CONTENT}")
-	FILE(WRITE "${PKG_DIR}/ball_contrib/CMakeLists.txt" "${MODIFIED_FILE_CONTENT}")
+	FILE(READ "${CONTRIB_SOURCE}/CMakeLists.txt" FILE_CONTENT)
+	STRING(REGEX REPLACE "ARCHIVES_PATH \"\"" "ARCHIVES_PATH \"\${CMAKE_SOURCE_DIR}/archives\"" MODIFIED_FILE_CONTENT_1 "${FILE_CONTENT}")
+	STRING(REGEX REPLACE "SET_CONTRIB_ARCHIVES_URL" "#SET_CONTRIB_ARCHIVES_URL" MODIFIED_FILE_CONTENT_2 "${MODIFIED_FILE_CONTENT_1}")
+	FILE(WRITE "${CONTRIB_SOURCE}/CMakeLists.txt" "${MODIFIED_FILE_CONTENT_2}")
 
 	# Cleanup
-	EXECUTE_PROCESS(COMMAND git rm ".gitignore" WORKING_DIRECTORY "${PKG_DIR}/ball_contrib")
-	EXECUTE_PROCESS(COMMAND rm ".DS_Store" WORKING_DIRECTORY "${PKG_DIR}/ball_contrib" ERROR_QUIET)
+	EXECUTE_PROCESS(COMMAND git rm "tools/*" WORKING_DIRECTORY "${CONTRIB_SOURCE}")
+	EXECUTE_PROCESS(COMMAND git rm ".gitignore" WORKING_DIRECTORY "${CONTRIB_SOURCE}")
+	EXECUTE_PROCESS(COMMAND rm ".DS_Store" WORKING_DIRECTORY "${CONTRIB_SOURCE}" ERROR_QUIET)
 
 	# Add all changes in git repository
-	EXECUTE_PROCESS(COMMAND git add --all WORKING_DIRECTORY "${PKG_DIR}/ball_contrib")
+	EXECUTE_PROCESS(COMMAND git add --all WORKING_DIRECTORY "${CONTRIB_SOURCE}")
 	# Commit added changes
-	EXECUTE_PROCESS(COMMAND git commit -m "Packaging ball_contrib" WORKING_DIRECTORY "${PKG_DIR}/ball_contrib")
-
-	# Read ball_contrib version
-	INCLUDE("${BUILD_DIR}/cmake/ball_contrib_version.cmake")
+	EXECUTE_PROCESS(COMMAND git commit -m "Packaging ball_contrib" WORKING_DIRECTORY "${CONTRIB_SOURCE}")
 
 ENDMACRO()
 
 
-# Create temporary working directories
+# Macro to generate the final archives
+MACRO(GENERATE_ARCHIVE SUFFIX FORMAT)
+
+	# Read ball_contrib version
+	INCLUDE("${BUILD_DIR}/cmake/ball_contrib_version.cmake")
+
+	# Generate archive
+	EXECUTE_PROCESS(COMMAND git archive master
+				-o "${PKG_DIR}/ball_contrib-${BALL_CONTRIB_VERSION}${SUFFIX}.${FORMAT}"
+				--prefix=ball_contrib-${BALL_CONTRIB_VERSION}${SUFFIX}/
+				WORKING_DIRECTORY "${CONTRIB_SOURCE}")
+
+ENDMACRO()
+
+
+# Set and create temporary working directories
 SET(PKG_DIR "${CMAKE_BINARY_DIR}/packaging")
 FILE(MAKE_DIRECTORY "${PKG_DIR}")
 SET(BUILD_DIR "${PKG_DIR}/build")
 FILE(MAKE_DIRECTORY "${BUILD_DIR}")
 
+SET(CONTRIB_SOURCE "${PKG_DIR}/ball_contrib")
+
 
 # Generate contrib for Linux / OSX
 GENERATE_CONTRIB(FALSE)
-
-# Generate tar archives (gz/bz2)
-EXECUTE_PROCESS(COMMAND git archive master -o "${PKG_DIR}/ball_contrib-${BALL_CONTRIB_VERSION}.tar.gz" WORKING_DIRECTORY "${PKG_DIR}/ball_contrib")
-EXECUTE_PROCESS(COMMAND git archive master -o "${PKG_DIR}/ball_contrib-${BALL_CONTRIB_VERSION}.tar.bz2" WORKING_DIRECTORY "${PKG_DIR}/ball_contrib")
+GENERATE_ARCHIVE("" "tar.gz")
+GENERATE_ARCHIVE("" "tar.bz2")
 
 # Cleanup temporary working directories
-FILE(REMOVE_RECURSE "${PKG_DIR}/build/*")
-FILE(REMOVE_RECURSE "${PKG_DIR}/ball_contrib")
+FILE(REMOVE_RECURSE "${BUILD_DIR}/*")
+FILE(REMOVE_RECURSE "${CONTRIB_SOURCE}")
 
 
 # Generate contrib for Windows
 GENERATE_CONTRIB(TRUE)
-
-# Generate zip
-EXECUTE_PROCESS(COMMAND git archive master -o "${PKG_DIR}/ball_contrib-${BALL_CONTRIB_VERSION}_win.zip" WORKING_DIRECTORY "${PKG_DIR}/ball_contrib")
+GENERATE_ARCHIVE("_win" "zip")
 
 # Cleanup temporary working directories
-FILE(REMOVE_RECURSE "${PKG_DIR}/build")
-FILE(REMOVE_RECURSE "${PKG_DIR}/ball_contrib")
+FILE(REMOVE_RECURSE "${BUILD_DIR}")
+FILE(REMOVE_RECURSE "${CONTRIB_SOURCE}")
 
 
