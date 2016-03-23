@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # -----------------------------------------------------------------------------
 #   BALL - Biochemical ALgorithms Library
 #   A C++ framework for molecular modeling and structural bioinformatics.
@@ -94,7 +95,5 @@ EXECUTE_PROCESS(COMMAND zip -qr "${PKG_DIR}/ball_contrib_win" "ball_contrib" -x 
 # Cleanup temporary working directories
 FILE(REMOVE_RECURSE "${PKG_DIR}/build")
 FILE(REMOVE_RECURSE "${PKG_DIR}/ball_contrib")
-
-
 
 
