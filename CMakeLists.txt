@@ -94,8 +94,7 @@ FILE(MAKE_DIRECTORY "${CONTRIB_BINARY_SRC}")
 # Directory already exists (git)
 SET(CONTRIB_LIBRARY_PATH "${PROJECT_SOURCE_DIR}/libraries")
 
-# OPTIONAL:
-# Path to directory that contains ball_contrib package tarballs.
+# Optional path to directory that contains ball_contrib package tarballs.
 # Amongst others, this variable can be used to provide self-contained ball_contrib packages.
 SET(ARCHIVES_PATH "" CACHE PATH "Optional path to the folder containing the contrib archives.")
 
