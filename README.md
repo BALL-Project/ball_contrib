@@ -25,7 +25,7 @@ Installation example (OSX/Linux):
 This project provides the following CMake variables:
  - PACKAGES  
    Select only a subset of third-party dependencies to be installed.  
-   Available packages are: boost, qt, fftw, eigen3, tbb, sip, openbabel, bison, flex, oncrpc
+   Available packages are: boost, qt, fftw, eigen3, tbb, sip, openbabel, ctd2galaxy, bison, flex, oncrpc
    * Example 1: build all dependencies (recommended)  
      cmake ..
    * Example 2: build only Boost  
