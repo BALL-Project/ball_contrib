@@ -39,11 +39,11 @@ Available CMake variables:
 
 Available CMake options:
  - SKIP_QTWEBENGINE  
-   Do not build the module QtWebEngine (Required for PresentaBALL). This extremely speeds up building Qt5.
+   Do not build Qt5 module QtWebEngine (required only for PresentaBALL). This extremely speeds up building Qt5.
 
 If the build process as given in the above example succeeds, the following directory 
 will contain the installation of third-party dependencies:  
-- ball_contrib/build/install  
+ - ball_contrib/build/install  
 
 It can be used to build BALL by specifying the absolute path of this install directory using one
 of the following CMake variables available from the BALL project:  
