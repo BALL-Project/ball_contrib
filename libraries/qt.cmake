@@ -47,7 +47,8 @@ ENDIF()
 
 # TODO: openssl
 
-SET(QT_CONFIGURE_OPTIONS -prefix "${CONTRIB_INSTALL_BASE}"
+# Common configure options
+SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_BASE}
 			 -opensource
 			 -confirm-license
 			 -shared
@@ -58,15 +59,26 @@ SET(QT_CONFIGURE_OPTIONS -prefix "${CONTRIB_INSTALL_BASE}"
 			 -skip qtwebkit
 )
 
+# Set the appropriate build type
+IF(CONTRIB_BUILD_TYPE STREQUAL "RelWithDebInfo")
+	LIST(APPEND QT_CONFIGURE_OPTIONS -release -force-debug-info)
+ELSE()
+	STRING(TOLOWER "${CONTRIB_BUILD_TYPE}" QT_BUILD_TYPE)
+	LIST(APPEND QT_CONFIGURE_OPTIONS -${QT_BUILD_TYPE})
+ENDIF()
+
+# Check if QtWebEngine should be excluded
 IF(SKIP_QTWEBENGINE)
 	LIST(APPEND QT_CONFIGURE_OPTIONS -skip qtwebengine)
 ENDIF()
 
+# Platform-specific settings
 IF(MSVC)
-        SET(QT_CONFIGURE_COMMAND configure.bat)
+	SET(QT_CONFIGURE_COMMAND configure.bat)
 	SET(QT_BUILD_COMMAND nmake)
 	SET(QT_INSTALL_COMMAND nmake)
 
+	# Configure for multiple process build
 	IF("${THREADS}" GREATER "1")
 		LIST(APPEND QT_CONFIGURE_OPTIONS -mp)
 	ENDIF()
@@ -75,11 +87,13 @@ ELSE()
 	SET(QT_BUILD_COMMAND make "-j${THREADS}")
 	SET(QT_INSTALL_COMMAND make)
 
+	# In case of Linux OS use xcb-libraries bundled with Qt
 	IF(CMAKE_SYSTEM_NAME STREQUAL Linux)
 		LIST(APPEND QT_CONFIGURE_OPTIONS -qt-xcb)
 	ENDIF()
 ENDIF()
 
+# Add project
 ExternalProject_Add(${PACKAGE_NAME}
 
 	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
