@@ -131,25 +131,6 @@ MACRO(EVALUATE_SELECTION)
 ENDMACRO()
 
 
-# Check MD5 sum of ARCHIVE and set IS_VALID=TRUE if it matches ARCHIVE_MD5
-MACRO(CHECK_PACKAGE_ARCHIVE ARCHIVE_SRC ARCHIVE_MD5 IS_VALID)
-
-	# Check if archive has already been downloaded
-	IF(EXISTS "${ARCHIVE_SRC}")
-
-		# Check if archive MD5 sum is correct
-		FILE(MD5 "${ARCHIVE_SRC}" ARCHIVE_MD5_CALC)
-		STRING(COMPARE EQUAL "${ARCHIVE_MD5_CALC}" "${ARCHIVE_MD5}" IS_VALID)
-
-		IF(SKIP_MD5_CHECKS)
-			SET(IS_VALID TRUE)
-		ENDIF()
-
-	ENDIF()
-
-ENDMACRO()
-
-
 # Fetch ARCHIVE either from a local directory or download
 # Using a local directoy can manually be specified by setting the optional variable ARCHIVES_PATH
 # This mechanism can be used to build older contrib packages
@@ -167,45 +148,22 @@ MACRO(FETCH_PACKAGE_ARCHIVES)
 			SET(IS_VALID FALSE)
 			SET(ARCHIVE_SRC "${ARCHIVES_PATH}/${ARCHIVE}")
 
-			CHECK_PACKAGE_ARCHIVE("${ARCHIVE_SRC}" "${ARCHIVE_MD5}" IS_VALID)
+			FILE(MD5 "${ARCHIVE_SRC}" ARCHIVE_MD5_CALC)
 
-			IF(IS_VALID)
+			IF("${ARCHIVE_MD5_CALC}" EQUAL "${ARCHIVE_MD5}")
 				FILE(COPY "${ARCHIVE_SRC}" DESTINATION "${CONTRIB_ARCHIVES_PATH}")
 			ELSE()
-				MSG_INVALID_ARCHIVE_PATH("${ARCHIVE}")
+				MESSAGE(WARNING "MD5 mismatch for archive: ${ARCHIVE}")
 			ENDIF()
 
 		ELSE()
 
-			# Not yet locally available so download archive
-			DOWNLOAD_ARCHIVE("${ARCHIVE}" "${ARCHIVE_MD5}")
+			MESSAGE(STATUS "Downloading: ${ARCHIVE}")
+			FILE(DOWNLOAD "${CONTRIB_ARCHIVES_URL}/${ARCHIVE}" "${CONTRIB_ARCHIVES_PATH}/${ARCHIVE}" EXPECTED_MD5 "${ARCHIVE_MD5}")
 
 		ENDIF()
 
 	ENDFOREACH()
-
-ENDMACRO()
-
-
-# Download archive
-MACRO(DOWNLOAD_ARCHIVE ARCHIVE ARCHIVE_MD5)
-
-	MESSAGE(STATUS "Downloading: ${ARCHIVE}")
-
-	SET(IS_VALID FALSE)
-	SET(ARCHIVE_DEST "${CONTRIB_ARCHIVES_PATH}/${ARCHIVE}")
-
-	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${ARCHIVE_MD5}" IS_VALID)
-
-	IF(NOT IS_VALID)
-		FILE(DOWNLOAD "${CONTRIB_ARCHIVES_URL}/${ARCHIVE}" "${ARCHIVE_DEST}")
-	ENDIF()
-
-	CHECK_PACKAGE_ARCHIVE("${ARCHIVE_DEST}" "${ARCHIVE_MD5}" IS_VALID)
-
-	IF(NOT IS_VALID)
-		MSG_DOWNLOAD_FAILED("${ARCHIVE}")
-	ENDIF()
 
 ENDMACRO()
 
@@ -253,35 +211,3 @@ ENDMACRO()
 MACRO(MSG_CONFIGURE_PACKAGE_END package_name)
 	MESSAGE(STATUS "Configuring ${package_name} - done")
 ENDMACRO()
-
-
-MACRO(MSG_DOWNLOAD_FAILED ARCHIVE)
-	MESSAGE(STATUS "")
-	MESSAGE(STATUS "=============================================================================================")
-	MESSAGE(STATUS " FATAL ERROR: Download of contrib archive failed: ${ARCHIVE}")
-	MESSAGE(STATUS "")
-	MESSAGE(STATUS " - Please verify that your internet connection works and try again.")
-	MESSAGE(STATUS " - If this error occurrs again please contact the developers.")
-	MESSAGE(STATUS "=============================================================================================")
-	MESSAGE(STATUS "")
-	MESSAGE(FATAL_ERROR "")
-ENDMACRO()
-
-
-MACRO(MSG_INVALID_ARCHIVE_PATH ARCHIVE)
-	MESSAGE(STATUS "")
-	MESSAGE(STATUS "=============================================================================================")
-	MESSAGE(STATUS " FATAL ERROR: Contrib archive ${ARCHIVE} not found or invalid." )
-	MESSAGE(STATUS "")
-	MESSAGE(STATUS " - Please verify that ARCHIVES_PATH (${ARCHIVES_PATH}) is set correctly")
-	MESSAGE(STATUS "")
-	MESSAGE(STATUS " PLEASE NOTE: only use ARCHIVES_PATH if you plan to build an older contrib version" )
-	MESSAGE(STATUS "")
-	MESSAGE(STATUS "=============================================================================================")
-	MESSAGE(STATUS "")
-	MESSAGE(FATAL_ERROR "")
-ENDMACRO()
-
-
-
-
