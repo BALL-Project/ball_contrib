@@ -37,6 +37,10 @@ Available CMake variables:
    * Example: use four threads  
      cmake .. -DTHREADS=4  
 
+Available CMake options:
+ - SKIP_QTWEBENGINE
+   Do not build the module QtWebEngine (Required for PresentaBALL). This extremely speeds up building Qt5.
+
 If the build process as given in the above example succeeds, the following directory 
 will contain the installation of third-party dependencies:  
 - ball_contrib/build/install  
