@@ -22,7 +22,7 @@ Installation example (OSX/Linux):
 - cmake ..  
 - make  
 
-This project provides the following CMake variables:
+Available CMake variables:
  - PACKAGES  
    Select only a subset of third-party dependencies to be installed.  
    Available packages are: boost, qt, fftw, eigen3, tbb, sip, openbabel, ctd2galaxy, bison, flex, oncrpc
