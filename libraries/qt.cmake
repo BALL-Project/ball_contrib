@@ -33,6 +33,9 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
+# CMake option to exclude QtWebEngine from the Qt5 build
+OPTION(SKIP_QTWEBENGINE "Skip building QtWebEngine." OFF)
+
 FIND_PACKAGE(Perl QUIET)
 IF(NOT PERL_EXECUTABLE)
 	IF(NOT OS_WINDOWS)
@@ -47,22 +50,34 @@ ENDIF()
 SET(QT_CONFIGURE_OPTIONS -prefix "${CONTRIB_INSTALL_BASE}"
 			 -opensource
 			 -confirm-license
+			 -shared
 			 -nomake examples
 			 -no-nis
 			 -no-harfbuzz
-			 -skip qtwebengine
+			 -skip qtwayland
+			 -skip qtwebkit
 )
 
-SET(QT_CONFIGURE_COMMAND ./configure)
-SET(QT_BUILD_COMMAND make "-j${THREADS}" module-qtwebkit)
-SET(QT_INSTALL_COMMAND make)
+IF(SKIP_QTWEBENGINE)
+	LIST(APPEND QT_CONFIGURE_OPTIONS -skip qtwebengine)
+ENDIF()
 
 IF(MSVC)
         SET(QT_CONFIGURE_COMMAND configure.bat)
-        SET(QT_BUILD_COMMAND cmake -DTHREADS=${THREADS} -P "${PROJECT_SOURCE_DIR}/cmake/InvokeNmake.cmake")
+	SET(QT_BUILD_COMMAND nmake)
 	SET(QT_INSTALL_COMMAND nmake)
-ELSEIF(CMAKE_SYSTEM_NAME STREQUAL Linux)
-	LIST(APPEND QT_CONFIGURE_OPTIONS -qt-xcb)
+
+	IF("${THREADS}" GREATER "1")
+		LIST(APPEND QT_CONFIGURE_OPTIONS -mp)
+	ENDIF()
+ELSE()
+	SET(QT_CONFIGURE_COMMAND ./configure)
+	SET(QT_BUILD_COMMAND make "-j${THREADS}")
+	SET(QT_INSTALL_COMMAND make)
+
+	IF(CMAKE_SYSTEM_NAME STREQUAL Linux)
+		LIST(APPEND QT_CONFIGURE_OPTIONS -qt-xcb)
+	ENDIF()
 ENDIF()
 
 ExternalProject_Add(${PACKAGE_NAME}
