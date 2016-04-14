@@ -22,7 +22,7 @@ Installation example (OSX/Linux):
 - cmake ..  
 - make  
 
-This project provides the following CMake variables:
+Available CMake variables:
  - PACKAGES  
    Select only a subset of third-party dependencies to be installed.  
    Available packages are: boost, qt, fftw, eigen3, tbb, sip, openbabel, ctd2galaxy, bison, flex, oncrpc
@@ -37,9 +37,13 @@ This project provides the following CMake variables:
    * Example: use four threads  
      cmake .. -DTHREADS=4  
 
+Available CMake options:
+ - SKIP_QTWEBENGINE  
+   Do not build Qt5 module QtWebEngine (required only for PresentaBALL). This extremely speeds up building Qt5.
+
 If the build process as given in the above example succeeds, the following directory 
 will contain the installation of third-party dependencies:  
-- ball_contrib/build/install  
+ - ball_contrib/build/install  
 
 It can be used to build BALL by specifying the absolute path of this install directory using one
 of the following CMake variables available from the BALL project:  
