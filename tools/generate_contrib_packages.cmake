@@ -91,9 +91,26 @@ MACRO(GENERATE_ARCHIVE SUFFIX FORMAT)
 
 ENDMACRO()
 
+IF(NOT "${GENERATE}" MATCHES "y")
+	MESSAGE(STATUS "===========================================================================")
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "INFO:")
+	MESSAGE(STATUS "* This script generates stand-alone ball_contrib packages for all supported platforms.")
+	MESSAGE(STATUS "* As a result the following tarballs are placed in <workdir>/ball_contrib_tarballs :")
+	MESSAGE(STATUS "*   ball_contrib-<version>.tar.gz")
+	MESSAGE(STATUS "*   ball_contrib-<version>.tar.bz2")
+	MESSAGE(STATUS "*   ball_contrib-<version>_win.zip")
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "USAGE:")
+	MESSAGE(STATUS "* $cmake -DGENERATE=y -P tools/cmake_contrib_packages.cmake")
+	MESSAGE(STATUS "")
+	MESSAGE(STATUS "===========================================================================")
+
+	RETURN()
+ENDIF()
 
 # Set and create temporary working directories
-SET(PKG_DIR "${CMAKE_BINARY_DIR}/packaging")
+SET(PKG_DIR "${CMAKE_BINARY_DIR}/ball_contrib_tarballs")
 FILE(MAKE_DIRECTORY "${PKG_DIR}")
 SET(BUILD_DIR "${PKG_DIR}/build")
 FILE(MAKE_DIRECTORY "${BUILD_DIR}")
