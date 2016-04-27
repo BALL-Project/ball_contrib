@@ -39,7 +39,7 @@ Available CMake variables:
 
 Available CMake options:
  - SKIP_QTWEBENGINE  
-   Do not build Qt5 module QtWebEngine (required only for PresentaBALL). This extremely speeds up building Qt5.
+   Do not build Qt5 module QtWebEngine (required only for the PresentaBALL and BALLaxy plugins). This extremely speeds up building Qt5.
 
 If the build process as given in the above example succeeds, the following directory 
 will contain the installation of third-party dependencies:  
