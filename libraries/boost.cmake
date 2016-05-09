@@ -63,6 +63,7 @@ SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_BASE}
 		     --layout=tagged
 		     link=shared
 		     threading=multi
+		     --ignore-site-config
 )
 
 # Set system dependent variables
