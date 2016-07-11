@@ -131,10 +131,16 @@ ENDIF()
 # Determine whether this is a 32 or 64 bit build
 IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	SET(CONTRIB_ADDRESSMODEL 64)
-	SET(MSBUILD "msbuild" "/p:Platform=x64"   "/p:Configuration=${CONTRIB_BUILD_TYPE}")
+	SET(MSBUILD "msbuild" "/m:${THREADS}" "/p:Platform=x64"   "/p:Configuration=${CONTRIB_BUILD_TYPE}")
 ELSE()
 	SET(CONTRIB_ADDRESSMODEL 32)
-	SET(MSBUILD "msbuild" "/p:Platform=win32" "/p:Configuration=${CONTRIB_BUILD_TYPE}")
+	SET(MSBUILD "msbuild" "/m:${THREADS}" "/p:Platform=win32" "/p:Configuration=${CONTRIB_BUILD_TYPE}")
+ENDIF()
+
+# Set appropriate build commands for non-windows systems
+IF(NOT MSVC)
+	SET(MAKE_COMMAND "make" "-j${THREADS}")
+	SET(MAKE_INSTALL_COMMAND "make" "install")
 ENDIF()
 
 # Check availability of Python
