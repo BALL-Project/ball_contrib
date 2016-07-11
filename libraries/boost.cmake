@@ -104,8 +104,8 @@ ExternalProject_Add_Step(${PACKAGE_NAME} extract_bzip2_zlib
 	DEPENDEES download
 
 	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${bzip2_archive}"
-	COMMAND cmake -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${zlib_archive}"
+	COMMAND ${CMAKE_COMMAND} -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${bzip2_archive}"
+	COMMAND ${CMAKE_COMMAND} -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${zlib_archive}"
 
 	DEPENDERS configure
 )
