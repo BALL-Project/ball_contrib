@@ -33,33 +33,10 @@
 
 MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# Further packages to be downloaded
-LIST(APPEND DOWNLOAD_ARCHIVES "bison_deps")
-
-SET(TARGET_DIR "${CONTRIB_BINARY_SRC}/bison_deps")
-CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/install_template.cmake.in" "${CONTRIB_BINARY_SRC}/bison_deps_install.cmake" @ONLY)
-
-ExternalProject_Add("bison_deps"
-
-	URL "${CONTRIB_ARCHIVES_URL}/${bison_deps_archive}"
-	PREFIX ${PROJECT_BINARY_DIR}
-	BUILD_IN_SOURCE 1
-
-	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
-	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
-
-	CONFIGURE_COMMAND ""
-	BUILD_COMMAND ""
-	INSTALL_COMMAND ${CMAKE_COMMAND} -P "${CONTRIB_BINARY_SRC}/bison_deps_install.cmake"
-)
-
-
 SET(TARGET_DIR "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}")
 CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/install_template.cmake.in" "${CONTRIB_BINARY_SRC}/bison_install.cmake" @ONLY)
 
 ExternalProject_Add(${PACKAGE_NAME}
-
-	DEPENDS "bison_deps"
 
 	URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
 	PREFIX ${PROJECT_BINARY_DIR}

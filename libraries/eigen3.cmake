@@ -38,7 +38,7 @@ ExternalProject_Add("${PACKAGE_NAME}"
 
 	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
 	PREFIX ${PROJECT_BINARY_DIR}
-	BUILD_IN_SOURCE 0 # Not allowed for eigen3
+	BUILD_IN_SOURCE 1
 
 	LOG_DOWNLOAD ${CUSTOM_LOG_DOWNLOAD}
 	LOG_UPDATE ${CUSTOM_LOG_UPDATE}
@@ -46,7 +46,23 @@ ExternalProject_Add("${PACKAGE_NAME}"
 	LOG_BUILD ${CUSTOM_LOG_BUILD}
 	LOG_INSTALL ${CUSTOM_LOG_INSTALL}
 
-	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+)
+
+# Extract bzip2 and zlib archives
+ExternalProject_Add_Step(${PACKAGE_NAME} custom_install
+
+	LOG 1
+	DEPENDEES build
+
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE_NAME}/Eigen ${CONTRIB_INSTALL_INC}/eigen3/Eigen
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE_NAME}/unsupported/Eigen ${CONTRIB_INSTALL_INC}/eigen3/unsupported/Eigen
+	COMMAND ${CMAKE_COMMAND} -E copy ${PACKAGE_NAME}/signature_of_eigen3_matrix_library ${CONTRIB_INSTALL_INC}/eigen3/signature_of_eigen3_matrix_library
+
+	DEPENDERS install
 )
 
 MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
