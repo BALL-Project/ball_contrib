@@ -56,7 +56,6 @@ SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_BASE}
 			 -no-nis
 			 -no-harfbuzz
 			 -skip qtwayland
-			 -skip qtwebkit
 )
 
 # Set the appropriate build type
