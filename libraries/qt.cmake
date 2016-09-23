@@ -56,7 +56,6 @@ SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_BASE}
 			 -no-nis
 			 -no-harfbuzz
 			 -skip qtwayland
-#			 -skip qtwebkit
 )
 
 # Set the appropriate build type
@@ -77,6 +76,8 @@ IF(MSVC)
 	SET(QT_CONFIGURE_COMMAND configure.bat)
 	SET(QT_BUILD_COMMAND nmake)
 	SET(QT_INSTALL_COMMAND nmake install)
+
+	LIST(APPEND QT_CONFIGURE_OPTIONS -opengl dynamic)
 
 	IF(MSVC_VERSION EQUAL "1800")
 		LIST(APPEND QT_CONFIGURE_OPTIONS -platform win32-msvc2013)
