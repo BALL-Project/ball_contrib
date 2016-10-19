@@ -41,7 +41,7 @@ Available CMake options:
  - SKIP_QTWEBENGINE  
    Do not build Qt5 module QtWebEngine (required only for the PresentaBALL and BALLaxy plugins). This extremely speeds up building Qt5.
  - SKIP_QTCONNECTIVITY
-   Do not nuild Qt5 module QtConnectivity (required only for bluetooth and RFID functionality; does not build under XCODE 8 on Mac).
+   Do not build Qt5 module QtConnectivity (required only for bluetooth and RFID functionality; does not build under XCODE 8 on Mac).
 
 If the build process as given in the above example succeeds, the following directory 
 will contain the installation of third-party dependencies:  
