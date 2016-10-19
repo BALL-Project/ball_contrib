@@ -36,6 +36,9 @@ MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 # CMake option to exclude QtWebEngine from the Qt5 build
 OPTION(SKIP_QTWEBENGINE "Skip building QtWebEngine." OFF)
 
+# CMake option to exclude QtConnectivity from the Qt5 build
+OPTION(SKIP_QTCONNECTIVITY "Skip building QtConnectivity." OFF)
+
 FIND_PACKAGE(Perl QUIET)
 IF(NOT PERL_EXECUTABLE)
 	IF(NOT OS_WINDOWS)
@@ -69,6 +72,12 @@ ENDIF()
 # Check if QtWebEngine should be excluded
 IF(SKIP_QTWEBENGINE)
 	LIST(APPEND QT_CONFIGURE_OPTIONS -skip qtwebengine)
+ENDIF()
+
+# Check if QtConnectivity should be excluded
+# This currently seems necessary for build on macOS with Xcode 8
+IF(SKIP_QTCONNECTIVITY)
+        LIST(APPEND QT_CONFIGURE_OPTIONS -skip qtconnectivity)
 ENDIF()
 
 # Platform-specific settings
