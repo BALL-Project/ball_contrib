@@ -5,7 +5,7 @@ Third-party dependencies used by the Biochemical Algorithms Library (BALL).
 This repository is intended for end-users of BALL.
 Third party dependencies are mostly original source tarballs but some are patched to fit our needs.
 
-**NOTICE**: Do not use our tarballs if you need one these packages for other purposes than a BALL installation.
+**NOTICE**: Do not use our tarballs if you need one of these packages for other purposes than a BALL installation.
 In such a case, please use source distributions provided by the original suppliers.
 
 Installation requirements:  
