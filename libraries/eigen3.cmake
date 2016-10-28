@@ -31,12 +31,11 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# Add project
-ExternalProject_Add("${PACKAGE_NAME}"
+ExternalProject_Add(${PACKAGE}
 
-	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
+	GIT_REPOSITORY ${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}
+	GIT_TAG ${CONTRIB_GIT_BRANCH}
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE 1
 
@@ -51,18 +50,16 @@ ExternalProject_Add("${PACKAGE_NAME}"
 	INSTALL_COMMAND ""
 )
 
-# Extract bzip2 and zlib archives
-ExternalProject_Add_Step(${PACKAGE_NAME} custom_install
+# Add custom Install step
+ExternalProject_Add_Step(${PACKAGE} custom_install
 
 	LOG 1
 	DEPENDEES build
 
 	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE_NAME}/Eigen ${CONTRIB_INSTALL_INC}/eigen3/Eigen
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE_NAME}/unsupported/Eigen ${CONTRIB_INSTALL_INC}/eigen3/unsupported/Eigen
-	COMMAND ${CMAKE_COMMAND} -E copy ${PACKAGE_NAME}/signature_of_eigen3_matrix_library ${CONTRIB_INSTALL_INC}/eigen3/signature_of_eigen3_matrix_library
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}/Eigen ${CONTRIB_INSTALL_INC}/eigen3/Eigen
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}/unsupported/Eigen ${CONTRIB_INSTALL_INC}/eigen3/unsupported/Eigen
+	COMMAND ${CMAKE_COMMAND} -E copy ${PACKAGE}/signature_of_eigen3_matrix_library ${CONTRIB_INSTALL_INC}/eigen3/signature_of_eigen3_matrix_library
 
 	DEPENDERS install
 )
-
-MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

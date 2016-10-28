@@ -31,11 +31,11 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-ExternalProject_Add("${PACKAGE_NAME}"
+ExternalProject_Add(${PACKAGE}
 
-	URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
+	GIT_REPOSITORY ${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}
+	GIT_TAG ${CONTRIB_GIT_BRANCH}
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -47,5 +47,3 @@ ExternalProject_Add("${PACKAGE_NAME}"
 
 	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CONTRIB_INSTALL_BASE}
 )
-
-MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

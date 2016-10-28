@@ -31,14 +31,11 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-SET(TARGET_DIR "${CONTRIB_BINARY_SRC}/${PACKAGE_NAME}")
-CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/install_template.cmake.in" "${CONTRIB_BINARY_SRC}/bison_install.cmake" @ONLY)
+ExternalProject_Add(${PACKAGE}
 
-ExternalProject_Add(${PACKAGE_NAME}
-
-	URL "${CONTRIB_ARCHIVES_URL}/${${PACKAGE_NAME}_archive}"
+	GIT_REPOSITORY ${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}
+	GIT_TAG ${CONTRIB_GIT_BRANCH}
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE 1
 
@@ -47,11 +44,17 @@ ExternalProject_Add(${PACKAGE_NAME}
 
 	CONFIGURE_COMMAND ""
 	BUILD_COMMAND ""
-	INSTALL_COMMAND ${CMAKE_COMMAND} -P "${CONTRIB_BINARY_SRC}/bison_install.cmake"
+	INSTALL_COMMAND ""
 )
 
-MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
+# Add custom install step
+ExternalProject_Add_Step(${PACKAGE} custom_install
 
+	LOG 1
+	DEPENDEES build
 
+	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE} ${CONTRIB_INSTALL_BASE}
 
-
+	DEPENDERS install
+)

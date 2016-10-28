@@ -31,7 +31,6 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
 IF(MSVC)
 	SET(OPENBABEL_BUILD_COMMAND ${MSBUILD} "openbabel.sln")
@@ -39,9 +38,11 @@ ELSE()
 	SET(OPENBABEL_BUILD_COMMAND ${MAKE_COMMAND})
 ENDIF()
 
-ExternalProject_Add("${PACKAGE_NAME}"
 
-	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
+ExternalProject_Add(${PACKAGE}
+
+	GIT_REPOSITORY ${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}
+	GIT_TAG ${CONTRIB_GIT_BRANCH}
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE 0
 
@@ -63,9 +64,8 @@ ExternalProject_Add("${PACKAGE_NAME}"
 	BUILD_COMMAND ${OPENBABEL_BUILD_COMMAND}
 )
 
+
 # On Mac OS X we have to use absolute paths as install names for dylibs
 IF(APPLE)
 	FIX_DYLIB_INSTALL_NAMES(libopenbabel)
 ENDIF()
-
-MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

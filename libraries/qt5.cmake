@@ -31,9 +31,7 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
 
-# CMake option to exclude QtWebEngine from the Qt5 build
 OPTION(SKIP_QTWEBENGINE "Skip building QtWebEngine." OFF)
 
 FIND_PACKAGE(Perl QUIET)
@@ -55,7 +53,18 @@ SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_BASE}
 			 -nomake examples
 			 -no-nis
 			 -no-harfbuzz
+			 -skip qt3d
+			 -skip qtcanvas3d
+			 -skip qtconnectivity
+			 -skip qtdoc
+			 -skip qtgraphicaleffects
+			 -skip qtimageformats
+			 -skip qtquickcontrols2
+			 -skip qtsensors
+			 -skip qtserialbus
+			 -skip qtserialport
 			 -skip qtwayland
+			 -skip qtwebview
 )
 
 # Set the appropriate build type
@@ -100,10 +109,11 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-# Add project
-ExternalProject_Add(${PACKAGE_NAME}
 
-	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
+ExternalProject_Add(${PACKAGE}
+
+	GIT_REPOSITORY ${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}
+	GIT_TAG ${CONTRIB_GIT_BRANCH}
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -119,5 +129,3 @@ ExternalProject_Add(${PACKAGE_NAME}
 	BUILD_COMMAND ${QT_BUILD_COMMAND}
 	INSTALL_COMMAND ${QT_INSTALL_COMMAND}
 )
-
-MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")

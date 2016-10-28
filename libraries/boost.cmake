@@ -31,10 +31,6 @@
 # $Authors: Philipp Thiel $
 # -----------------------------------------------------------------------------
 
-MSG_CONFIGURE_PACKAGE_BEGIN("${PACKAGE_NAME}")
-
-# Further packages to be downloaded
-LIST(APPEND DOWNLOAD_ARCHIVES "bzip2" "zlib")
 
 # Determine the correct b2 switches according to build type and platform
 IF(CONTRIB_BUILD_TYPE STREQUAL "RelWithDebInfo")
@@ -56,8 +52,8 @@ SET(BOOST_LIBRARIES --with-chrono
 # Boost b2 options
 SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_BASE}
 		     -j ${THREADS}
-		     -sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${bzip2}
-		     -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${zlib}
+		     -sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/bzip2
+		     -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/zlib
 		     address-model=${CONTRIB_ADDRESSMODEL}
 		     variant=${BOOST_BUILD_TYPE}
 		     --layout=tagged
@@ -75,10 +71,11 @@ ELSE()
 	SET(BOOST_B2_CMD ./b2)
 ENDIF()
 
-# Add project
-ExternalProject_Add(${PACKAGE_NAME}
 
-	URL "${CONTRIB_ARCHIVES_PATH}/${${PACKAGE_NAME}_archive}"
+ExternalProject_Add(${PACKAGE}
+
+	GIT_REPOSITORY ${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}
+	GIT_TAG ${CONTRIB_GIT_BRANCH}
 	PREFIX ${PROJECT_BINARY_DIR}
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
 
@@ -98,14 +95,14 @@ ExternalProject_Add(${PACKAGE_NAME}
 )
 
 # Extract bzip2 and zlib archives
-ExternalProject_Add_Step(${PACKAGE_NAME} extract_bzip2_zlib
+ExternalProject_Add_Step(${PACKAGE} extract_bzip2_zlib
 
 	LOG 1
 	DEPENDEES download
 
 	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-	COMMAND ${CMAKE_COMMAND} -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${bzip2_archive}"
-	COMMAND ${CMAKE_COMMAND} -E tar xzf "${CONTRIB_ARCHIVES_PATH}/${zlib_archive}"
+	COMMAND ${GIT_EXECUTABLE} clone --branch ${CONTRIB_GIT_BRANCH} "${CONTRIB_GITHUB_BASE}/BALL_contrib_bzip2-1.0.6" bzip2
+	COMMAND ${GIT_EXECUTABLE} clone --branch ${CONTRIB_GIT_BRANCH} "${CONTRIB_GITHUB_BASE}/BALL_contrib_zlib-1.2.8" zlib
 
 	DEPENDERS configure
 )
@@ -115,7 +112,7 @@ IF(APPLE)
 	FIX_DYLIB_INSTALL_NAMES(libboost)
 ENDIF()
 
-MSG_CONFIGURE_PACKAGE_END("${PACKAGE_NAME}")
+
 
 
 
