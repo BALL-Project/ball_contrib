@@ -61,7 +61,7 @@ INCLUDE(ContribSetup)
 
 # Load contrib-specific macros and messages
 INCLUDE(ContribMacros)
-return (0)
+
 
 ###############################################################################
 # Packages contained in this contrib
