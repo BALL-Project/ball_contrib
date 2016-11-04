@@ -33,10 +33,10 @@
 
 
 # Determine the correct b2 switches according to build type and platform
-IF(CONTRIB_BUILD_TYPE STREQUAL "RelWithDebInfo")
+IF(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo")
 	SET(BOOST_BUILD_TYPE "release debug-symbols=on")
 ELSE()
-	STRING(TOLOWER "${CONTRIB_BUILD_TYPE}" BOOST_BUILD_TYPE)
+	STRING(TOLOWER "${CMAKE_BUILD_TYPE}" BOOST_BUILD_TYPE)
 ENDIF()
 
 # Libraries to be build

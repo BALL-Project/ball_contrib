@@ -41,7 +41,7 @@ IF(MSVC)
 
 	SET(FFTW3_CONFIGURE_COMMAND "cmd" "/c echo nothing to do")
 	SET(FFTW3_BUILD_COMMAND ${MSBUILD} "${BUILDDIR}/fftw-3.3-libs.sln")
-	SET(FFTW3_INSTALL_COMMAND "${CMAKE_COMMAND}" -Dconfig=${CONTRIB_BUILD_TYPE} -P "${CONTRIB_BINARY_SRC}/fftw_install.cmake")
+	SET(FFTW3_INSTALL_COMMAND "${CMAKE_COMMAND}" -Dconfig=${CMAKE_BUILD_TYPE} -P "${CONTRIB_BINARY_SRC}/fftw_install.cmake")
 
 	CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/fftw_install.cmake.in" "${CONTRIB_BINARY_SRC}/fftw_install.cmake" @ONLY)
 ELSE()
