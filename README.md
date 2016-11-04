@@ -34,7 +34,7 @@ Installation example OSX/Linux:
 Available CMake variables:
  - **PACKAGES**  
    Select only a subset of third-party dependencies to be installed.  
-   Available packages are: boost, qt5, fftw, eigen3, tbb, sip, openbabel
+   Available packages are: boost, qt5, fftw, eigen3, tbb, sip, openbabel.
    * Example 1: build all dependencies (recommended)  
      `cmake ..`
    * Example 2: build only Boost  
@@ -46,7 +46,10 @@ Available CMake variables:
    * Example: use four threads  
      `cmake .. -DTHREADS=4`  
  - **CONTRIB_INSTALL_PREFIX**  
-   Installation target directory. Default: ball_contrib/build/install
+   Installation target directory. Default: ball_contrib/build/install  
+ - **DOWNLOAD_TIMEOUT**  
+   Timout (seconds) for a single package download. Default: 420.  
+   If package downloads fail, try to increase this timeout.  
    
 Available CMake options:
  - **SKIP_QTWEBENGINE**  
