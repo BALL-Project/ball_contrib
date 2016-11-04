@@ -11,7 +11,7 @@ Sources are based on original tarballs and are patched to fit our needs.
 - Python (if Python support is required)  
 
 **Installation**  
-*Example OSX/Linux*  
+- *Example OSX/Linux*  
   `$ git clone https://github.com/BALL-Project/ball_contrib.git`   
   `$ cd ball_contrib`  
   `$ mkdir build`  
@@ -19,7 +19,7 @@ Sources are based on original tarballs and are patched to fit our needs.
   `$ cmake ..`  
   `$ make`  
  
-*Example Windows*  
+- *Example Windows*  
   `$ git clone https://github.com/BALL-Project/ball_contrib.git`   
   `$ cd ball_contrib`  
   `$ md build`  
@@ -27,7 +27,7 @@ Sources are based on original tarballs and are patched to fit our needs.
   `$ cmake .. -G "Visual Studio 14 2015 Win64"`  
   `$ msbuild BALL_contrib.sln`  
 
-**IMPORTANT NOTE**  
+- *IMPORTANT BUILD NOTE*  
 Do not use the '-j' flag for make and the /maxcpucount switch for MSbuild!
 The behaviour is undefined and will most likels break your build.
 If you want to allow multiple build threads please specify the number during the
