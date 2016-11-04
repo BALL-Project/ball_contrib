@@ -33,6 +33,21 @@
 
 
 ###############################################################################
+# Check build type
+
+SET(CONTRIB_BUILD_TYPES "Release" "Debug" "RelWithDebInfo")
+LIST(FIND CONTRIB_BUILD_TYPES "${CMAKE_BUILD_TYPE}" VALID_BUILD_TYPE)
+
+IF("${CMAKE_BUILD_TYPE}" STREQUAL "")
+	SET(CMAKE_BUILD_TYPE "Release")
+ELSEIF(${VALID_BUILD_TYPE} EQUAL -1)
+	MESSAGE(FATAL_ERROR "The specified CMAKE_BUILD_TYPE is invalid. Available build types are: ${CONTRIB_BUILD_TYPES}")
+ENDIF()
+
+MESSAGE(STATUS "Contrib build type: ${CMAKE_BUILD_TYPE}")
+
+
+###############################################################################
 # GitHub package repository settings
 
 # GitHub base URL that contains package repos
