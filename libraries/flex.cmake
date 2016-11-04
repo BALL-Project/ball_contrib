@@ -54,7 +54,7 @@ ExternalProject_Add_Step(${PACKAGE} custom_install
 	DEPENDEES build
 
 	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE} ${CONTRIB_INSTALL_BASE}
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE} ${CONTRIB_INSTALL_PREFIX}
 
 	DEPENDERS install
 )

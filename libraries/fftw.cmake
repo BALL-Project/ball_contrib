@@ -45,7 +45,7 @@ IF(MSVC)
 
 	CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/fftw_install.cmake.in" "${CONTRIB_BINARY_SRC}/fftw_install.cmake" @ONLY)
 ELSE()
-	SET(FFTW3_CONFIGURE_COMMAND ./configure --prefix=${CONTRIB_INSTALL_BASE} --enable-shared --with-pic)
+	SET(FFTW3_CONFIGURE_COMMAND ./configure --prefix=${CONTRIB_INSTALL_PREFIX} --enable-shared --with-pic)
 	SET(FFTW3_BUILD_COMMAND ${MAKE_COMMAND})
 	SET(FFTW3_INSTALL_COMMAND ${MAKE_INSTALL_COMMAND})
 ENDIF()

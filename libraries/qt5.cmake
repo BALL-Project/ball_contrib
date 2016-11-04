@@ -46,7 +46,7 @@ ENDIF()
 # TODO: openssl
 
 # Common configure options
-SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_BASE}
+SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_PREFIX}
 			 -opensource
 			 -confirm-license
 			 -shared
