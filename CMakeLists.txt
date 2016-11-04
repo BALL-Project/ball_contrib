@@ -1,34 +1,28 @@
 # -----------------------------------------------------------------------------
-#   BALL - Biochemical ALgorithms Library
-#   A C++ framework for molecular modeling and structural bioinformatics.
-# -----------------------------------------------------------------------------
+# CONTRIB FRAMEWORK
 #
-# Copyright (C) 1996-2012, the BALL Team:
-#  - Andreas Hildebrandt
-#  - Oliver Kohlbacher
-#  - Hans-Peter Lenhof
-#  - Eberhard Karls University, Tuebingen
-#  - Saarland University, Saarbrücken
-#  - others
+# Based on CMake ExternalProjects, this repository offers functionality
+# to configure, build, and install software dependencies that can be used
+# by other projects.
 #
-#  This library is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU Lesser General Public
-#  License as published by the Free Software Foundation; either
-#  version 2.1 of the License, or (at your option) any later version.
+# It has been developed in course of the open source
+# research software BALL (Biochemical ALgorithms Library).
 #
-#  This library is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#  Lesser General Public License for more details.
 #
-#  You should have received a copy of the GNU Lesser General Public
-#  License along with this library (BALL/source/LICENSE); if not, write
-#  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-#  Boston, MA  02111-1307  USA
+# Copyright 2016, the BALL team (http://www.ball-project.org)
 #
-# -----------------------------------------------------------------------------
-# $Maintainer: Philipp Thiel $
-# $Authors: Philipp Thiel $
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL ANY OF THE AUTHORS OR THE CONTRIBUTING
+# INSTITUTIONS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
 # -----------------------------------------------------------------------------
 
 
@@ -96,4 +90,6 @@ EVALUATE_PACKAGES()
 # Configure and download selected packages
 
 CONFIGURE_PACKAGES()
+
+LICENSE_AGREEMENT_MSG()
 
