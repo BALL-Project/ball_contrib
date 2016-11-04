@@ -46,6 +46,8 @@ LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_BINARY_DIR}/cmake")
 # CMake variables that can be changed by the user
 SET(CONTRIB_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install" CACHE PATH "Prefix to install BALL_contrib. Default: <BALL_contrib_build_dir>/install")
 SET(THREADS "1" CACHE STRING "Number of threads used by make steps. Default: 1")
+SET(PACKAGES "all" CACHE STRING "Contrib packages to be build. Default: all")
+SET(DOWNLOAD_TIMEOUT "420" CACHE STRING "Timout (seconds) for single package downloads (git clone). Default: 420")
 
 # ExternalProjects package
 INCLUDE(ExternalProject)
