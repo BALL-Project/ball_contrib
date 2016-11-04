@@ -84,31 +84,16 @@ IF(MSVC)
 	SET(PACKAGES_SELECTED bison flex)
 ENDIF()
 
-# The following macro evaluates the list of available packages and
-# the packages selected for installation by the user via -DPACKAGES
-#
-# The following varables will then be available
-# - PACKAGES_AVAILABLE
-# - PACKAGES_SELECTED
+
+###############################################################################
+# Generate list of available packages (PACKAGES_AVAILABLE)
+# and evaluate packages selected by the user via -DPACKAGES (PACKAGES_SELECTED)
+
 EVALUATE_PACKAGES()
 
 
 ###############################################################################
-# Check selected packages and configure them
+# Configure and download selected packages
 
-FOREACH(PACKAGE ${PACKAGES_SELECTED})
-
-	# Check if selected package is indeed an available one
-	LIST(FIND PACKAGES_AVAILABLE ${PACKAGE} PACKAGE_FOUND)
-
-	IF(${PACKAGE_FOUND} EQUAL -1)
-		MESSAGE(SEND_ERROR "The selected package '${PACKAGE}' is not part of BALL_contrib.")
-	ELSE()
-		MSG_CONFIGURE_PACKAGE_BEGIN(${PACKAGE})
-		INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE}.cmake")
-		MSG_CONFIGURE_PACKAGE_END(${PACKAGE})
-	ENDIF()
-
-ENDFOREACH()
-
+CONFIGURE_PACKAGES()
 
