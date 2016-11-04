@@ -40,5 +40,5 @@ Available CMake variables:
    Installation target directory. Default: ball_contrib/build/install
    
 Available CMake options:
- - **SKIP_QTWEBENGINE**
-   Do not build Qt5 module QtWebEngine (required only for the PresentaBALL and BALLaxy plugins). This extremely speeds up building Qt5.
+ - **SKIP_QTWEBENGINE**  
+   Do not build Qt5 module QtWebEngine, which is required only for the PresentaBALL and BALLaxy plugins. This extremely speeds up building Qt5.
