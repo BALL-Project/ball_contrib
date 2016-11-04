@@ -12,15 +12,24 @@ Installation requirements:
 - git 
 - CMake >= 2.8.12
 - Perl (ActivePerl on Windows)
-- Python (if BALL Python support is required)
+- A compiler (e.g. gcc/g++, clang, MSVC) 
+- Python (if Python support is required)
 
-Installation example (OSX/Linux):  
+Installation example OSX/Linux:  
   `$ git clone https://github.com/BALL-Project/ball_contrib.git`   
   `$ cd ball_contrib`  
   `$ mkdir build`  
   `$ cd build`  
   `$ cmake ..`  
   `$ make`  
+ 
+ Installation example Windows:  
+  `$ git clone https://github.com/BALL-Project/ball_contrib.git`   
+  `$ cd ball_contrib`  
+  `$ md build`  
+  `$ cd build`  
+  `$ cmake .. -G "Visual Studio 14 2015 Win64"`  
+  `$ msbuild BALL_contrib.sln`  
 
 Available CMake variables:
  - **PACKAGES**  
