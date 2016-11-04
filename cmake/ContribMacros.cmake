@@ -66,7 +66,7 @@ MACRO(CONFIGURE_PACKAGES)
 			INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE}.cmake")
 
 			# Check if package has already been cloned, if not, clone it
-			IF(NOT pkg_${PACKAGE}_downloaded)
+			IF(NOT ${PACKAGE}_downloaded)
 				MESSAGE(STATUS "Downloading package (git clone): ${PACKAGE}")
 				EXECUTE_PROCESS(COMMAND ${GIT_EXECUTABLE} clone --branch "${CONTRIB_GIT_BRANCH}" "${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}" "${CONTRIB_BINARY_SRC}/${PACKAGE}"
 						TIMEOUT 300
@@ -78,7 +78,7 @@ MACRO(CONFIGURE_PACKAGES)
 				# Check if download was successful
 				IF(${DOWNLOAD_EXIT_CODE} EQUAL 0)
 					# If yes, mark package as donwloaded in CMake internal cache
-					SET(pkg_${PACKAGE}_downloaded TRUE CACHE INTERNAL "Variable indicates that package ${PACKAGE} has already been cloned")
+					SET("${PACKAGE}_downloaded" TRUE CACHE INTERNAL "Variable indicates that package ${PACKAGE} has already been cloned")
 				ELSE()
 					# If not, exit CMake run with fatal error
 					MESSAGE(FATAL_ERROR "Downloading of package failed: ${PACKAGE}")
@@ -111,12 +111,11 @@ ENDMACRO()
 # Macro to print licensing information after successful configuration run
 MACRO(LICENSE_AGREEMENT_MSG)
 	MESSAGE("")
-#	MESSAGE(STATUS "---------------------------------------------------------------------")
-	MESSAGE(STATUS "---------------------------------------------------------------------")
+	MESSAGE("   +---------------------------------------------------------------------")
 	MESSAGE("   +")
 	MESSAGE("   + You successfully configured the Contrib!")
 	MESSAGE("   +")
-	MESSAGE(STATUS "---------------------------------------------------------------------")
+	MESSAGE("   +---------------------------------------------------------------------")
 	MESSAGE("   +")
 	MESSAGE("   + !!! IMPORTANT LICENSING INFORMATION !!!")
 	MESSAGE("   +")
@@ -129,12 +128,12 @@ MACRO(LICENSE_AGREEMENT_MSG)
 	MESSAGE("   +")
 
 	FOREACH(PACKAGE ${PACKAGES_SELECTED})
-		MESSAGE( "   + - ${PACKAGE}:\t${CONTRIB_BINARY_SRC}/${PACKAGE}")
+		MESSAGE( "   + - ${PACKAGE}:")
+		MESSAGE( "   +   ${CONTRIB_BINARY_SRC}/${PACKAGE}")
 	ENDFOREACH()
 
 	MESSAGE("   +")
-	MESSAGE(STATUS "---------------------------------------------------------------------")
-#	MESSAGE(STATUS "---------------------------------------------------------------------")
+	MESSAGE("   +---------------------------------------------------------------------")
 	MESSAGE("")
 ENDMACRO()
 
