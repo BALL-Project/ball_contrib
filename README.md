@@ -5,10 +5,10 @@ Sources are based on original tarballs and are patched to fit our needs.
 
 **Requirements**  
 - git 
-- CMake >= 2.8.12
+- CMake (version >= 3)
 - Perl (ActivePerl on Windows)
 - A compiler (e.g. gcc/g++, clang, MSVC) 
-- Python (if Python support is required)  
+- Python (version >= 2.6)
 
 **Installation**  
 - *Example OSX/Linux*  
