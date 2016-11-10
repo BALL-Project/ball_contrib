@@ -41,6 +41,11 @@ SET(BOOST_LIBRARIES --with-chrono
 		    --with-serialization
 		    --with-system
 		    --with-thread
+		    --with-math
+		    --with-filesystem
+		    --with-graph
+		    --with-program_options
+
 )
 
 # Boost b2 options
