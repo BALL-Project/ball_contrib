@@ -53,12 +53,12 @@ ENDIF()
 
 # Set system dependent git GIT branches
 SET(CONTRIB_GIT_BRANCH "contrib_linux" CACHE INTERNAL "OS dependent branch of package GIT repository")
+SET(GIT_ARCHIVE_FORMAT "tarball")
 IF(MSVC)
 	SET(CONTRIB_GIT_BRANCH "contrib_win")
 	SET(GIT_ARCHIVE_FORMAT "zipball")
 ELSEIF(APPLE)
 	SET(CONTRIB_GIT_BRANCH "contrib_osx")
-	SET(GIT_ARCHIVE_FORMAT "tarball")
 ENDIF()
 
 
