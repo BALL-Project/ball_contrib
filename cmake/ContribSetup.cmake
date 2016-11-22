@@ -45,7 +45,7 @@ MESSAGE(STATUS "Contrib build type: ${CMAKE_BUILD_TYPE}")
 # GitHub package repository settings
 
 # GitHub base URL that contains package repos
-SET(CONTRIB_GITHUB_BASE "http://github.com/philthiel" CACHE INTERNAL "GitHub base URL where all package repos are located")
+SET(CONTRIB_GITHUB_BASE "git://github.com/philthiel" CACHE INTERNAL "GitHub base URL where all package repos are located")
 
 # Set system dependent git GIT branches
 SET(CONTRIB_GIT_BRANCH "contrib_linux" CACHE INTERNAL "OS dependent branch of package GIT repository")

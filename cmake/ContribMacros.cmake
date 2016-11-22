@@ -68,7 +68,7 @@ MACRO(CONFIGURE_PACKAGES)
 			# Check if package has already been cloned, if not, clone it
 			IF(NOT ${PACKAGE}_downloaded)
 				MESSAGE(STATUS "Downloading package (git clone): ${PACKAGE}")
-				EXECUTE_PROCESS(COMMAND ${GIT_EXECUTABLE} clone --branch "${CONTRIB_GIT_BRANCH}" "${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}" "${CONTRIB_BINARY_SRC}/${PACKAGE}"
+				EXECUTE_PROCESS(COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${CONTRIB_GIT_BRANCH}" "${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}" "${CONTRIB_BINARY_SRC}/${PACKAGE}"
 						TIMEOUT ${DOWNLOAD_TIMEOUT}
 						RESULT_VARIABLE DOWNLOAD_EXIT_CODE
 						OUTPUT_FILE "${CONTRIB_BINARY_SRC}/${PACKAGE}_download_out.log"
