@@ -50,7 +50,7 @@ MACRO(EVALUATE_PACKAGES)
 ENDMACRO()
 
 
-# Configure and download (git clone) packages
+# Configure packages
 MACRO(CONFIGURE_PACKAGES)
 
 	FOREACH(PACKAGE ${PACKAGES_SELECTED})
@@ -67,26 +67,56 @@ MACRO(CONFIGURE_PACKAGES)
 
 			# Check if package has already been cloned, if not, clone it
 			IF(NOT ${PACKAGE}_downloaded)
-				MESSAGE(STATUS "Downloading package (git clone): ${PACKAGE}")
-				EXECUTE_PROCESS(COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${CONTRIB_GIT_BRANCH}" "${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}" "${CONTRIB_BINARY_SRC}/${PACKAGE}"
-						TIMEOUT ${DOWNLOAD_TIMEOUT}
-						RESULT_VARIABLE DOWNLOAD_EXIT_CODE
-						OUTPUT_FILE "${CONTRIB_BINARY_SRC}/${PACKAGE}_download_out.log"
-						ERROR_FILE "${CONTRIB_BINARY_SRC}/${PACKAGE}_download_err.log"
-						)
-
-				# Check if download was successful
-				IF(${DOWNLOAD_EXIT_CODE} EQUAL 0)
-					# If yes, mark package as donwloaded in CMake internal cache
-					SET("${PACKAGE}_downloaded" TRUE CACHE INTERNAL "Variable indicates that package ${PACKAGE} has already been cloned")
-				ELSE()
-					# If not, exit CMake run with fatal error
-					MESSAGE(FATAL_ERROR "Downloading of package failed: ${PACKAGE}")
-				ENDIF()
+				DOWNLOAD_PACKAGE_SOURCE("${PACKAGE}")
 			ENDIF()
 		ENDIF()
 
 	ENDFOREACH()
+
+ENDMACRO()
+
+
+# Download package using git clone
+MACRO(DOWNLOAD_PACKAGE_SOURCE PACKAGE)
+
+	MESSAGE(STATUS "Downloading source: ${PACKAGE}")
+
+	IF(${DOWNLOAD_TYPE} STREQUAL "archive")
+
+		FILE(DOWNLOAD "${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}/${GIT_ARCHIVE_FORMAT}/${CONTRIB_GIT_BRANCH}" "${CONTRIB_BINARY_SRC}/${PACKAGE}.${GIT_ARCHIVE_FORMAT}"
+			LOG "${CONTRIB_BINARY_SRC}/${PACKAGE}_download_out.log"
+			TIMEOUT ${DOWNLOAD_TIMEOUT}
+			STATUS DOWNLOAD_STATUS
+			)
+
+		LIST(GET DOWNLOAD_STATUS 0 DOWNLOAD_EXIT_CODE)
+
+		IF(${DOWNLOAD_EXIT_CODE} EQUAL 0)
+			EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E tar xf "${CONTRIB_BINARY_SRC}/${PACKAGE}.${GIT_ARCHIVE_FORMAT}" WORKING_DIRECTORY ${CONTRIB_BINARY_SRC})
+			FILE(GLOB ARCHIVE_FILE_NAME "${CONTRIB_BINARY_SRC}/*${pkg_${PACKAGE}}*")
+			EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove_directory ${PACKAGE} WORKING_DIRECTORY ${CONTRIB_BINARY_SRC})
+			EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E rename ${ARCHIVE_FILE_NAME} ${PACKAGE} WORKING_DIRECTORY ${CONTRIB_BINARY_SRC})
+		ENDIF()
+
+	ELSE()
+
+		EXECUTE_PROCESS(COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${CONTRIB_GIT_BRANCH}" "${CONTRIB_GITHUB_BASE}/${pkg_${PACKAGE}}" "${CONTRIB_BINARY_SRC}/${PACKAGE}"
+				TIMEOUT ${DOWNLOAD_TIMEOUT}
+				RESULT_VARIABLE DOWNLOAD_EXIT_CODE
+				OUTPUT_FILE "${CONTRIB_BINARY_SRC}/${PACKAGE}_download_out.log"
+				ERROR_FILE "${CONTRIB_BINARY_SRC}/${PACKAGE}_download_err.log"
+			)
+
+	ENDIF()
+
+	# Check if download was successful
+	IF(${DOWNLOAD_EXIT_CODE} EQUAL 0)
+		# If yes, mark package as donwloaded in CMake internal cache
+		SET("${PACKAGE}_downloaded" TRUE CACHE INTERNAL "Variable indicates that package ${PACKAGE} has already been cloned")
+	ELSE()
+		# If not, exit CMake run with fatal error
+		MESSAGE(FATAL_ERROR "Downloading of package failed: ${PACKAGE}")
+	ENDIF()
 
 ENDMACRO()
 

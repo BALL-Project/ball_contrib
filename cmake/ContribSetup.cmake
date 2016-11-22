@@ -44,15 +44,21 @@ MESSAGE(STATUS "Contrib build type: ${CMAKE_BUILD_TYPE}")
 ###############################################################################
 # GitHub package repository settings
 
-# GitHub base URL that contains package repos
-SET(CONTRIB_GITHUB_BASE "git://github.com/philthiel" CACHE INTERNAL "GitHub base URL where all package repos are located")
+# Set GitHub base URL
+IF(${DOWNLOAD_TYPE} STREQUAL "archive")
+	SET(CONTRIB_GITHUB_BASE "https://api.github.com/repos/philthiel" CACHE INTERNAL "GitHub base URL for archive download or cloning")
+ELSE()
+	SET(CONTRIB_GITHUB_BASE "git://github.com/philthiel" CACHE INTERNAL "GitHub base URL for archive download or cloning")
+ENDIF()
 
 # Set system dependent git GIT branches
 SET(CONTRIB_GIT_BRANCH "contrib_linux" CACHE INTERNAL "OS dependent branch of package GIT repository")
 IF(MSVC)
 	SET(CONTRIB_GIT_BRANCH "contrib_win")
+	SET(GIT_ARCHIVE_FORMAT "zipball")
 ELSEIF(APPLE)
 	SET(CONTRIB_GIT_BRANCH "contrib_osx")
+	SET(GIT_ARCHIVE_FORMAT "tarball")
 ENDIF()
 
 
