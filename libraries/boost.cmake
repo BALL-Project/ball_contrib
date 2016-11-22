@@ -51,8 +51,8 @@ SET(BOOST_LIBRARIES --with-chrono
 # Boost b2 options
 SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_PREFIX}
 		     -j ${THREADS}
-		     -sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/bzip2
-		     -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/zlib
+		     -sBZIP2_SOURCE=${CONTRIB_BINARY_SRC}/${PACKAGE}/bzip2
+		     -sZLIB_SOURCE=${CONTRIB_BINARY_SRC}/${PACKAGE}/zlib
 		     address-model=${CONTRIB_ADDRESSMODEL}
 		     variant=${BOOST_BUILD_TYPE}
 		     --layout=tagged
@@ -90,19 +90,6 @@ ExternalProject_Add(${PACKAGE}
 		      ${BOOST_LIBRARIES}
 
 	INSTALL_COMMAND ""
-)
-
-# Extract bzip2 and zlib archives
-ExternalProject_Add_Step(${PACKAGE} extract_bzip2_zlib
-
-	LOG 1
-	DEPENDEES download
-
-	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-	COMMAND ${GIT_EXECUTABLE} clone --branch ${CONTRIB_GIT_BRANCH} "${CONTRIB_GITHUB_BASE}/BALL_contrib_bzip2-1.0.6" bzip2
-	COMMAND ${GIT_EXECUTABLE} clone --branch ${CONTRIB_GIT_BRANCH} "${CONTRIB_GITHUB_BASE}/BALL_contrib_zlib-1.2.8" zlib
-
-	DEPENDERS configure
 )
 
 # On Mac OS X we have to use absolute paths as install names for dylibs
