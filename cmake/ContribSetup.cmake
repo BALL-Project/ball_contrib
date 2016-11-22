@@ -120,33 +120,3 @@ IF(NOT GIT_FOUND)
 ENDIF()
 
 
-###############################################################################
-# Search Python
-
-# Check Python installation
-SET(Python_ADDITIONAL_VERSIONS 2.7 2.6)
-
-INCLUDE(FindPythonLibs)
-IF(NOT PYTHONLIBS_FOUND)
-	MESSAGE(FATAL_ERROR "No python libraries found. Required to build SIP.")
-ENDIF()
-
-INCLUDE(FindPythonInterp)
-IF(NOT PYTHONINTERP_FOUND)
-	MESSAGE(FATAL_ERROR "No python interpreter found. Required to build SIP and CTD2Galaxy.")
-ENDIF()
-
-EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c "import struct; print struct.calcsize(\"P\") * 8"
-		RESULT_VARIABLE RUN_PYTHON_SUCCESS
-		OUTPUT_VARIABLE PYTHON_BITSIZE)
-
-IF(NOT RUN_PYTHON_SUCCESS EQUAL 0)
-	MESSAGE(FATAL_ERROR "Could not execute python. Required to build SIP and CTD2Galaxy. Error: ${RUN_PYTHON_SUCCESS}")
-ENDIF()
-
-STRING(STRIP ${PYTHON_BITSIZE} PYTHON_BITSIZE)
-IF(NOT PYTHON_BITSIZE EQUAL CONTRIB_ADDRESSMODEL)
-	MESSAGE(FATAL_ERROR "Python was built for a different address model. Please install appropriate version.")
-ENDIF()
-
-

@@ -26,6 +26,29 @@
 # -----------------------------------------------------------------------------
 
 
+# Check Python
+SET(Python_ADDITIONAL_VERSIONS 2.7 2.6)
+
+INCLUDE(FindPythonLibs)
+IF(NOT PYTHONLIBS_FOUND)
+	MESSAGE(FATAL_ERROR "No python libraries found. Required to build SIP.")
+ENDIF()
+
+INCLUDE(FindPythonInterp)
+IF(NOT PYTHONINTERP_FOUND)
+	MESSAGE(FATAL_ERROR "No python interpreter found. Required to build SIP.")
+ENDIF()
+
+EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c "import struct; print struct.calcsize(\"P\") * 8"
+		OUTPUT_VARIABLE PYTHON_BITSIZE
+		)
+
+IF(NOT ${PYTHON_BITSIZE} MATCHES "${CONTRIB_ADDRESSMODEL}.*")
+	MESSAGE(FATAL_ERROR "Python was built for a different address model. Please install appropriate version.")
+ENDIF()
+
+
+# SIP configuration
 SET(SIP_CONFIGURE_OPTIONS "")
 IF("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	LIST(APPEND SIP_CONFIGURE_OPTIONS "-u")
