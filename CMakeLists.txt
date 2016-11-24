@@ -63,19 +63,19 @@ INCLUDE(ContribMacros)
 ###############################################################################
 # Packages contained in this contrib
 
-SET(pkg_boost        "BALL_contrib_boost_1.60.0" CACHE INTERNAL "Boost repo name")
-SET(pkg_eigen3       "BALL_contrib_eigen_3.2.5" CACHE INTERNAL "Eigen3 repo name")
-SET(pkg_fftw         "BALL_contrib_fftw_3.3.4" CACHE INTERNAL "FFTW repo name")
-SET(pkg_glew         "BALL_contrib_glew_1.13.0" CACHE INTERNAL "GLEW repo name")
-SET(pkg_openbabel    "BALL_contrib_openbabel_2.4.1" CACHE INTERNAL "OpenBabel repo name")
-SET(pkg_sip          "BALL_contrib_sip_4.16.9" CACHE INTERNAL "SIP repo name")
-SET(pkg_tbb          "BALL_contrib_tbb43_20150611" CACHE INTERNAL "TBB repo name")
-SET(pkg_qt5          "BALL_contrib_qt_5.6.1-1" CACHE INTERNAL "Qt5 repo name")
+SET(pkg_boost        "contrib_boost_1.60.0" CACHE INTERNAL "Boost repo name")
+SET(pkg_eigen3       "contrib_eigen_3.2.5" CACHE INTERNAL "Eigen3 repo name")
+SET(pkg_fftw         "contrib_fftw_3.3.4" CACHE INTERNAL "FFTW repo name")
+SET(pkg_glew         "contrib_glew_1.13.0" CACHE INTERNAL "GLEW repo name")
+SET(pkg_openbabel    "contrib_openbabel_2.4.1" CACHE INTERNAL "OpenBabel repo name")
+SET(pkg_sip          "contrib_sip_4.16.9" CACHE INTERNAL "SIP repo name")
+SET(pkg_tbb          "contrib_tbb43_20150611" CACHE INTERNAL "TBB repo name")
+SET(pkg_qt5          "contrib_qt_5.6.1-1" CACHE INTERNAL "Qt5 repo name")
 
 IF(MSVC)
-	SET(pkg_bison        "BALL_contrib_bison_2.4.1" CACHE INTERNAL "Bison repo name")
-	SET(pkg_flex         "BALL_contrib_flex_2.5.4" CACHE INTERNAL "Flex repo name")
-	SET(pkg_oncrpc       "BALL_contrib_oncrpc_1.14" CACHE INTERNAL "Oncrpc repo name")
+	SET(pkg_bison        "contrib_bison_2.4.1" CACHE INTERNAL "Bison repo name")
+	SET(pkg_flex         "contrib_flex_2.5.4" CACHE INTERNAL "Flex repo name")
+	SET(pkg_oncrpc       "contrib_oncrpc_1.14" CACHE INTERNAL "Oncrpc repo name")
 
 	# Bison and Flex are mandatory on Windows
 	SET(PACKAGES_SELECTED bison flex)
