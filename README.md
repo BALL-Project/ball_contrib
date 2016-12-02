@@ -29,7 +29,7 @@ Sources are based on original tarballs and are patched to fit our needs.
 
 - *IMPORTANT BUILD NOTE*  
 Do not use the '-j' flag for make and the /maxcpucount switch for MSbuild!
-The behaviour is undefined and will most likels break your build.
+The behaviour is undefined and will most likely break your build.
 If you want to allow multiple build threads please specify the number during the
 CMake configuration run using the command line option -DTHREADS=n_threads  
 
