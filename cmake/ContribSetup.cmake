@@ -112,6 +112,19 @@ ENDIF()
 
 
 ###############################################################################
+# System inforamtiom
+
+# MSVC version
+IF(MSVC12)
+	SET(CONTRIB_MSVC_VERSION "12.0")
+	SET(CONTRIB_MSVC_VERSION_YEAR "2013")
+ELSEIF(MSVC14)
+	SET(CONTRIB_MSVC_VERSION "14.0")
+	SET(CONTRIB_MSVC_VERSION_YEAR "2015")
+ENDIF()
+
+
+###############################################################################
 # Search Git
 
 FIND_PACKAGE(Git)

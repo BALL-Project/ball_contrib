@@ -63,6 +63,7 @@ SET(BOOST_B2_OPTIONS --prefix=${CONTRIB_INSTALL_PREFIX}
 
 # Set system dependent variables
 IF(MSVC)
+	LIST(APPEND BOOST_B2_OPTIONS --toolset=msvc-${CONTRIB_MSVC_VERSION})
 	SET(BOOST_BOOTSTRAP_CMD bootstrap.bat)
 	SET(BOOST_B2_CMD b2.exe)
 ELSE()
