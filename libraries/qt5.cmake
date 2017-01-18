@@ -119,29 +119,28 @@ ExternalProject_Add(${PACKAGE}
 )
 
 
-IF(APPLE)
-
-	# This step is not very nice an can most likely be removed when moving to Qt 5.7
-	# QtTest library links to XCTest framework via rpath but no LC_RPATH is set in the dylib.
-	# Thus, XCTest cannot be found. As a solution, we add the eppropriate RPATH to th dylib.
-
-	EXECUTE_PROCESS(COMMAND xcrun --show-sdk-path OUTPUT_VARIABLE XCRUN_SDK_PATH)
-	STRING(STRIP ${XCRUN_SDK_PATH} XCRUN_SDK_PATH)
-	SET(XCODE_SDK_FRAMEWORKS "${XCRUN_SDK_PATH}/../../Library/Frameworks")
-
-	# Add custom Install step
-	ExternalProject_Add_Step(${PACKAGE} qttest_add_lc_rpath
-
-		LOG 1
-		DEPENDEES build
-
-		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-		COMMAND install_name_tool -add_rpath "${XCODE_SDK_FRAMEWORKS}" "${PACKAGE}/qtbase/lib/QtTest.framework/QtTest"
-
-		DEPENDERS install
-	)
-
-ENDIF()
+#IF(APPLE)
+#
+#	# This step is not very nice and can most likely be removed when moving to Qt 5.7
+#	# QtTest library links to XCTest framework via rpath but no LC_RPATH is set in the dylib.
+#	# Thus, XCTest cannot be found. As a solution, we change the installed name of XCTest framework.
+#
+#	EXECUTE_PROCESS(COMMAND xcrun --show-sdk-path OUTPUT_VARIABLE XCRUN_SDK_PATH)
+#	STRING(STRIP ${XCRUN_SDK_PATH} XCRUN_SDK_PATH)
+#
+#	# Add custom Install step
+#	ExternalProject_Add_Step(${PACKAGE} qttest_add_lc_rpath
+#
+#		LOG 1
+#		DEPENDEES build
+#
+#		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
+#		COMMAND install_name_tool -change "@rpath/XCTest.framework/Versions/A/XCTest" "${XCRUN_SDK_PATH}/../../Library/Frameworks/XCTest.framework/Versions/A/XCTest" "${PACKAGE}/qtbase/lib/QtTest.framework/QtTest"
+#
+#		DEPENDERS install
+#	)
+#
+#ENDIF()
 
 
 
