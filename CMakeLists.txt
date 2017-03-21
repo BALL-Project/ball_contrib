@@ -69,7 +69,7 @@ SET(pkg_fftw         "contrib_fftw_3.3.4" CACHE INTERNAL "FFTW repo name")
 SET(pkg_glew         "contrib_glew_1.13.0" CACHE INTERNAL "GLEW repo name")
 SET(pkg_openbabel    "contrib_openbabel_2.4.1" CACHE INTERNAL "OpenBabel repo name")
 SET(pkg_sip          "contrib_sip_4.16.9" CACHE INTERNAL "SIP repo name")
-SET(pkg_tbb          "contrib_tbb43_20150611" CACHE INTERNAL "TBB repo name")
+SET(pkg_tbb          "contrib_tbb-2017_U5" CACHE INTERNAL "TBB repo name")
 SET(pkg_qt5          "contrib_qt_5.6.1-1" CACHE INTERNAL "Qt5 repo name")
 
 IF(MSVC)
