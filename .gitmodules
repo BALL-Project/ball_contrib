@@ -1,0 +1,33 @@
+[submodule "libraries/glew_1.13.0"]
+	path = libraries/glew_1.13.0
+	url = https://github.com/philthiel/glew_1.13.0
+[submodule "libraries/sip_4.16.9"]
+	path = libraries/sip_4.16.9
+	url = https://github.com/philthiel/sip_4.16.9
+[submodule "libraries/qt_5.6.1-1"]
+	path = libraries/qt_5.6.1-1
+	url = https://github.com/philthiel/qt_5.6.1-1
+[submodule "libraries/openbabel_2.4.1"]
+	path = libraries/openbabel_2.4.1
+	url = https://github.com/philthiel/openbabel_2.4.1
+[submodule "libraries/oncrpc_1.14"]
+	path = libraries/oncrpc_1.14
+	url = https://github.com/philthiel/oncrpc_1.14
+[submodule "libraries/flex_2.5.4"]
+	path = libraries/flex_2.5.4
+	url = https://github.com/philthiel/flex_2.5.4
+[submodule "libraries/fftw_3.3.4"]
+	path = libraries/fftw_3.3.4
+	url = https://github.com/philthiel/fftw_3.3.4
+[submodule "libraries/eigen_3.2.5"]
+	path = libraries/eigen_3.2.5
+	url = https://github.com/philthiel/eigen_3.2.5
+[submodule "libraries/boost_1.60.0"]
+	path = libraries/boost_1.60.0
+	url = https://github.com/philthiel/boost_1.60.0
+[submodule "libraries/bison_2.4.1"]
+	path = libraries/bison_2.4.1
+	url = https://github.com/philthiel/bison_2.4.1
+[submodule "libraries/tbb-2017_U5"]
+	path = libraries/tbb-2017_U5
+	url = https://github.com/philthiel/tbb-2017_U5
