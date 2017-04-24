@@ -37,7 +37,7 @@ SET(CONTRIB_VERSION "${CONTRIB_VERSION_MAJOR}.${CONTRIB_VERSION_MINOR}.${CONTRIB
 ###############################################################################
 # CMake and global settings
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1.0 FATAL_ERROR)
 
 # Path to contrib-specific CMake modules
 LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -77,24 +77,36 @@ IF(MSVC)
 	SET(pkg_flex         "contrib_flex_2.5.4" CACHE INTERNAL "Flex repo name")
 	SET(pkg_oncrpc       "contrib_oncrpc_1.14" CACHE INTERNAL "Oncrpc repo name")
 	SET(pkg_rtfact       "contrib_rtfact_4f1d028" CACHE INTERNAL "RTfact repo name")
-
-	# Bison and Flex are mandatory on Windows
-	# Boost, Glew, and TBB are required for RTFact
-	SET(PACKAGES_SELECTED bison flex boost glew tbb)
 ENDIF()
 
 
 ###############################################################################
-# Generate list of available packages (PACKAGES_AVAILABLE)
-# and evaluate packages selected by the user via -DPACKAGES (PACKAGES_SELECTED)
+# Setup packages for installation and specify cross dependencies
 
-EVALUATE_PACKAGES()
+# Generate CMake list that contains all available packages without pkg_ prefix
+PACKAGE_LIST_GENERATE()
+
+# Generate list of packages to be installed
+IF("${PACKAGES}" STREQUAL "all")
+	SET(PACKAGES_SELECTED ${PACKAGES_AVAILABLE})
+ELSE()
+	SET(PACKAGES_SELECTED ${PACKAGES})
+ENDIF()
+
+# Specify contrib cross dependencies
+IF(MSVC)
+	SET_CROSS_DEPENDENCIES(rtfact boost glew tbb)
+ENDIF()
 
 
 ###############################################################################
 # Configure and download selected packages
 
 CONFIGURE_PACKAGES()
+
+
+###############################################################################
+# Print final message containing license notification
 
 LICENSE_AGREEMENT_MSG()
 

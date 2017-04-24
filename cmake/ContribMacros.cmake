@@ -26,10 +26,10 @@
 # -----------------------------------------------------------------------------
 
 
-# Create a list of all packages available in this contrib and a list of packages selected for installation
-MACRO(EVALUATE_PACKAGES)
+# Generate CMake list that contains all available packages without pkg_ prefix
+# Created CMake variable holding available packages: PACKAGES_AVAILABLE
+MACRO(PACKAGE_LIST_GENERATE)
 
-	# First, generate list of available packages
 	GET_CMAKE_PROPERTY(VAR_LIST VARIABLES)
 
 	FOREACH(TMP_VAR ${VAR_LIST})
@@ -40,11 +40,19 @@ MACRO(EVALUATE_PACKAGES)
 		ENDIF()
 	ENDFOREACH()
 
-	# Second, generate list of packages to be installed
-	IF("${PACKAGES}" STREQUAL "all")
-		SET(PACKAGES_SELECTED ${PACKAGES_AVAILABLE})
-	ELSE()
-		SET(PACKAGES_SELECTED ${PACKAGES_SELECTED} ${PACKAGES})
+ENDMACRO()
+
+
+# Set a cross dependency for a contrib package selected for installation
+MACRO(SET_CROSS_DEPENDENCIES)
+
+	LIST(FIND PACKAGES_SELECTED ${ARGV0} PACKAGE_FOUND)
+
+	IF(NOT ${PACKAGE_FOUND} EQUAL -1)
+		SET(ARGN_LIST "${ARGN}")
+		LIST(REMOVE_ITEM PACKAGES_SELECTED ${ARGN_LIST})
+		LIST(REVERSE ARGN_LIST)
+		LIST(APPEND PACKAGES_SELECTED ${ARGN_LIST})
 	ENDIF()
 
 ENDMACRO()
