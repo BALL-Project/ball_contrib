@@ -26,6 +26,13 @@
 # -----------------------------------------------------------------------------
 
 
+IF(MSVC)
+	SET(RTFACT_BUILD_COMMAND ${MSBUILD} RTfactRtpie.vcxproj)
+ELSE()
+	SET(RTFACT_BUILD_COMMAND ${MAKE_COMMAND})
+ENDIF()
+
+
 ExternalProject_Add(${PACKAGE}
 
 	DEPENDS boost glew tbb
@@ -41,21 +48,39 @@ ExternalProject_Add(${PACKAGE}
 
 	CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CONTRIB_INSTALL_PREFIX}
 
-	BUILD_COMMAND ${MSBUILD} RTfactRtpie.vcxproj
+	BUILD_COMMAND   "${RTFACT_BUILD_COMMAND}"
 	INSTALL_COMMAND ""
 )
 
 
 # Add custom Install step
-ExternalProject_Add_Step(${PACKAGE} custom_install
+IF(MSVC)
 
-	LOG 1
-	DEPENDEES build
+	ExternalProject_Add_Step(${PACKAGE} custom_install
 
-	WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}-build/bin/${CMAKE_BUILD_TYPE} ${CONTRIB_INSTALL_BIN}
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}-build/lib/${CMAKE_BUILD_TYPE} ${CONTRIB_INSTALL_LIB}
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}/include ${CONTRIB_INSTALL_INC}
+		LOG 1
+		DEPENDEES build
 
-	DEPENDERS install
-)
+		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}-build/bin/${CMAKE_BUILD_TYPE} ${CONTRIB_INSTALL_BIN}
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}-build/lib/${CMAKE_BUILD_TYPE} ${CONTRIB_INSTALL_LIB}
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}/include ${CONTRIB_INSTALL_INC}
+
+		DEPENDERS install
+	)
+
+ELSE()
+
+	ExternalProject_Add_Step(${PACKAGE} custom_install
+
+		LOG 1
+		DEPENDEES build
+
+		WORKING_DIRECTORY "${CONTRIB_BINARY_SRC}"
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}-build/lib ${CONTRIB_INSTALL_LIB}
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${PACKAGE}/include ${CONTRIB_INSTALL_INC}
+
+		DEPENDERS install
+	)
+
+ENDIF()
