@@ -71,7 +71,7 @@ SET(pkg_openbabel    "contrib_openbabel_2.4.1" CACHE INTERNAL "OpenBabel repo na
 SET(pkg_rtfact       "contrib_rtfact_4f1d028" CACHE INTERNAL "RTfact repo name")
 SET(pkg_sip          "contrib_sip_4.16.9" CACHE INTERNAL "SIP repo name")
 SET(pkg_tbb          "contrib_tbb-2017_U5" CACHE INTERNAL "TBB repo name")
-SET(pkg_qt5          "contrib_qt_5.6.1-1" CACHE INTERNAL "Qt5 repo name")
+SET(pkg_qt5          "contrib_qt_5.6.3" CACHE INTERNAL "Qt5 repo name")
 
 IF(MSVC)
 	SET(pkg_bison        "contrib_bison_2.4.1" CACHE INTERNAL "Bison repo name")
