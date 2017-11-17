@@ -45,7 +45,6 @@ SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_PREFIX}
 			 -confirm-license
 			 -shared
 			 -nomake examples
-			 -no-nis
 			 -no-harfbuzz
 			 -skip qt3d
 			 -skip qtcanvas3d
