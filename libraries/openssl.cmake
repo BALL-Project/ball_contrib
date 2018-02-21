@@ -56,6 +56,5 @@ ExternalProject_Add(${PACKAGE}
 
 # On Mac OS X we have to use absolute paths as install names for dylibs
 IF(APPLE)
-	FIX_DYLIB_INSTALL_NAMES(libssl)
-	FIX_DYLIB_INSTALL_NAMES(libcrypto)
+	FIX_DYLIB_INSTALL_NAMES(libssl libcrypto)
 ENDIF()
