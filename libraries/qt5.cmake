@@ -46,6 +46,7 @@ SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_PREFIX}
 			 -shared
 			 -nomake examples
 			 -no-harfbuzz
+			 -openssl-linked -I${CONTRIB_INSTALL_INC} -L${CONTRIB_INSTALL_LIB}
 			 -skip qt3d
 			 -skip qtcanvas3d
 			 -skip qtconnectivity
@@ -100,6 +101,7 @@ ENDIF()
 
 ExternalProject_Add(${PACKAGE}
 
+	DEPENDS openssl
 	PREFIX ${PROJECT_BINARY_DIR}
 	DOWNLOAD_COMMAND ""
 	BUILD_IN_SOURCE ${CUSTOM_BUILD_IN_SOURCE}
