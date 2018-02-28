@@ -119,6 +119,10 @@ ExternalProject_Add(${PACKAGE}
 	INSTALL_COMMAND ${QT_INSTALL_COMMAND}
 )
 
+# Easy access to qt5 config settings
+# Not required to build the contrib
+FILE(WRITE ${CONTRIB_BINARY_SRC}/qt5_config.txt "${QT_CONFIGURE_COMMAND} ${QT_CONFIGURE_OPTIONS}")
+
 
 #IF(APPLE)
 #
