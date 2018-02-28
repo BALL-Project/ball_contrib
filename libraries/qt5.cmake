@@ -37,7 +37,6 @@ IF(NOT PERL_EXECUTABLE)
 	ENDIF()
 ENDIF()
 
-# TODO: openssl
 
 # Common configure options
 SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_PREFIX}
@@ -46,7 +45,6 @@ SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_PREFIX}
 			 -shared
 			 -nomake examples
 			 -no-harfbuzz
-			 -openssl-linked
 			 -skip qt3d
 			 -skip qtcanvas3d
 			 -skip qtconnectivity
@@ -87,15 +85,23 @@ IF(MSVC)
 	IF("${THREADS}" GREATER "1")
 		LIST(APPEND QT_CONFIGURE_OPTIONS -mp)
 	ENDIF()
+ELSEIF(APPLE)
+	SET(QT_CONFIGURE_COMMAND ./configure)
+	SET(QT_BUILD_COMMAND ${MAKE_COMMAND})
+	SET(QT_INSTALL_COMMAND ${MAKE_INSTALL_COMMAND})
+
+	# SSL support on macOS using Secure Transport API
+	LIST(APPEND QT_CONFIGURE_OPTIONS -securetransport)
 ELSE()
 	SET(QT_CONFIGURE_COMMAND ./configure)
 	SET(QT_BUILD_COMMAND ${MAKE_COMMAND})
 	SET(QT_INSTALL_COMMAND ${MAKE_INSTALL_COMMAND})
 
-	# In case of Linux OS use xcb-libraries bundled with Qt
-	IF(CMAKE_SYSTEM_NAME STREQUAL Linux)
-		LIST(APPEND QT_CONFIGURE_OPTIONS -qt-xcb)
-	ENDIF()
+	# SSL support on Linux using OpenSSL
+	LIST(APPEND QT_CONFIGURE_OPTIONS -openssl-linked)
+
+	# On Linux we use Qt's XCB
+	LIST(APPEND QT_CONFIGURE_OPTIONS -qt-xcb)
 ENDIF()
 
 
