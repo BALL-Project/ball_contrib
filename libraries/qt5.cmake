@@ -46,7 +46,7 @@ SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_PREFIX}
 			 -shared
 			 -nomake examples
 			 -no-harfbuzz
-			 -openssl-linked -I${CONTRIB_INSTALL_INC} -L${CONTRIB_INSTALL_LIB}
+			 -openssl-linked
 			 -skip qt3d
 			 -skip qtcanvas3d
 			 -skip qtconnectivity
@@ -121,7 +121,8 @@ ExternalProject_Add(${PACKAGE}
 
 # Easy access to qt5 config settings
 # Not required to build the contrib
-FILE(WRITE ${CONTRIB_BINARY_SRC}/qt5_config.txt "${QT_CONFIGURE_COMMAND} ${QT_CONFIGURE_OPTIONS}")
+STRING(REPLACE ";" " " CONFIG_STRING "${QT_CONFIGURE_OPTIONS}")
+FILE(WRITE ${CONTRIB_BINARY_SRC}/qt5_config.txt "${QT_CONFIGURE_COMMAND} " "${CONFIG_STRING}")
 
 
 #IF(APPLE)

@@ -97,7 +97,7 @@ ENDIF()
 
 # Specify contrib cross dependencies
 SET_CROSS_DEPENDENCIES(rtfact boost glew tbb)
-SET_CROSS_DEPENDENCIES(qt5 openssl)
+#SET_CROSS_DEPENDENCIES(qt5 openssl)
 
 
 ###############################################################################
