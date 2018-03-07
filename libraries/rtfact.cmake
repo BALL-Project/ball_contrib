@@ -33,6 +33,10 @@ ELSE()
 ENDIF()
 
 
+# Package branch to clone/download from the BALL-Contrib repository
+SET(GIT_BRANCH "master")
+
+
 ExternalProject_Add(${PACKAGE}
 
 	DEPENDS boost glew tbb

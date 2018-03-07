@@ -68,10 +68,8 @@ SET(pkg_eigen3       "contrib_eigen_3.2.5" CACHE INTERNAL "Eigen3 repo name")
 SET(pkg_fftw         "contrib_fftw_3.3.4" CACHE INTERNAL "FFTW repo name")
 SET(pkg_glew         "contrib_glew_1.13.0" CACHE INTERNAL "GLEW repo name")
 SET(pkg_openbabel    "contrib_openbabel_2.4.1" CACHE INTERNAL "OpenBabel repo name")
-SET(pkg_rtfact       "contrib_rtfact_4f1d028" CACHE INTERNAL "RTfact repo name")
 SET(pkg_sip          "contrib_sip_4.16.9" CACHE INTERNAL "SIP repo name")
 SET(pkg_tbb          "contrib_tbb-2017_U5" CACHE INTERNAL "TBB repo name")
-#SET(pkg_qt5          "contrib_qt_5.6.3" CACHE INTERNAL "Qt5 repo name")
 SET(pkg_qt5          "contrib_qt_5.10.1" CACHE INTERNAL "Qt5 repo name")
 
 
@@ -80,6 +78,7 @@ IF(MSVC)
 	SET(pkg_flex         "contrib_flex_2.5.4" CACHE INTERNAL "Flex repo name")
 	SET(pkg_oncrpc       "contrib_oncrpc_1.14" CACHE INTERNAL "Oncrpc repo name")
 	SET(pkg_openssl      "contrib_openssl_1.1.0g" CACHE INTERNAL "OpenSSL repo name")
+	SET(pkg_rtfact       "contrib_rtfact_4f1d028" CACHE INTERNAL "RTfact repo name")
 ENDIF()
 
 
