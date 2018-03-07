@@ -72,7 +72,11 @@ IF(SKIP_QTWEBENGINE)
 	LIST(APPEND QT_CONFIGURE_OPTIONS -skip qtwebengine)
 ENDIF()
 
+# Package branch to clone/download from the BALL-Contrib repository
+SET(GIT_BRANCH "master")
+
 SET(PACKAGE_DEPENDENCIES "")
+
 
 # Platform-specific settings
 IF(MSVC)

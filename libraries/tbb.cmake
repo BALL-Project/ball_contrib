@@ -38,6 +38,10 @@ ENDIF()
 CONFIGURE_FILE("${CONTRIB_LIBRARY_PATH}/tbb_install.cmake.in" "${CONTRIB_BINARY_SRC}/tbb_install.cmake" @ONLY)
 
 
+# Package branch to clone/download from the BALL-Contrib repository
+SET(GIT_BRANCH "master")
+
+
 ExternalProject_Add(${PACKAGE}
 
 	PREFIX ${PROJECT_BINARY_DIR}

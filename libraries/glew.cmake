@@ -34,9 +34,15 @@ IF(MSVC)
 	IF(${CONTRIB_ADDRESSMODEL} EQUAL 32)
 		SET(GLEW_ARCH_DIR "Win32")
 	ENDIF()
+
+	# Package branch to clone/download from the BALL-Contrib repository
+	SET(GIT_BRANCH "contrib_win")
 ELSE()
 	SET(GLEW_BUILD_COMMAND env GLEW_DEST=${CONTRIB_INSTALL_PREFIX} ${MAKE_COMMAND} STRIP=strip)
 	SET(GLEW_INSTALL_COMMAND env GLEW_DEST=${CONTRIB_INSTALL_PREFIX} ${MAKE_INSTALL_COMMAND})
+
+	# Package branch to clone/download from the BALL-Contrib repository
+	SET(GIT_BRANCH "master")
 ENDIF()
 
 
