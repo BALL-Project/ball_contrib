@@ -70,7 +70,7 @@ MACRO(CONFIGURE_PACKAGES)
 			MESSAGE(SEND_ERROR "The selected package '${PACKAGE}' is not part of BALL_contrib.")
 		ELSE()
 			# Configure package
-			MESSAGE(STATUS "Configuring external project: ${PACKAGE}")
+			MESSAGE(STATUS "Configuring external project: ${PACKAGE} (${pkg_${PACKAGE}})")
 			INCLUDE("${CONTRIB_LIBRARY_PATH}/${PACKAGE}.cmake")
 
 			# Check if package source has already been downloaded
