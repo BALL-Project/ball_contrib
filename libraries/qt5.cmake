@@ -40,6 +40,7 @@ ENDIF()
 
 # Common configure options
 SET(QT_CONFIGURE_OPTIONS -prefix ${CONTRIB_INSTALL_PREFIX}
+                         -v
 			 -opensource
 			 -confirm-license
 			 -shared
