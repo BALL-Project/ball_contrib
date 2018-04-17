@@ -63,8 +63,8 @@ INCLUDE(ContribMacros)
 ###############################################################################
 # Packages contained in this contrib
 
-SET(pkg_boost        "contrib_boost_1.60.0" CACHE INTERNAL "Boost repo name")
-SET(pkg_eigen3       "contrib_eigen_3.2.5" CACHE INTERNAL "Eigen3 repo name")
+SET(pkg_boost        "contrib_boost_1.66.0" CACHE INTERNAL "Boost repo name")
+SET(pkg_eigen3       "contrib_eigen_3.3.4" CACHE INTERNAL "Eigen3 repo name")
 SET(pkg_fftw         "contrib_fftw_3.3.4" CACHE INTERNAL "FFTW repo name")
 SET(pkg_glew         "contrib_glew_1.13.0" CACHE INTERNAL "GLEW repo name")
 SET(pkg_openbabel    "contrib_openbabel_2.4.1" CACHE INTERNAL "OpenBabel repo name")
